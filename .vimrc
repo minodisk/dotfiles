@@ -59,10 +59,16 @@ NeoBundle 'vim-scripts/AnsiEsc.vim'
 " NeoBundle 'bronson/vim-trailing-whitespace'
 
 """ シンタックスハイライト
-" CoffeeScript
-NeoBundle 'kchmck/vim-coffee-script'
+" Jade
+NeoBundle 'digitaltoad/vim-jade'
+" Sass
+NeoBundle 'cakebaker/scss-syntax.vim'
+" Stylus
+NeoBundle 'wavded/vim-stylus'
 " LESS
 " NeoBundle 'KohPoll/vim-less'
+" CoffeeScript
+NeoBundle 'kchmck/vim-coffee-script'
 
 """ Git
 NeoBundle 'tpope/vim-fugitive'
