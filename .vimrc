@@ -1,26 +1,30 @@
 filetype off
 
 
-"===============================================================================
-" プラグイン管理
+""" プラグインのロード開始
+" Note: Skip initialization for vim-tiny or vim-small.
+ if !1 | finish | endif
+ if has('vim_starting')
+   set nocompatible               " Be iMproved
+   " Required:
+   set runtimepath+=~/.vim/bundle/neobundle.vim/
+ endif
+ " Required:
+ call neobundle#begin(expand('~/.vim/bundle/'))
+ " Let NeoBundle manage NeoBundle
+ " Required:
+ NeoBundleFetch 'Shougo/neobundle.vim'
 
-"-------------------------------------------------
-" プラグインのロード開始
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-"-------------------------------------------------
-" Unite
+""" unite.vim
 " :Unite ファイルリスト表示
 NeoBundle 'Shougo/unite.vim'
 " 最近使ったファイル
 NeoBundle 'Shougo/neomru.vim'
+
+""" vimfiler
 NeoBundle 'Shougo/vimfiler'
 
+""" vimproc.vim
 NeoBundle 'Shougo/vimproc.vim', {
   \ 'build' : {
   \     'windows' : 'tools\\update-dll-mingw',
@@ -31,19 +35,12 @@ NeoBundle 'Shougo/vimproc.vim', {
   \ }
 NeoBundle 'Shougo/vimshell'
 
-"-------------------------------------------------
-" NERDTree
-" :NERDTree ファイルツリー表示
-" NeoBundle 'scrooloose/nerdtree'
-
-"-------------------------------------------------
-" 補完
+""" 補完
 " 補完候補
 NeoBundle 'Shougo/neocomplcache'
 " スニペット
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
-
 " 括弧等
 NeoBundle 'kana/vim-smartinput'
 " コメントアウト
@@ -53,8 +50,7 @@ NeoBundle 'tyru/caw.vim'
 " 入力からの補完
 NeoBundle 'kana/vim-smartchr'
 
-"-------------------------------------------------
-" カラーリング
+""" カラーリング
 " インデント
 NeoBundle 'nathanaelkane/vim-indent-guides'
 " ログファイル
@@ -62,34 +58,27 @@ NeoBundle 'vim-scripts/AnsiEsc.vim'
 " 行末の半角スペース
 " NeoBundle 'bronson/vim-trailing-whitespace'
 
-"-------------------------------------------------
-" シンタックスハイライト
+""" シンタックスハイライト
 " CoffeeScript
 NeoBundle 'kchmck/vim-coffee-script'
 " LESS
 " NeoBundle 'KohPoll/vim-less'
 
-"-------------------------------------------------
-" コードチェック
-" Syntastic
-NeoBundle 'scrooloose/syntastic'
-" カバレッジ
-"NoeBundle 'nyarly/cadre'
-
-"-------------------------------------------------
-" Git
+""" Git
 NeoBundle 'tpope/vim-fugitive'
 
-" CoffeeScript
+""" コードチェック
+" Syntastic
+NeoBundle 'scrooloose/syntastic'
+
+""" 言語サポート
 " coffee2js
 NeoBundle 'JarrodCTaylor/vim-js2coffee'
 
-"-------------------------------------------------
-" 外部ツール起動
+""" 外部ツール起動
 " Dash
 NeoBundle 'rizzatti/dash.vim'
 
-"-------------------------------------------------
 " プラグインのインストールとバージョンチェック
 call neobundle#end()
 filetype plugin indent on
@@ -122,7 +111,7 @@ set wildmenu
 " 入力中のコマンドを表示する
 set showcmd
 " バックアップディレクトリの指定(でもバックアップは使ってない)
-set backupdir=$HOME/.vimbackup
+" set backupdir=$HOME/.vimbackup
 " バッファで開いているファイルのディレクトリでエクスクローラを開始する(でもエクスプローラって使ってない)
 set browsedir=buffer
 " 小文字のみで検索したときに大文字小文字を無視する
@@ -130,7 +119,7 @@ set smartcase
 " 検索結果をハイライト表示する
 set hlsearch
 " 暗い背景色に合わせた配色にする
-set background=dark
+" set background=dark
 " タブ入力を複数の空白入力に置き換える
 set expandtab
 " 検索ワードの最初の文字を入力した時点で検索を開始する
@@ -157,14 +146,21 @@ set shiftwidth=2
 set smarttab
 " カーソルを行頭、行末で止まらないようにする
 set whichwrap=b,s,h,l,<,>,[,]
+" カーソル行をハイライト
+set cursorline
 " 構文毎に文字色を変化させる
 syntax on
 " フォント
 set guifont=SourceCodePro-Light:h12
 " カラースキーマの指定
-colorscheme molokai
+" let g:molokai_original = 1
+" colorscheme molokai
+let g:hybrid_use_Xresources = 1
+colorscheme hybrid
 " 行番号の色
-" highlight LineNr ctermfg=darkyellow
+highlight LineNr guifg=#707880 guibg=#282A2E
+" 選択行番号の色
+highlight CursorLineNr guibg=#282A2E
 
 
 "===============================================================================
@@ -218,8 +214,7 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 " au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
 
-"-------------------------------------------------
-" vimfiler
+""" vimfiler
 "vimデフォルトのエクスプローラをvimfilerで置き換える
 let g:vimfiler_as_default_explorer = 1
 "セーフモードを無効にした状態で起動する
@@ -229,8 +224,7 @@ nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
 
-"-------------------------------------------------
-" neocomplcache
+""" neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -310,8 +304,7 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 " https://github.com/c9s/perlomni.vim
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-"-------------------------------------------------
-" neosnippet
+""" neosnippet
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -328,13 +321,11 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-"-------------------------------------------------
-" caw.vim
+""" caw.vim
 nmap <Leader>c <Plug>(caw:i:toggle)
 vmap <Leader>c <Plug>(caw:i:toggle)
 
-"-------------------------------------------------
-" vim-smartchr
+""" vim-smartchr
 inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
@@ -345,27 +336,23 @@ inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
-"-------------------------------------------------
-" vim-indent-guides自動起動
+""" vim-indent-guides自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 
-"-------------------------------------------------
-" grep検索の実行後にQuickFix Listを表示する
-"autocmd QuickFixCmdPost *grep* cwindow
+""" grep検索の実行後にQuickFix Listを表示する
+autocmd QuickFixCmdPost *grep* cwindow
 
 
 "===============================================================================
 " プラグインではない機能
 
-"-------------------------------------------------
-" ノーマルモードでEnterで改行入力
+""" ノーマルモードでEnterで改行入力
 noremap <CR> o<ESC>
 
-" インサートモードでShift-Tabでインデントを下げる
+""" インサートモードでShift-Tabでインデントを下げる
 inoremap <S-TAB> <ESC><<i
 
-"-------------------------------------------------
-" 全角スペースの表示
+""" 全角スペースの表示
 " http://inari.hatenablog.com/entry/2014/05/05/231307
 function! ZenkakuSpace()
     highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
@@ -379,8 +366,7 @@ if has('syntax')
   call ZenkakuSpace()
 endif
 
-"-------------------------------------------------
-" 行末スペースの削除
+""" 行末スペースの削除
 function! RTrim()
   let s:cursor = getpos('.')
   %s/\s\+$//e
@@ -389,8 +375,7 @@ endfunction
 " 保存時に実行
 autocmd BufWritePre * call RTrim()
 
-"-------------------------------------------------
-" 挿入モード時、ステータスラインの色を変更
+""" 挿入モード時、ステータスラインの色を変更
 " https://sites.google.com/site/fudist/Home/vim-nihongo-ban/-vimrc-sample
 let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
 if has('syntax')
@@ -419,8 +404,7 @@ function! s:GetHighlight(hi)
   return hl
 endfunction
 
-"-------------------------------------------------
-" 最後のカーソル位置を復元する
+""" 最後のカーソル位置を復元する
 if has("autocmd")
   autocmd BufReadPost *
   \ if line("'\"") > 0 && line ("'\"") <= line("$") |
@@ -428,7 +412,20 @@ if has("autocmd")
   \ endif
 endif
 
+""" プロジェクトローカルな設定を使う
+" http://vim-users.jp/2009/12/hack112/
+augroup vimrc-local
+  autocmd!
+  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
+  autocmd BufReadPre .vimprojects set ft=vim
+augroup END
+function! s:vimrc_local(loc)
+  let files = findfile('.vimprojects', escape(a:loc, ' ') . ';', -1)
+  for i in reverse(filter(files, 'filereadable(v:val)'))
+    source `=i`
+  endfor
+endfunction
 
-"===============================================================================
 
+"""
 filetype on
