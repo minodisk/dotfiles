@@ -132,10 +132,12 @@ set expandtab
 set incsearch
 " 保存されていないファイルがあるときでも別のファイルを開けるようにする
 set hidden
-" 不可視文字を表示する
+" 不可視文字を表示
 set list
+" set listchars=tab:▸\,trail:-,eol:¬,extends:»,precedes:«,nbsp:%
+set listchars=tab:▸\ ,eol:¬
 " タブと行の続きを可視化する
-set listchars=tab:>\ ,extends:<
+" set listchars=tab:>\ ,extends:<
 " 行番号を表示する
 set number
 " 対応する括弧やブレースを表示する
@@ -172,21 +174,42 @@ highlight CursorLineNr guibg=#282A2E
 "===============================================================================
 " プラグインの設定とキーマップ
 
+""" http://deris.hatenablog.jp/entry/2013/05/02/192415
+" 使いづらいキーを使いやすいキーに割り当てる
+nnoremap ; :
+nnoremap : ;
+" 表示上の行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+" 誤操作すると困るキーを無効化する
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap Q <Nop>
+
 """ unite.vim
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
-" バッファ一覧
-nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-" ファイル一覧
-nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" レジスタ一覧
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-" 最近使用したファイル一覧
-nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-" 常用セット
-nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-" 全部乗せ
-nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+" " バッファ一覧
+" nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+" " ファイル一覧
+" nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+" " レジスタ一覧
+" nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+" " 最近使用したファイル一覧
+" nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
+" " 常用セット
+" nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
+" " 全部乗せ
+" nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+
+nnoremap [unite] <Nop>
+nmap     <Space>u [unite]
+nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+
+" nnoremap <C-u> :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
