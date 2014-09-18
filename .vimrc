@@ -125,24 +125,6 @@ set smartcase
 set whichwrap=b,s,h,l,<,>,[,]
 
 
-
-" タグファイルの指定(でもタグジャンプは使ったことがない)
-" set tags=~/.tags
-" コマンドラインに使われる画面上の行数
-" set cmdheight=2
-
-" バックアップディレクトリの指定(でもバックアップは使ってない)
-" set backupdir=$HOME/.vimbackup
-" バッファで開いているファイルのディレクトリでエクスクローラを開始する(でもエクスプローラって使ってない)
-" set browsedir=buffer
-
-" 暗い背景色に合わせた配色にする
-" set background=dark
-
-
-
-
-
 """ プラグインの設定とキーマップ
 
 """ http://deris.hatenablog.jp/entry/2013/05/02/192415
