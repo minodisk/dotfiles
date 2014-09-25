@@ -19,12 +19,12 @@ NeoBundle 'Shougo/vimfiler'
 
 "" vimproc
 NeoBundle 'Shougo/vimproc.vim', {
-  \ 'build' : {
+  \ 'build': {
   \     'windows' : 'tools\\update-dll-mingw',
   \     'cygwin' : 'make -f make_cygwin.mak',
   \     'mac' : 'make -f make_mac.mak',
   \     'unix' : 'make -f make_unix.mak',
-  \    },
+  \   }
   \ }
 
 "" vimshell
@@ -34,6 +34,12 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+""" tern
+NeoBundle 'marijnh/tern_for_vim', {
+  \ 'build': {
+  \     'others': 'npm install'
+  \   }
+  \ }
 
 "" 補完
 " 対応する括弧やクオートを補完
@@ -96,6 +102,13 @@ NeoBundleCheck
 " ファイル
 set noswapfile
 set hidden
+" 不可視文字を表示
+set list
+" set listchars=tab:▸\,trail:-,eol:¬,extends:»,precedes:«,nbsp:%
+set listchars=tab:▸\ ,trail:.,eol:¬
+" タブと行の続きを可視化する
+" set listchars=tab:>\ ,extends:<
+" 行番号を表示する
 " UI
 set title
 set number
