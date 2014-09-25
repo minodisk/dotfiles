@@ -26,12 +26,12 @@ NeoBundle 'Shougo/vimfiler'
 
 """ vimproc.vim
 NeoBundle 'Shougo/vimproc.vim', {
-  \ 'build' : {
+  \ 'build': {
   \     'windows' : 'tools\\update-dll-mingw',
   \     'cygwin' : 'make -f make_cygwin.mak',
   \     'mac' : 'make -f make_mac.mak',
   \     'unix' : 'make -f make_unix.mak',
-  \    },
+  \   }
   \ }
 NeoBundle 'Shougo/vimshell'
 
@@ -41,6 +41,12 @@ NeoBundle 'Shougo/neocomplcache'
 " スニペット
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+""" tern
+NeoBundle 'marijnh/tern_for_vim', {
+  \ 'build': {
+  \     'others': 'npm install'
+  \   }
+  \ }
 " 括弧等
 NeoBundle 'kana/vim-smartinput'
 " コメントアウト
@@ -135,7 +141,7 @@ set hidden
 " 不可視文字を表示
 set list
 " set listchars=tab:▸\,trail:-,eol:¬,extends:»,precedes:«,nbsp:%
-set listchars=tab:▸\ ,eol:¬
+set listchars=tab:▸\ ,trail:.,eol:¬
 " タブと行の続きを可視化する
 " set listchars=tab:>\ ,extends:<
 " 行番号を表示する
@@ -191,6 +197,9 @@ nnoremap Q <Nop>
 """ unite.vim
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+
+nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+
 " " バッファ一覧
 " nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
 " " ファイル一覧
@@ -204,10 +213,11 @@ let g:unite_enable_start_insert=1
 " " 全部乗せ
 " nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 
-nnoremap [unite] <Nop>
-nmap     <Space>u [unite]
-nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
-nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+""" http://deris.hatenablog.jp/entry/2013/05/02/192415
+" nnoremap [unite] <Nop>
+" nmap     <Space>u [unite]
+" nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+" nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
 
 " nnoremap <C-u> :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
