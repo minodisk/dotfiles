@@ -1,30 +1,23 @@
 filetype off
 
 
-""" プラグインのロード開始
-" Note: Skip initialization for vim-tiny or vim-small.
- if !1 | finish | endif
- if has('vim_starting')
-   set nocompatible               " Be iMproved
-   " Required:
-   set runtimepath+=~/.vim/bundle/neobundle.vim/
- endif
- " Required:
- call neobundle#begin(expand('~/.vim/bundle/'))
- " Let NeoBundle manage NeoBundle
- " Required:
- NeoBundleFetch 'Shougo/neobundle.vim'
+""" プラグイン
+if !1 | finish | endif
+if has('vim_starting')
+  set nocompatible
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-""" unite.vim
-" :Unite ファイルリスト表示
+"" unite
 NeoBundle 'Shougo/unite.vim'
-" 最近使ったファイル
 NeoBundle 'Shougo/neomru.vim'
 
-""" vimfiler
+"" vimfiler
 NeoBundle 'Shougo/vimfiler'
 
-""" vimproc.vim
+"" vimproc
 NeoBundle 'Shougo/vimproc.vim', {
   \ 'build': {
   \     'windows' : 'tools\\update-dll-mingw',
@@ -33,12 +26,12 @@ NeoBundle 'Shougo/vimproc.vim', {
   \     'unix' : 'make -f make_unix.mak',
   \   }
   \ }
+
+"" vimshell
 NeoBundle 'Shougo/vimshell'
 
-""" 補完
-" 補完候補
+"" neocomplcache
 NeoBundle 'Shougo/neocomplcache'
-" スニペット
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 """ tern
@@ -47,6 +40,8 @@ NeoBundle 'marijnh/tern_for_vim', {
   \     'others': 'npm install'
   \   }
   \ }
+
+"" 補完
 " 括弧等
 NeoBundle 'kana/vim-smartinput'
 " コメントアウト
@@ -56,7 +51,7 @@ NeoBundle 'tyru/caw.vim'
 " 入力からの補完
 NeoBundle 'kana/vim-smartchr'
 
-""" カラーリング
+"" カラーリング
 " インデント
 NeoBundle 'nathanaelkane/vim-indent-guides'
 " ログファイル
@@ -75,6 +70,9 @@ NeoBundle 'wavded/vim-stylus'
 " NeoBundle 'KohPoll/vim-less'
 " CoffeeScript
 NeoBundle 'kchmck/vim-coffee-script'
+
+""" ステータスライン
+NeoBundle 'itchyny/lightline.vim'
 
 """ Git
 NeoBundle 'tpope/vim-fugitive'
@@ -97,46 +95,9 @@ filetype plugin indent on
 NeoBundleCheck
 
 
-"===============================================================================
-" オプション
-
-" vi互換を切る
-" set nocompatible
-" タグファイルの指定(でもタグジャンプは使ったことがない)
-set tags=~/.tags
-" スワップファイルは使わない(ときどき面倒な警告が出るだけで役に立ったことがない)
+""" オプション
+" ファイル
 set noswapfile
-" カーソルが何行目の何列目に置かれているかを表示する
-set ruler
-" コマンドラインに使われる画面上の行数
-set cmdheight=2
-" エディタウィンドウの末尾から2行目にステータスラインを常時表示させる
-set laststatus=2
-" ステータス行に表示させる情報の指定(どこからかコピペしたので細かい意味はわかっていない)
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
-" ステータス行に現在のgitブランチを表示する
-set statusline+=%{fugitive#statusline()}
-" ウインドウのタイトルバーにファイルのパス情報等を表示する
-set title
-" コマンドラインモードで<Tab>キーによるファイル名補完を有効にする
-set wildmenu
-" 入力中のコマンドを表示する
-set showcmd
-" バックアップディレクトリの指定(でもバックアップは使ってない)
-" set backupdir=$HOME/.vimbackup
-" バッファで開いているファイルのディレクトリでエクスクローラを開始する(でもエクスプローラって使ってない)
-set browsedir=buffer
-" 小文字のみで検索したときに大文字小文字を無視する
-set smartcase
-" 検索結果をハイライト表示する
-set hlsearch
-" 暗い背景色に合わせた配色にする
-" set background=dark
-" タブ入力を複数の空白入力に置き換える
-set expandtab
-" 検索ワードの最初の文字を入力した時点で検索を開始する
-set incsearch
-" 保存されていないファイルがあるときでも別のファイルを開けるようにする
 set hidden
 " 不可視文字を表示
 set list
@@ -145,40 +106,39 @@ set listchars=tab:▸\ ,trail:.,eol:¬
 " タブと行の続きを可視化する
 " set listchars=tab:>\ ,extends:<
 " 行番号を表示する
+" UI
+set title
 set number
-" 対応する括弧やブレースを表示する
-set showmatch
-" 改行時に前の行のインデントを継続する
-set autoindent
-" 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
-set smartindent
-" タブ文字の表示幅
-set tabstop=2
-" Vimが挿入するインデントの幅
-set shiftwidth=2
-" 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
-set smarttab
-" カーソルを行頭、行末で止まらないようにする
-set whichwrap=b,s,h,l,<,>,[,]
-" カーソル行をハイライト
-set cursorline
-" 構文毎に文字色を変化させる
-syntax on
-" フォント
+set laststatus=2
+" エディタ表示
 set guifont=SourceCodePro-Light:h12
-" カラースキーマの指定
-" let g:molokai_original = 1
-" colorscheme molokai
 let g:hybrid_use_Xresources = 1
 colorscheme hybrid
-" 行番号の色
 highlight LineNr guifg=#707880 guibg=#282A2E
-" 選択行番号の色
 highlight CursorLineNr guibg=#282A2E
+set showmatch
+set listchars=tab:▸\ ,trail:.,eol:¬
+syntax on
+set cursorline
+" フォーマッター
+set expandtab
+set autoindent
+set smartindent
+set tabstop=2
+set shiftwidth=2
+set smarttab
+" コマンドライン
+set wildmenu
+set showcmd
+" 検索
+set hlsearch
+set incsearch
+set smartcase
+" その他
+set whichwrap=b,s,h,l,<,>,[,]
 
 
-"===============================================================================
-" プラグインの設定とキーマップ
+""" プラグインの設定とキーマップ
 
 """ http://deris.hatenablog.jp/entry/2013/05/02/192415
 " 使いづらいキーを使いやすいキーに割り当てる
@@ -197,29 +157,7 @@ nnoremap Q <Nop>
 """ unite.vim
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
-
 nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
-
-" " バッファ一覧
-" nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-" " ファイル一覧
-" nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" " レジスタ一覧
-" nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-" " 最近使用したファイル一覧
-" nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-" " 常用セット
-" nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-" " 全部乗せ
-" nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
-
-""" http://deris.hatenablog.jp/entry/2013/05/02/192415
-" nnoremap [unite] <Nop>
-" nmap     <Space>u [unite]
-" nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
-" nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
-
-" nnoremap <C-u> :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -229,29 +167,6 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
-
-" " Unit
-" " http://blog.remora.cx/2010/12/vim-ref-with-unite.html
-" " 入力モードで開始する
-" let g:unite_enable_start_insert=1
-" " バッファ一覧
-" noremap <C-P> :Unite buffer<CR>
-" " ファイル一覧
-" noremap <C-N> :Unite -buffer-name=file file<CR>
-" " 最近使ったファイルの一覧
-" noremap <C-Z> :Unite file_mru<CR>
-" " sourcesを「今開いているファイルのディレクトリ」とする
-" noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
-" " ウィンドウを分割して開く
-" au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-" au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-" " ウィンドウを縦に分割して開く
-" au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-" au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
-" " ESCキーを2回押すと終了する
-" au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-" au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
-
 
 """ vimfiler
 "vimデフォルトのエクスプローラをvimfilerで置き換える
@@ -381,6 +296,70 @@ let g:indent_guides_enable_on_vim_startup = 1
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
 
+let g:syntastic_coffee_checkers = ['coffeelint']
+
+""" liteline.vim
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'mode_map': { 'c': 'NORMAL' },
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+      \ },
+      \ 'component_function': {
+      \   'modified': 'MyModified',
+      \   'readonly': 'MyReadonly',
+      \   'fugitive': 'MyFugitive',
+      \   'filename': 'MyFilename',
+      \   'fileformat': 'MyFileformat',
+      \   'filetype': 'MyFiletype',
+      \   'fileencoding': 'MyFileencoding',
+      \   'mode': 'MyMode',
+      \ },
+      \ 'separator': { 'left': '⮀', 'right': '⮂' },
+      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \ }
+
+function! MyModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! MyReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
+endfunction
+
+function! MyFilename()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyFugitive()
+  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? '⭠ '._ : ''
+  endif
+  return ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! MyMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
 
 "===============================================================================
 " プラグインではない機能
@@ -413,35 +392,6 @@ function! RTrim()
 endfunction
 " 保存時に実行
 autocmd BufWritePre * call RTrim()
-
-""" 挿入モード時、ステータスラインの色を変更
-" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/-vimrc-sample
-let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
-if has('syntax')
-  augroup InsertHook
-    autocmd!
-    autocmd InsertEnter * call s:StatusLine('Enter')
-    autocmd InsertLeave * call s:StatusLine('Leave')
-  augroup END
-endif
-let s:slhlcmd = ''
-function! s:StatusLine(mode)
-  if a:mode == 'Enter'
-    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-    silent exec g:hi_insert
-  else
-    highlight clear StatusLine
-    silent exec s:slhlcmd
-  endif
-endfunction
-function! s:GetHighlight(hi)
-  redir => hl
-  exec 'highlight '.a:hi
-  redir END
-  let hl = substitute(hl, '[\r\n]', '', 'g')
-  let hl = substitute(hl, 'xxx', '', '')
-  return hl
-endfunction
 
 """ 最後のカーソル位置を復元する
 if has("autocmd")
