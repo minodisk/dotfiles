@@ -35,11 +35,11 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 """ tern
-NeoBundle 'marijnh/tern_for_vim', {
-  \ 'build': {
-  \     'others': 'npm install'
-  \   }
-  \ }
+" NeoBundle 'marijnh/tern_for_vim', {
+"   \ 'build': {
+"   \     'others': 'npm install'
+"   \   }
+"   \ }
 
 "" 補完
 " 括弧等
@@ -47,7 +47,7 @@ NeoBundle 'kana/vim-smartinput'
 " コメントアウト
 NeoBundle 'tyru/caw.vim'
 " クォート
-" NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-surround'
 " 入力からの補完
 NeoBundle 'kana/vim-smartchr'
 
@@ -113,9 +113,12 @@ set laststatus=2
 " エディタ表示
 set guifont=SourceCodePro-Light:h12
 let g:hybrid_use_Xresources = 1
+let g:hybrid_use_iTerm_colors = 1
 colorscheme hybrid
 highlight LineNr guifg=#707880 guibg=#282A2E
 highlight CursorLineNr guibg=#282A2E
+" highlight NonText term=underline ctermfg=8 guifg=#373b41
+" highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
 set showmatch
 set listchars=tab:▸\ ,trail:.,eol:¬
 syntax on
@@ -173,10 +176,8 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 let g:vimfiler_as_default_explorer = 1
 "セーフモードを無効にした状態で起動する
 let g:vimfiler_safe_mode_by_default = 0
-"現在開いているバッファのディレクトリを開く
-nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
-nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+nnoremap <silent> <Space>f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
 
 """ neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
