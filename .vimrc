@@ -42,12 +42,12 @@ NeoBundle 'Shougo/neosnippet-snippets'
 "   \ }
 
 "" 補完
-" 括弧等
+" 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartinput'
+" 選択範囲を括弧やクオートで囲む
+NeoBundle 'tpope/vim-surround'
 " コメントアウト
 NeoBundle 'tyru/caw.vim'
-" クォート
-NeoBundle 'tpope/vim-surround'
 " 入力からの補完
 NeoBundle 'kana/vim-smartchr'
 
@@ -76,6 +76,9 @@ NeoBundle 'itchyny/lightline.vim'
 
 """ Git
 NeoBundle 'tpope/vim-fugitive'
+" Gist
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/gist-vim'
 
 """ コードチェック
 " Syntastic
@@ -139,7 +142,7 @@ set incsearch
 set smartcase
 " その他
 set whichwrap=b,s,h,l,<,>,[,]
-
+set visualbell
 
 """ プラグインの設定とキーマップ
 
@@ -157,9 +160,22 @@ nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
 
+" ウィンドウ移動
+nnoremap <Space>h <C-w>h
+nnoremap <Space>j <C-w>j
+nnoremap <Space>k <C-w>k
+nnoremap <Space>l <C-w>l
+nnoremap <Space>w <C-w>w
+nnoremap <Space>H <C-w>H
+nnoremap <Space>J <C-w>J
+nnoremap <Space>K <C-w>K
+nnoremap <Space>L <C-w>L
+nnoremap <Space>r <C-w>r
+
 """ unite.vim
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+" 全部入りで開く
 nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -178,6 +194,19 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 "現在開いているバッファをIDE風に開く
 nnoremap <silent> <Space>f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+"現在開いているバッファのディレクトリを開く
+" nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
+"現在開いているバッファをIDE風に開く
+" nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+
+" function! s:git_root_dir()
+"   if(system('git rev-parse --is-inside-work-tree') == "true\n")
+"     return ':VimFiler -split -simple -winwidth=35 -no-quit ' . system('git rev-parse --show-cdup') . '\<CR>'
+"   else
+"     return ':VimFilerBufferDir -split -simple -winwidth=35 -no-quit\n'
+"   endif
+" endfunction
+" nnoremap <expr><Space>f <SID>git_root_dir()
 
 """ neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -362,16 +391,15 @@ function! MyMode()
 endfunction
 
 
-"===============================================================================
-" プラグインではない機能
+""" プラグインではない機能
 
-""" ノーマルモードでEnterで改行入力
+"" ノーマルモードでEnterで改行入力
 noremap <CR> o<ESC>
 
-""" インサートモードでShift-Tabでインデントを下げる
+"" インサートモードでShift-Tabでインデントを下げる
 inoremap <S-TAB> <ESC><<i
 
-""" 全角スペースの表示
+"" 全角スペースの表示
 " http://inari.hatenablog.com/entry/2014/05/05/231307
 function! ZenkakuSpace()
     highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
@@ -385,7 +413,7 @@ if has('syntax')
   call ZenkakuSpace()
 endif
 
-""" 行末スペースの削除
+"" 行末スペースの削除
 function! RTrim()
   let s:cursor = getpos('.')
   %s/\s\+$//e
@@ -394,7 +422,7 @@ endfunction
 " 保存時に実行
 autocmd BufWritePre * call RTrim()
 
-""" 最後のカーソル位置を復元する
+"" 最後のカーソル位置を復元する
 if has("autocmd")
   autocmd BufReadPost *
   \ if line("'\"") > 0 && line ("'\"") <= line("$") |
@@ -402,7 +430,7 @@ if has("autocmd")
   \ endif
 endif
 
-""" プロジェクトローカルな設定を使う
+"" プロジェクトローカルな設定を使う
 " http://vim-users.jp/2009/12/hack112/
 augroup vimrc-local
   autocmd!
@@ -417,5 +445,5 @@ function! s:vimrc_local(loc)
 endfunction
 
 
-"""
+""
 filetype on
