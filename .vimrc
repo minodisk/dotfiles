@@ -41,7 +41,7 @@ NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
 NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
-NeoBundle 'ujihisa/neco-look'   " 英単語
+" NeoBundle 'ujihisa/neco-look'   " 英単語
 
 """ カラーリング
 " インデント
@@ -103,8 +103,7 @@ set noswapfile
 set hidden
 
 """ 不可視文字を表示
-set list
-set listchars=tab:▸\ ,trail:.,eol:¬
+set list listchars=tab:▸\ ,trail:.,eol:¬
 
 """ UI
 set title
@@ -113,15 +112,7 @@ set laststatus=2
 
 """ エディタ表示
 set guifont=SourceCodePro-Light:h12
-let g:hybrid_use_Xresources = 1
-let g:hybrid_use_iTerm_colors = 1
-colorscheme hybrid
-highlight LineNr guifg=#707880 guibg=#282A2E
-highlight CursorLineNr guibg=#282A2E
-" highlight NonText term=underline ctermfg=8 guifg=#373b41
-" highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
 set showmatch
-syntax on
 set cursorline
 
 """ フォーマッター
@@ -145,22 +136,11 @@ set smartcase
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
 
+" シンタックスハイライトする
+syntax on
+
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
-
-""" 全角スペースの表示
-" http://inari.hatenablog.com/entry/2014/05/05/231307
-function! ZenkakuSpace()
-  highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
-endfunction
-if has('syntax')
-  augroup ZenkakuSpace
-    autocmd!
-    autocmd ColorScheme * call ZenkakuSpace()
-    autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
-  augroup END
-  call ZenkakuSpace()
-endif
 
 """ 行末スペースの削除
 function! RTrim()
@@ -172,12 +152,16 @@ endfunction
 autocmd BufWritePre * call RTrim()
 
 """ 最後のカーソル位置を復元する
-if has("autocmd")
-  autocmd BufReadPost *
-  \ if line("'\") > 0 && line ("'\") <= line("$") |
-  \   exe "normal! g'\" |
-  \ endif
-endif
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
 
 """ プロジェクトローカルな設定を使う
 " http://vim-users.jp/2009/12/hack112/
@@ -192,6 +176,20 @@ function! s:vimrc_local(loc)
     source `=i`
   endfor
 endfunction
+
+""" 全角スペースを赤くハイライトする
+augroup highlightIdegraphicSpace
+  autocmd!
+  autocmd ColorScheme * highlight IdeographicSpace term=underline ctermbg=167 guibg=#cc6666
+  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+augroup END
+
+""" カラースキーム
+" let g:hybrid_use_Xresources = 1
+" let g:hybrid_use_iTerm_colors = 1
+colorscheme hybrid
+highlight LineNr ctermfg=243 ctermbg=236 guifg=#707880 guibg=#303030
+highlight CursorLineNr ctermfg=221 ctermbg=221 guibg=#303030
 
 "---------------------------------------------------------------------------
 " プラグイン設定
@@ -262,7 +260,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 """ syntastic
 let g:syntastic_coffee_checkers = ['coffeelint']
 
-""" liteline.vim
+"" liteline.vim
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'mode_map': { 'c': 'NORMAL' },
@@ -428,6 +426,9 @@ nnoremap gk k
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
+" 検索でvery magicを使う
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
 
 " ウィンドウ移動
 nnoremap <Space>h <C-w>h
@@ -446,6 +447,7 @@ noremap <CR> o<ESC>
 
 " インサートモードでShift-Tabでインデントを下げる
 inoremap <S-TAB> <ESC><<i
+
 
 "---------------------------------------------------------------------------
 
