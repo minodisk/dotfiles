@@ -115,7 +115,7 @@ set guifont=SourceCodePro-Light:h12
 set showmatch
 set cursorline
 
-""" フォーマッター
+""" インデント
 set expandtab
 set autoindent
 set smartindent
@@ -135,6 +135,7 @@ set smartcase
 """ その他
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
+set nrformats=                " 10進数でインクリメント
 
 " シンタックスハイライトする
 syntax on
