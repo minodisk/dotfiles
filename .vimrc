@@ -46,6 +46,9 @@ NeoBundle 'ujihisa/neco-look'   " 英単語
 """ 変換
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
+""" 移動
+NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
+
 """ カラーリング
 " インデント
 NeoBundle 'nathanaelkane/vim-indent-guides'
