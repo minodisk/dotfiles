@@ -48,6 +48,8 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
+NeoBundle 'showmarks'               " マークを表示する
+NeoBundle 'marks_corey'             " マークを表示する
 
 """ カラーリング
 " インデント
