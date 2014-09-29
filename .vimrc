@@ -1,4 +1,3 @@
-filetype off
 
 "---------------------------------------------------------------------------
 " プラグイン
@@ -49,7 +48,7 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
 NeoBundle 'showmarks'               " マークを表示する
-NeoBundle 'marks_corey'             " マークを表示する
+" NeoBundle 'marks_corey'             " マークを連番表示
 
 """ カラーリング
 " インデント
@@ -263,6 +262,9 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
+""" showmarks
+let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 """ vim-indent-guides自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 
@@ -408,8 +410,10 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \: "\<TAB>"
 
 " caw.vim
-nmap <Leader>c <Plug>(caw:i:toggle)
-vmap <Leader>c <Plug>(caw:i:toggle)
+" nmap <Leader>c <Plug>(caw:i:toggle)
+" vmap <Leader>c <Plug>(caw:i:toggle)
+nmap <Space>/ <Plug>(caw:i:toggle)
+vmap <Space>/ <Plug>(caw:i:toggle)
 
 " vim-smartchr
 inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
@@ -422,22 +426,11 @@ inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
-" http://deris.hatenablog.jp/entry/2013/05/02/192415
-" 使いづらいキーを使いやすいキーに割り当てる
-nnoremap ; :
-nnoremap : ;
-" 表示上の行移動
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-" 誤操作すると困るキーを無効化する
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap Q <Nop>
-" 検索でvery magicを使う
-" http://deris.hatenablog.jp/entry/2013/05/15/024932
-nnoremap / /\v
+" EasyMotion
+nnoremap [easymotion] <Nop>
+nmap     <Space>m [easymotion]
+nnoremap <silent> [easymotion]w <Plug>(easymotion-w)
+nnoremap <silent> [easymotion]f <Plug>(easymotion-f)
 
 " ウィンドウ移動
 nnoremap <Space>h <C-w>h
@@ -456,6 +449,23 @@ noremap <CR> o<ESC>
 
 " インサートモードでShift-Tabでインデントを下げる
 inoremap <S-TAB> <ESC><<i
+
+" http://deris.hatenablog.jp/entry/2013/05/02/192415
+" 使いづらいキーを使いやすいキーに割り当てる
+nnoremap ; :
+nnoremap : ;
+" 表示上の行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+" 誤操作すると困るキーを無効化する
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap Q <Nop>
+" 検索でvery magicを使う
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
 
 
 "---------------------------------------------------------------------------
