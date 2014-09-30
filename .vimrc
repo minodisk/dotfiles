@@ -35,6 +35,9 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
+""" プラグイン機能の繰り返し
+NeoBundle 'tpope/vim-repeat'
+
 """ 補完
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
@@ -431,6 +434,9 @@ nnoremap [easymotion] <Nop>
 nmap     <Space>m [easymotion]
 nnoremap <silent> [easymotion]w <Plug>(easymotion-w)
 nnoremap <silent> [easymotion]f <Plug>(easymotion-f)
+
+" Ctrl-J で Escape
+imap <C-j> <ESC>
 
 " ウィンドウ移動
 nnoremap <Space>h <C-w>h
