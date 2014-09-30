@@ -1,3 +1,4 @@
+filetype off
 
 "---------------------------------------------------------------------------
 " プラグイン
@@ -9,6 +10,9 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
+
+""" vim-localrc
+NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 
 """ unite {
 NeoBundle 'Shougo/unite.vim'
@@ -173,17 +177,17 @@ augroup END
 
 """ プロジェクトローカルな設定を使う
 " http://vim-users.jp/2009/12/hack112/
-augroup vimrc-local
-  autocmd!
-  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
-  autocmd BufReadPre .vimprojects set ft=vim
-augroup END
-function! s:vimrc_local(loc)
-  let files = findfile('.vimprojects', escape(a:loc, ' ') . ';', -1)
-  for i in reverse(filter(files, 'filereadable(v:val)'))
-    source `=i`
-  endfor
-endfunction
+" augroup vimrc-local
+"   autocmd!
+"   autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
+"   autocmd BufReadPre .vimprojects set ft=vim
+" augroup END
+" function! s:vimrc_local(loc)
+"   let files = findfile('.vimprojects', escape(a:loc, ' ') . ';', -1)
+"   for i in reverse(filter(files, 'filereadable(v:val)'))
+"     source `=i`
+"   endfor
+" endfunction
 
 """ 全角スペースを赤くハイライトする
 augroup highlightIdegraphicSpace
