@@ -56,6 +56,7 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
+" NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
 " NeoBundle 'showmarks'               " マークを表示する
 
 """ カラーリング
@@ -267,8 +268,12 @@ let g:yankring_history_file = '.vim_yankring_history'
 let g:yankring_max_history = 10
 let g:yankring_window_height = 13
 
-""" vim-indent-guides自動起動
+""" indent-guides
+" 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
+" 明かくする
+let g:indent_guides_color_change_percent = 15
+
 
 """ syntastic
 let g:syntastic_coffee_checkers = ['coffeelint']
@@ -499,6 +504,8 @@ inoremap <expr> , smartchr#loop(', ', ',')
 """ EasyMotion
 " デフォルトのキーバインドを設定しない
 let g:EasyMotion_do_mapping = 0
+" キーワード検索で小文字で入力しても大文字にマッチする
+let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
 let g:EasyMotion_startofline=0
 " let g:EasyMotion_do_mapping = 0
@@ -508,11 +515,6 @@ omap <Space>s <Plug>(easymotion-s2)
 nmap <Space>j <Plug>(easymotion-j)
 nmap <Space>k <Plug>(easymotion-k)
 nmap <Space>l <Plug>(easymotion-bd-jk)
-
-" nnoremap [easymotion] <Nop>
-" nmap     <Space>m [easymotion]
-" nnoremap [easymotion]w <Plug>(easymotion-w)
-" nnoremap [easymotion]f <Plug>(easymotion-f)
 
 
 "---------------------------------------------------------------------------
