@@ -274,7 +274,6 @@ let g:indent_guides_enable_on_vim_startup = 1
 " 明かくする
 let g:indent_guides_color_change_percent = 15
 
-
 """ syntastic
 let g:syntastic_coffee_checkers = ['coffeelint']
 
@@ -306,11 +305,11 @@ function! MyReadonly()
 endfunction
 function! MyFilename()
   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \  &ft == 'unite' ? unite#get_status_string() :
-        \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
+    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \  &ft == 'unite' ? unite#get_status_string() :
+    \  &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+    \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 function! MyFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
@@ -336,7 +335,7 @@ endfunction
 " キーマップ
 
 " Ctrl-J で Escape
-" imap <C-j> <ESC>
+imap <C-Space> <ESC>
 
 " ウィンドウ移動
 nnoremap ,h <C-w>h
@@ -387,6 +386,9 @@ nnoremap <F6> <Esc>q/
 nnoremap q: <Nop>
 nnoremap q/ <Nop>
 nnoremap q? <Nop>
+
+" [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
+nnoremap <ESC><ESC> :nohlsearch<CR>
 
 """ eskk.vim
 autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
