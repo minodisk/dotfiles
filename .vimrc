@@ -357,10 +357,25 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
-" 誤操作すると困るキーを無効化する
+" 誤操作すると困るキーを無効化
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
+
+" カーソルキーを無効化
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+" 挿入モードでの移動
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-0> 0
+inoremap <C-6> ^
+inoremap <C-4> $
+
 " 検索でvery magicを使う
 " http://deris.hatenablog.jp/entry/2013/05/15/024932
 nnoremap / /\v
@@ -387,12 +402,12 @@ nnoremap <ESC><ESC> :nohlsearch<CR>
 autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
 autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
 let g:eskk#dictionary = {
-\ 'path': "~/.skk/SKK-JISYO.USER",
+\ 'path': "$HOME/.skk/SKK-JISYO.USER",
 \ 'sorted': 0,
 \ 'encoding': 'utf-8',
 \}
 let g:eskk#large_dictionary = {
-\ 'path': '~/.skk/SKK-JISYO.L',
+\ 'path': '$HOME/.skk/SKK-JISYO.L',
 \ 'sorted': 1,
 \ 'encoding': 'euc-jp',
 \}
