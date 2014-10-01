@@ -375,6 +375,11 @@ nnoremap Q <Nop>
 " http://deris.hatenablog.jp/entry/2013/05/15/024932
 nnoremap / /\v
 
+" [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する
+nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+
 """ eskk.vim
 autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
 autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
