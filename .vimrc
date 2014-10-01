@@ -54,6 +54,9 @@ NeoBundle 'ujihisa/neco-look'   " 英単語
 NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
+""" 整形
+NeoBundle 'Align'               " 特定文字ベースの文書整形
+
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
 " NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
@@ -165,20 +168,6 @@ augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
-
-""" プロジェクトローカルな設定を使う
-" http://vim-users.jp/2009/12/hack112/
-" augroup vimrc-local
-"   autocmd!
-"   autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
-"   autocmd BufReadPre .vimprojects set ft=vim
-" augroup END
-" function! s:vimrc_local(loc)
-"   let files = findfile('.vimprojects', escape(a:loc, ' ') . ';', -1)
-"   for i in reverse(filter(files, 'filereadable(v:val)'))
-"     source `=i`
-"   endfor
-" endfunction
 
 """ 全角スペースを赤くハイライトする
 augroup highlightIdegraphicSpace
