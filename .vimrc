@@ -50,6 +50,8 @@ NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 
 """ 変換
+" NeoBundle 'skk.vim'
+NeoBundle 'tyru/eskk.vim'
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 移動
@@ -335,6 +337,59 @@ endfunction
 "---------------------------------------------------------------------------
 " キーマップ
 
+" Ctrl-J で Escape
+" imap <C-j> <ESC>
+
+" ウィンドウ移動
+nnoremap <Space>h <C-w>h
+nnoremap <Space>j <C-w>j
+nnoremap <Space>k <C-w>k
+nnoremap <Space>l <C-w>l
+nnoremap <Space>w <C-w>w
+nnoremap <Space>H <C-w>H
+nnoremap <Space>J <C-w>J
+nnoremap <Space>K <C-w>K
+nnoremap <Space>L <C-w>L
+nnoremap <Space>r <C-w>r
+
+" ノーマルモードでEnterで改行入力
+noremap <CR> o<ESC>
+
+" インサートモードでShift-Tabでインデントを下げる
+inoremap <S-TAB> <ESC><<i
+
+" http://deris.hatenablog.jp/entry/2013/05/02/192415
+" 使いづらいキーを使いやすいキーに割り当てる
+nnoremap ; :
+nnoremap : ;
+" 表示上の行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+" 誤操作すると困るキーを無効化する
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap Q <Nop>
+" 検索でvery magicを使う
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
+
+""" eskk.vim
+autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
+autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+" map! <C-j> <Plug>(skk-toggle-im)
+let g:eskk#dictionary = {
+\ 'path': "~/.skk/SKK-JISYO.USER",
+\ 'sorted': 0,
+\ 'encoding': 'utf-8',
+\}
+let g:eskk#large_dictionary = {
+\ 'path': '~/.skk/SKK-JISYO.L',
+\ 'sorted': 1,
+\ 'encoding': 'euc-jp',
+\}
+
 """ unite
 " 全部入りで開く
 nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
@@ -417,8 +472,6 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \: "\<TAB>"
 
 " caw.vim
-" nmap <Leader>c <Plug>(caw:i:toggle)
-" vmap <Leader>c <Plug>(caw:i:toggle)
 nmap <Space>/ <Plug>(caw:i:toggle)
 vmap <Space>/ <Plug>(caw:i:toggle)
 
@@ -438,44 +491,6 @@ nnoremap [easymotion] <Nop>
 nmap     <Space>m [easymotion]
 nnoremap <silent> [easymotion]w <Plug>(easymotion-w)
 nnoremap <silent> [easymotion]f <Plug>(easymotion-f)
-
-" Ctrl-J で Escape
-imap <C-j> <ESC>
-
-" ウィンドウ移動
-nnoremap <Space>h <C-w>h
-nnoremap <Space>j <C-w>j
-nnoremap <Space>k <C-w>k
-nnoremap <Space>l <C-w>l
-nnoremap <Space>w <C-w>w
-nnoremap <Space>H <C-w>H
-nnoremap <Space>J <C-w>J
-nnoremap <Space>K <C-w>K
-nnoremap <Space>L <C-w>L
-nnoremap <Space>r <C-w>r
-
-" ノーマルモードでEnterで改行入力
-noremap <CR> o<ESC>
-
-" インサートモードでShift-Tabでインデントを下げる
-inoremap <S-TAB> <ESC><<i
-
-" http://deris.hatenablog.jp/entry/2013/05/02/192415
-" 使いづらいキーを使いやすいキーに割り当てる
-nnoremap ; :
-nnoremap : ;
-" 表示上の行移動
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-" 誤操作すると困るキーを無効化する
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap Q <Nop>
-" 検索でvery magicを使う
-" http://deris.hatenablog.jp/entry/2013/05/15/024932
-nnoremap / /\v
 
 
 "---------------------------------------------------------------------------
