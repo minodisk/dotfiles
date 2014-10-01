@@ -334,16 +334,16 @@ endfunction
 " imap <C-j> <ESC>
 
 " ウィンドウ移動
-nnoremap <Space>h <C-w>h
-nnoremap <Space>j <C-w>j
-nnoremap <Space>k <C-w>k
-nnoremap <Space>l <C-w>l
-nnoremap <Space>w <C-w>w
-nnoremap <Space>H <C-w>H
-nnoremap <Space>J <C-w>J
-nnoremap <Space>K <C-w>K
-nnoremap <Space>L <C-w>L
-nnoremap <Space>r <C-w>r
+nnoremap ,h <C-w>h
+nnoremap ,j <C-w>j
+nnoremap ,k <C-w>k
+nnoremap ,l <C-w>l
+nnoremap ,w <C-w>w
+nnoremap ,H <C-w>H
+nnoremap ,J <C-w>J
+nnoremap ,K <C-w>K
+nnoremap ,L <C-w>L
+nnoremap ,r <C-w>r
 
 " ノーマルモードでEnterで改行入力
 noremap <CR> o<ESC>
@@ -496,8 +496,19 @@ inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
-" EasyMotion
+""" EasyMotion
+" デフォルトのキーバインドを設定しない
+let g:EasyMotion_do_mapping = 0
+" JKMotion 時に同カラムで移動する
+let g:EasyMotion_startofline=0
 " let g:EasyMotion_do_mapping = 0
+nmap <Space>s <Plug>(easymotion-s2)
+xmap <Space>s <Plug>(easymotion-s2)
+omap <Space>s <Plug>(easymotion-s2)
+nmap <Space>j <Plug>(easymotion-j)
+nmap <Space>k <Plug>(easymotion-k)
+nmap <Space>l <Plug>(easymotion-bd-jk)
+
 " nnoremap [easymotion] <Nop>
 " nmap     <Space>m [easymotion]
 " nnoremap [easymotion]w <Plug>(easymotion-w)
