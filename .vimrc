@@ -50,14 +50,12 @@ NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 
 """ 変換
-" NeoBundle 'skk.vim'
 NeoBundle 'tyru/eskk.vim'
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
-NeoBundle 'showmarks'               " マークを表示する
-" NeoBundle 'marks_corey'             " マークを連番表示
+" NeoBundle 'showmarks'               " マークを表示する
 
 """ カラーリング
 " インデント
