@@ -145,6 +145,10 @@ set nrformats=                " 10進数でインクリメント
 " シンタックスハイライトする
 syntax on
 
+" 日本語ヘルプ
+helptags $HOME/.vim/vimdoc-ja/doc
+set helplang=ja
+
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
 
