@@ -14,7 +14,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 """ vim-localrc
 NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 
-""" unite {
+""" unite
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 
@@ -39,8 +39,9 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
-""" プラグイン機能の繰り返し
-NeoBundle 'tpope/vim-repeat'
+NeoBundle 'mattn/webapi-vim'    " HTTPライブラリ
+NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
+NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピーして一度に持ち運ぶ
 
 """ 補完
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
@@ -50,7 +51,7 @@ NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 
 """ 変換
-NeoBundle 'tyru/eskk.vim'
+NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 移動
@@ -58,52 +59,38 @@ NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
 " NeoBundle 'showmarks'               " マークを表示する
 
 """ カラーリング
-" インデント
-NeoBundle 'nathanaelkane/vim-indent-guides'
-" ログファイル
-NeoBundle 'vim-scripts/AnsiEsc.vim'
-" 行末の半角スペース
-" NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
+NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
+" NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
 
 """ シンタックスハイライト
-" Jade
-NeoBundle 'digitaltoad/vim-jade'
-" Sass
-NeoBundle 'cakebaker/scss-syntax.vim'
-" Stylus
-NeoBundle 'wavded/vim-stylus'
-" LESS
+NeoBundle 'digitaltoad/vim-jade'      " Jade
+NeoBundle 'cakebaker/scss-syntax.vim' " Sass
+NeoBundle 'wavded/vim-stylus'         " Stylus
 " NeoBundle 'KohPoll/vim-less'
-" CoffeeScript
-NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'kchmck/vim-coffee-script'  " CoffeeScript
 
 """ ステータスライン
 NeoBundle 'itchyny/lightline.vim'
 
 """ その他
-" Git
-NeoBundle 'tpope/vim-fugitive'
-" Gist
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'mattn/gist-vim'
+NeoBundle 'tpope/vim-fugitive'  " Git
+NeoBundle 'mattn/gist-vim'      " Gist
 
 """ コードチェック
 " Syntastic
 NeoBundle 'scrooloose/syntastic'
-" tern {
 " NeoBundle 'marijnh/tern_for_vim', {
 "   \ 'build': {
 "   \     'others': 'npm install'
 "   \   }
 "   \ }
-" }
+
 " 言語サポート
-" coffee2js
-NeoBundle 'JarrodCTaylor/vim-js2coffee'
+NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 
 """ 外部ツール起動
-" Dash
-NeoBundle 'rizzatti/dash.vim'
+NeoBundle 'rizzatti/dash.vim'           " Dash
 
 call neobundle#end()
 filetype plugin indent on
@@ -270,7 +257,15 @@ if has('conceal')
 endif
 
 """ showmarks
-let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+" let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+""" YankRing.vim
+" 履歴ファイルの保存先
+let g:yankring_history_dir = expand('$HOME')
+let g:yankring_history_file = '.vim_yankring_history'
+" 履歴リストの表示
+let g:yankring_max_history = 10
+let g:yankring_window_height = 13
 
 """ vim-indent-guides自動起動
 let g:indent_guides_enable_on_vim_startup = 1
@@ -378,10 +373,19 @@ nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 
+" [VTB:4-7] コマンド履歴のキーマップを置き換える
+" コマンド履歴
+nnoremap <F5> <Esc>q:
+" 検索履歴
+nnoremap <F6> <Esc>q/
+" デフォルトのキーマップを無効化
+nnoremap q: <Nop>
+nnoremap q/ <Nop>
+nnoremap q? <Nop>
+
 """ eskk.vim
 autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
 autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
-" map! <C-j> <Plug>(skk-toggle-im)
 let g:eskk#dictionary = {
 \ 'path': "~/.skk/SKK-JISYO.USER",
 \ 'sorted': 0,
@@ -474,6 +478,9 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
 
+" YankRing.vim
+nnoremap <silent> <C-l> :YRShow<CR>
+
 " caw.vim
 nmap <Space>/ <Plug>(caw:i:toggle)
 vmap <Space>/ <Plug>(caw:i:toggle)
@@ -490,10 +497,11 @@ inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
 " EasyMotion
-nnoremap [easymotion] <Nop>
-nmap     <Space>m [easymotion]
-nnoremap <silent> [easymotion]w <Plug>(easymotion-w)
-nnoremap <silent> [easymotion]f <Plug>(easymotion-f)
+" let g:EasyMotion_do_mapping = 0
+" nnoremap [easymotion] <Nop>
+" nmap     <Space>m [easymotion]
+" nnoremap [easymotion]w <Plug>(easymotion-w)
+" nnoremap [easymotion]f <Plug>(easymotion-f)
 
 
 "---------------------------------------------------------------------------
