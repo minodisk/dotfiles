@@ -17,6 +17,7 @@ NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 """ unite
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/unite-outline'
 
 """ vimfiler
 NeoBundle 'Shougo/vimfiler'
@@ -98,6 +99,9 @@ NeoBundle 'scrooloose/syntastic'
 
 " 言語サポート
 NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
+
+""" APIドキュメントを参照する
+NeoBundle 'thinca/vim-ref'
 
 """ 外部ツール起動
 NeoBundle 'rizzatti/dash.vim'           " Dash
@@ -274,7 +278,10 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_color_change_percent = 12
 
 """ syntastic
-let g:syntastic_coffee_checkers = ['coffeelint']
+" let g:syntastic_coffee_checkers = ['coffeelint']
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
 
 "" liteline.vim
 let g:lightline = {
