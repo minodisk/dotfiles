@@ -50,17 +50,23 @@ NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 
+""" 移動
+NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
+" NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
+" NeoBundle 'showmarks'               " マークを表示する
+
+""" テキストオブジェクト
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-fold'
+NeoBundle 'kana/vim-textobj-indent'
+NeoBundle 'kana/vim-textobj-lastpat'
+
 """ 変換
 NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 整形
 NeoBundle 'Align'               " 特定文字ベースの文書整形
-
-""" 移動
-NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
-" NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
-" NeoBundle 'showmarks'               " マークを表示する
 
 """ カラーリング
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
@@ -264,8 +270,8 @@ let g:yankring_window_height = 13
 """ indent-guides
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
-" 明かくする
-let g:indent_guides_color_change_percent = 15
+" 明かるくする
+let g:indent_guides_color_change_percent = 12
 
 """ syntastic
 let g:syntastic_coffee_checkers = ['coffeelint']
@@ -376,9 +382,10 @@ inoremap <C-0> 0
 inoremap <C-6> ^
 inoremap <C-4> $
 
-" 検索でvery magicを使う
-" http://deris.hatenablog.jp/entry/2013/05/15/024932
+" very magic で検索する
 nnoremap / /\v
+" *で検索した時にカーソルが次候補へ移動しないようにする
+nmap * *N
 
 " [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する
 nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
@@ -396,7 +403,7 @@ nnoremap q/ <Nop>
 nnoremap q? <Nop>
 
 " [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
-nnoremap <ESC><ESC> :nohlsearch<CR>
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 
 """ eskk.vim
 autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
@@ -504,10 +511,6 @@ vmap <Space>/ <Plug>(caw:i:toggle)
 inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
-" inoremap <expr> + smartchr#loop(' + ', '+')
-" inoremap <expr> - smartchr#loop(' - ', '-')
-" inoremap <expr> * smartchr#loop(' * ', '*')
-" inoremap <expr> / smartchr#loop(' / ', '/')
 inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
@@ -517,8 +520,7 @@ let g:EasyMotion_do_mapping = 0
 " キーワード検索で小文字で入力しても大文字にマッチする
 let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
-let g:EasyMotion_startofline=0
-" let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_startofline = 0
 nmap <Space>s <Plug>(easymotion-s2)
 xmap <Space>s <Plug>(easymotion-s2)
 omap <Space>s <Plug>(easymotion-s2)
