@@ -340,9 +340,17 @@ endfunction
 "---------------------------------------------------------------------------
 " キーマップ
 
-" Ctrl-J で Escape
+" ESC置き換え
+inoremap jj <Esc>
 imap <C-Space> <ESC>
-
+" 挿入モードでの移動
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-0> 0
+inoremap <C-6> ^
+inoremap <C-4> $
 " ウィンドウ移動
 nnoremap ,h <C-w>h
 nnoremap ,j <C-w>j
@@ -380,14 +388,7 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-" 挿入モードでの移動
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-inoremap <C-0> 0
-inoremap <C-6> ^
-inoremap <C-4> $
+
 
 " very magic で検索する
 nnoremap / /\v
