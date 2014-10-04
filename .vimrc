@@ -198,17 +198,119 @@ highlight LineNr ctermfg=243 ctermbg=236 guifg=#707880 guibg=#303030
 highlight CursorLineNr ctermfg=221 ctermbg=221 guibg=#303030
 
 "---------------------------------------------------------------------------
-" プラグイン設定
+" キーマップ
+
+" ESC置き換え
+" imap <C-Space> <ESC>
+" 挿入モードでの移動
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-0> 0
+inoremap <C-6> ^
+inoremap <C-4> $
+" ウィンドウ移動
+nnoremap ,h <C-w>h
+nnoremap ,j <C-w>j
+nnoremap ,k <C-w>k
+nnoremap ,l <C-w>l
+nnoremap ,w <C-w>w
+nnoremap ,H <C-w>H
+nnoremap ,J <C-w>J
+nnoremap ,K <C-w>K
+nnoremap ,L <C-w>L
+nnoremap ,r <C-w>r
+
+" ノーマルモードでEnterで改行入力
+noremap <CR> o<ESC>
+
+" インデントを下げる
+inoremap <S-TAB>  <ESC><<i
+
+" http://deris.haten/blog.jp/entry/2013/05/02/192415
+" 使いづらいキーを使いやすいキーに割り当てる
+nnoremap ; :
+nnoremap : ;
+" 表示上の行移動
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+" 誤操作すると困るキーを無効化
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap Q <Nop>
+
+" カーソルキーを無効化
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+
+" very magic で検索する
+nnoremap / /\v
+" *で検索した時にカーソルが次候補へ移動しないようにする
+nmap * *N
+
+" [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する
+nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+
+" [VTB:4-7] コマンド履歴のキーマップを置き換える
+" コマンド履歴
+nnoremap <F5> <Esc>q:
+" 検索履歴
+nnoremap <F6> <Esc>q/
+" デフォルトのキーマップを無効化
+nnoremap q: <Nop>
+nnoremap q/ <Nop>
+nnoremap q? <Nop>
+
+" [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+
+"---------------------------------------------------------------------------
+" プラグインのオプションとキーマップ
 
 """ unite
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+" キーマップ
+" 全部入りで開く
+nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+" ウィンドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+" ウィンドウを縦に分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+" ESCキーを2回押すと終了する
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 
 """ vimfiler
 " vimデフォルトのエクスプローラをvimfilerで置き換える
 let g:vimfiler_as_default_explorer = 1
 " セーフモードを無効にした状態で起動する
 let g:vimfiler_safe_mode_by_default = 0
+" キーマップ
+" 現在開いているバッファをIDE風に開く
+nnoremap <silent> <Space>f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+"現在開いているバッファのディレクトリを開く
+" nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
+"現在開いているバッファをIDE風に開く
+" nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+" function! s:git_root_dir()
+"   if(system('git rev-parse --is-inside-work-tree') == "true\n")
+"     return ':VimFiler -split -simple -winwidth=35 -no-quit ' . system('git rev-parse --show-cdup') . '\<CR>'
+"   else
+"     return ':VimFilerBufferDir -split -simple -winwidth=35 -no-quit\n'
+"   endif
+" endfunction
+" nnoremap <expr><Space>f <SID>git_root_dir()
 
 """ neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -253,12 +355,59 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" キーマップ
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplcache#smart_close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+" For cursor moving in insert mode(Not recommended)
+"inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
+"inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
+"inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
+"inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
+" Or set this.
+" let g:neocomplcache_enable_cursor_hold_i = 1
+" Or set this.
+let g:neocomplcache_enable_insert_char_pre = 1
+" AutoComplPop like behavior.
+"let g:neocomplcache_enable_auto_select = 1
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplcache_enable_auto_select = 1
+"let g:neocomplcache_disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 """ neosnippet
 " For snippet_complete marker.
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+" キーマップ
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)"
+  \: "\<TAB>"
 
 """ showmarks
 " let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -279,9 +428,9 @@ let g:indent_guides_color_change_percent = 12
 
 """ syntastic
 " let g:syntastic_coffee_checkers = ['coffeelint']
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
+" let g:syntastic_enable_signs = 1
+" let g:syntastic_error_symbol = '✗'
+" let g:syntastic_warning_symbol = '⚠'
 
 "" liteline.vim
 let g:lightline = {
@@ -337,85 +486,8 @@ function! MyMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-"---------------------------------------------------------------------------
-" キーマップ
-
-" ESC置き換え
-inoremap jj <Esc>
-imap <C-Space> <ESC>
-" 挿入モードでの移動
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-inoremap <C-0> 0
-inoremap <C-6> ^
-inoremap <C-4> $
-" ウィンドウ移動
-nnoremap ,h <C-w>h
-nnoremap ,j <C-w>j
-nnoremap ,k <C-w>k
-nnoremap ,l <C-w>l
-nnoremap ,w <C-w>w
-nnoremap ,H <C-w>H
-nnoremap ,J <C-w>J
-nnoremap ,K <C-w>K
-nnoremap ,L <C-w>L
-nnoremap ,r <C-w>r
-
-" ノーマルモードでEnterで改行入力
-noremap <CR> o<ESC>
-
-" インサートモードでShift-Tabでインデントを下げる
-inoremap <S-TAB> <ESC><<i
-
-" http://deris.hatenablog.jp/entry/2013/05/02/192415
-" 使いづらいキーを使いやすいキーに割り当てる
-nnoremap ; :
-nnoremap : ;
-" 表示上の行移動
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-" 誤操作すると困るキーを無効化
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap Q <Nop>
-
-" カーソルキーを無効化
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-
-
-" very magic で検索する
-nnoremap / /\v
-" *で検索した時にカーソルが次候補へ移動しないようにする
-nmap * *N
-
-" [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する
-nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
-vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
-nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
-
-" [VTB:4-7] コマンド履歴のキーマップを置き換える
-" コマンド履歴
-nnoremap <F5> <Esc>q:
-" 検索履歴
-nnoremap <F6> <Esc>q/
-" デフォルトのキーマップを無効化
-nnoremap q: <Nop>
-nnoremap q/ <Nop>
-nnoremap q? <Nop>
-
-" [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
-nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
-
 """ eskk.vim
-autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
-autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+" 辞書のパス
 let g:eskk#dictionary = {
 \ 'path': "$HOME/.skk/SKK-JISYO.USER",
 \ 'sorted': 0,
@@ -426,87 +498,9 @@ let g:eskk#large_dictionary = {
 \ 'sorted': 1,
 \ 'encoding': 'euc-jp',
 \}
-
-""" unite
-" 全部入りで開く
-nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
-
-""" vimfiler
-" 現在開いているバッファをIDE風に開く
-nnoremap <silent> <Space>f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
-"現在開いているバッファのディレクトリを開く
-" nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
-"現在開いているバッファをIDE風に開く
-" nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
-" function! s:git_root_dir()
-"   if(system('git rev-parse --is-inside-work-tree') == "true\n")
-"     return ':VimFiler -split -simple -winwidth=35 -no-quit ' . system('git rev-parse --show-cdup') . '\<CR>'
-"   else
-"     return ':VimFilerBufferDir -split -simple -winwidth=35 -no-quit\n'
-"   endif
-" endfunction
-" nnoremap <expr><Space>f <SID>git_root_dir()
-
-""" neocomplcache
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplcache_enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplcache_enable_insert_char_pre = 1
-" AutoComplPop like behavior.
-"let g:neocomplcache_enable_auto_select = 1
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplcache_enable_auto_select = 1
-"let g:neocomplcache_disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" neosnippet
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+" キーマップ
+autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
+autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
 
 " YankRing.vim
 nnoremap <silent> <C-l> :YRShow<CR>
@@ -523,12 +517,13 @@ inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 
 """ EasyMotion
-" デフォルトのキーバインドを設定しない
+" デフォルトのキーマップを設定しない
 let g:EasyMotion_do_mapping = 0
 " キーワード検索で小文字で入力しても大文字にマッチする
 let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
 let g:EasyMotion_startofline = 0
+" キーマップ
 nmap <Space>s <Plug>(easymotion-s2)
 xmap <Space>s <Plug>(easymotion-s2)
 omap <Space>s <Plug>(easymotion-s2)
