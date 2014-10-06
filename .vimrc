@@ -200,6 +200,14 @@ highlight CursorLineNr ctermfg=221 ctermbg=221 guibg=#303030
 "---------------------------------------------------------------------------
 " キーマップ
 
+" ctrl-cを無効化
+inoremap <C-c> <Nop>
+" カーソルキーを無効化
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
 " ESC置き換え
 " imap <C-Space> <ESC>
 " 挿入モードでの移動
@@ -241,13 +249,6 @@ nnoremap gk k
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
-
-" カーソルキーを無効化
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-
 
 " very magic で検索する
 nnoremap / /\v
