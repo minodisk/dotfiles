@@ -99,6 +99,8 @@ NeoBundle 'scrooloose/syntastic'
 
 " 言語サポート
 NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
+NeoBundle 'dgryski/vim-godef'
+NeoBundle 'vim-jp/vim-go-extra'
 
 """ APIドキュメントを参照する
 NeoBundle 'thinca/vim-ref'
@@ -196,6 +198,14 @@ augroup END
 colorscheme hybrid
 highlight LineNr ctermfg=243 ctermbg=236 guifg=#707880 guibg=#303030
 highlight CursorLineNr ctermfg=221 ctermbg=221 guibg=#303030
+
+""" 言語設定
+" Go
+set path+=$GOPATH/src/**
+let g:gofmt_command = 'goimports'
+" au BufWritePre *.go Fmt
+au BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4 completeopt=menu,preview
+" au FileType go compiler go
 
 "---------------------------------------------------------------------------
 " キーマップ
