@@ -63,7 +63,7 @@ NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-lastpat'
 
 """ 変換
-NeoBundle 'tyru/eskk.vim'       " 日本語入力
+" NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 整形
@@ -498,20 +498,20 @@ function! MyMode()
 endfunction
 
 """ eskk.vim
-" 辞書のパス
-let g:eskk#dictionary = {
-\ 'path': "$HOME/.skk/SKK-JISYO.USER",
-\ 'sorted': 0,
-\ 'encoding': 'utf-8',
-\}
-let g:eskk#large_dictionary = {
-\ 'path': '$HOME/.skk/SKK-JISYO.L',
-\ 'sorted': 1,
-\ 'encoding': 'euc-jp',
-\}
-" キーマップ
-autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
-autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+" " 辞書のパス
+" let g:eskk#dictionary = {
+" \ 'path': "$HOME/.skk/SKK-JISYO.USER",
+" \ 'sorted': 0,
+" \ 'encoding': 'utf-8',
+" \}
+" let g:eskk#large_dictionary = {
+" \ 'path': '$HOME/.skk/SKK-JISYO.L',
+" \ 'sorted': 1,
+" \ 'encoding': 'euc-jp',
+" \}
+" " キーマップ
+" autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
+" autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
 
 " YankRing.vim
 nnoremap <silent> <C-l> :YRShow<CR>
