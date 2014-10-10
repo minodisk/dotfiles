@@ -157,6 +157,10 @@ set nrformats=                " 10進数でインクリメント
 " シンタックスハイライトする
 syntax on
 
+" 文字コード
+set encoding=utf-8
+set fileencodings=utf-8,sjis,ceuc-jp,p932
+
 " 日本語ヘルプ
 helptags $HOME/.vim/vimdoc-ja/doc
 set helplang=ja
