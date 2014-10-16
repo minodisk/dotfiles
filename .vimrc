@@ -47,6 +47,7 @@ NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピ�
 """ 補完
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
+NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 " NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
@@ -77,6 +78,7 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 NeoBundle 'Align'               " 特定文字ベースの文書整形
 
 """ カラーリング
+highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
@@ -105,15 +107,17 @@ NeoBundle 'scrooloose/syntastic'
 "   \ }
 
 " 言語サポート
+NeoBundle 'Blackrush/vim-gocode'
+" NeoBundle 'dgryski/vim-godef'
+" NeoBundle 'vim-jp/vim-go-extra'
 NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
-NeoBundle 'dgryski/vim-godef'
-NeoBundle 'vim-jp/vim-go-extra'
 
 """ APIドキュメントを参照する
 NeoBundle 'thinca/vim-ref'
 
 """ 外部ツール起動
 NeoBundle 'rizzatti/dash.vim'           " Dash
+
 
 call neobundle#end()
 filetype plugin indent on
@@ -124,7 +128,9 @@ NeoBundleCheck
 
 """ ファイル
 set noswapfile
+set nobackup
 set hidden
+set undodir=~/.vim/undo
 
 """ 不可視文字を表示
 set list listchars=tab:▸\ ,trail:.,eol:¬
@@ -140,12 +146,10 @@ set showmatch
 set cursorline
 
 """ インデント
-set expandtab
 set autoindent
-set smartindent
-set tabstop=2
-set shiftwidth=2
 set smarttab
+set smartindent
+set expandtab shiftwidth=2 tabstop=2
 
 """ コマンドライン
 set wildmenu
@@ -161,16 +165,39 @@ set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
 set nrformats=                " 10進数でインクリメント
 
-" シンタックスハイライトする
-syntax on
 
 " 文字コード
-set encoding=utf-8
-set fileencodings=utf-8,sjis,ceuc-jp,p932
+" set encoding=utf-8
+" set fileencodings=sjis,utf-8
+
+""" 言語設定
+" Go
+set path+=$GOPATH/src/**
+let g:gofmt_command = 'goimports'
+" au BufWritePre *.go Fmt
+au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
+" au FileType go compiler go
+
+" Go
+" filetype plugin indent off
+" set runtimepath+=$GOROOT/misc/vim
+" filetype plugin indent on
+" syntax on
+" autocmd FileType go autocmd BufWritePre <buffer> Fmt
+" exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+
+syntax on
+
+""" カラースキーム
+" let g:hybrid_use_Xresources = 1
+" let g:hybrid_use_iTerm_colors = 1
+" colorscheme hybrid
+highlight LineNr ctermfg=243 ctermbg=236
+highlight CursorLineNr ctermfg=221 ctermbg=221
 
 " 日本語ヘルプ
-helptags $HOME/.vim/vimdoc-ja/doc
-set helplang=ja
+" helptags $HOME/.vim/vimdoc-ja/doc
+" set helplang=ja
 
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
@@ -195,28 +222,6 @@ augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
-
-""" 全角スペースを赤くハイライトする
-augroup highlightIdegraphicSpace
-  autocmd!
-  autocmd ColorScheme * highlight IdeographicSpace term=underline ctermbg=167 guibg=#cc6666
-  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
-augroup END
-
-""" カラースキーム
-" let g:hybrid_use_Xresources = 1
-" let g:hybrid_use_iTerm_colors = 1
-colorscheme hybrid
-highlight LineNr ctermfg=243 ctermbg=236 guifg=#707880 guibg=#303030
-highlight CursorLineNr ctermfg=221 ctermbg=221 guibg=#303030
-
-""" 言語設定
-" Go
-set path+=$GOPATH/src/**
-let g:gofmt_command = 'goimports'
-" au BufWritePre *.go Fmt
-au BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4 completeopt=menu,preview
-" au FileType go compiler go
 
 "---------------------------------------------------------------------------
 " キーマップ
@@ -377,6 +382,7 @@ let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+let g:neocomplcache_force_omni_patterns.go = '\h\w*\.\?'
 " キーマップ
 inoremap <expr><C-g>     neocomplcache#undo_completion()
 inoremap <expr><C-l>     neocomplcache#complete_common_string()
@@ -542,11 +548,11 @@ nmap <Space>/ <Plug>(caw:i:toggle)
 vmap <Space>/ <Plug>(caw:i:toggle)
 
 " vim-smartchr
-inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
+" inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
-inoremap <expr> : smartchr#loop(': ', ':')
-inoremap <expr> , smartchr#loop(', ', ',')
+" inoremap <expr> : smartchr#loop(': ', ':')
+" inoremap <expr> , smartchr#loop(', ', ',')
 
 """ EasyMotion
 " デフォルトのキーマップを設定しない
