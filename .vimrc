@@ -47,9 +47,9 @@ NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピ�
 """ 補完
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
-NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
+" NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 
 """ 移動
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
@@ -61,6 +61,13 @@ NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-fold'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-lastpat'
+NeoBundle 'osyo-manga/vim-textobj-multiblock'
+NeoBundle 'thinca/vim-textobj-between'
+NeoBundle 'rhysd/vim-textobj-anyblock'
+
+""" オペレータ
+NeoBundle 'kana/vim-operator-user'
+NeoBundle 'rhysd/vim-operator-surround'
 
 """ 変換
 " NeoBundle 'tyru/eskk.vim'       " 日本語入力
@@ -424,29 +431,6 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \ "\<Plug>(neosnippet_expand_or_jump)"
   \: "\<TAB>"
 
-""" showmarks
-" let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-""" YankRing.vim
-" 履歴ファイルの保存先
-let g:yankring_history_dir = expand('$HOME')
-let g:yankring_history_file = '.vim_yankring_history'
-" 履歴リストの表示
-let g:yankring_max_history = 10
-let g:yankring_window_height = 13
-
-""" indent-guides
-" 自動起動
-let g:indent_guides_enable_on_vim_startup = 1
-" 明かるくする
-let g:indent_guides_color_change_percent = 12
-
-""" syntastic
-" let g:syntastic_coffee_checkers = ['coffeelint']
-" let g:syntastic_enable_signs = 1
-" let g:syntastic_error_symbol = '✗'
-" let g:syntastic_warning_symbol = '⚠'
-
 "" liteline.vim
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
@@ -517,8 +501,41 @@ endfunction
 " autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
 " autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
 
-" YankRing.vim
+" vim-operator-surround
+nmap <silent>sa <Plug>(operator-surround-append)
+nmap <silent>sd <Plug>(operator-surround-delete)
+nmap <silent>sr <Plug>(operator-surround-replace)
+" with vim-textobj-multiblock
+nmap <silent>sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
+" with vim-textobj-anyblock
+nmap <silent>sdd <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
+nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
+" with vim-textobj-between
+nmap <silent>sdb <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
+nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
+
+""" YankRing.vim
+" 履歴ファイルの保存先
+let g:yankring_history_dir = expand('$HOME')
+let g:yankring_history_file = '.vim_yankring_history'
+" 履歴リストの表示
+let g:yankring_max_history = 10
+let g:yankring_window_height = 13
+" キーマップ
 nnoremap <silent> <C-l> :YRShow<CR>
+
+""" indent-guides
+" 自動起動
+let g:indent_guides_enable_on_vim_startup = 1
+" 明かるくする
+let g:indent_guides_color_change_percent = 12
+
+""" syntastic
+" let g:syntastic_coffee_checkers = ['coffeelint']
+" let g:syntastic_enable_signs = 1
+" let g:syntastic_error_symbol = '✗'
+" let g:syntastic_warning_symbol = '⚠'
 
 " caw.vim
 nmap <Space>/ <Plug>(caw:i:toggle)
@@ -545,6 +562,9 @@ omap <Space>s <Plug>(easymotion-s2)
 nmap <Space>j <Plug>(easymotion-j)
 nmap <Space>k <Plug>(easymotion-k)
 nmap <Space>l <Plug>(easymotion-bd-jk)
+
+""" showmarks
+" let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 "---------------------------------------------------------------------------
