@@ -122,6 +122,7 @@ NeoBundleCheck
 set noswapfile
 set nobackup
 set hidden
+set undodir=~/.vim/undo
 
 """ 不可視文字を表示
 set list listchars=tab:▸\ ,trail:.,eol:¬
@@ -155,6 +156,7 @@ set smartcase
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
 set nrformats=                " 10進数でインクリメント
+
 
 " 文字コード
 " set encoding=utf-8
