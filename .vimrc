@@ -84,11 +84,13 @@ NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
 
 """ シンタックスハイライト
-NeoBundle 'digitaltoad/vim-jade'      " Jade
-NeoBundle 'cakebaker/scss-syntax.vim' " Sass
-NeoBundle 'wavded/vim-stylus'         " Stylus
+NeoBundle 'digitaltoad/vim-jade'            " Jade
+NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
+NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
-NeoBundle 'kchmck/vim-coffee-script'  " CoffeeScript
+NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
+" NeoBundle 'jeroenbourgois/vim-actionscript' " ActionScript
+NeoBundle 'endel/actionscript.vim'          " ActionScript
 
 """ ステータスライン
 NeoBundle 'itchyny/lightline.vim'
@@ -552,7 +554,7 @@ vmap <Space>/ <Plug>(caw:i:toggle)
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
 " inoremap <expr> : smartchr#loop(': ', ':')
-" inoremap <expr> , smartchr#loop(', ', ',')
+inoremap <expr> , smartchr#loop(', ', ',')
 
 """ EasyMotion
 " デフォルトのキーマップを設定しない
