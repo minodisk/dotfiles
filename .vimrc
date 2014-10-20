@@ -181,7 +181,9 @@ set nrformats=                " 10進数でインクリメント
 " フォーマット時に使っていないimportを削除する
 let g:gofmt_command = 'goimports'
 " 保存時にフォーマットする
-auto BufWritePre *.go Fmt
+autocmd BufWritePre *.go Fmt
+" タブでインデント、プレビュー補完
+autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 
 """ カラースキーム
 " let g:hybrid_use_Xresources = 1
