@@ -1,5 +1,8 @@
 filetype off
 
+set rtp+=$GOROOT/misc/vim
+exe "set rtp+=" . globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
+
 "---------------------------------------------------------------------------
 " プラグイン
 
@@ -89,7 +92,6 @@ NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
-" NeoBundle 'jeroenbourgois/vim-actionscript' " ActionScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
 
 """ ステータスライン
@@ -109,23 +111,26 @@ NeoBundle 'scrooloose/syntastic'
 "   \ }
 
 " 言語サポート
-" NeoBundle 'Blackrush/vim-gocode'
+NeoBundleLazy 'Blackrush/vim-gocode', {
+      \ 'autoload': {
+      \   'filetypes': ['go']
+      \ }
+      \}
 NeoBundle 'dgryski/vim-godef'
-NeoBundle 'vim-jp/vim-go-extra'
-NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 
 """ APIドキュメントを参照する
 NeoBundle 'thinca/vim-ref'
 
 """ 外部ツール起動
+NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 NeoBundle 'rizzatti/dash.vim'           " Dash
-
 
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 
-"---------------------------------------------------------------------------
+
+"--------------------------------------------------------------------------
 " オプション
 
 """ ファイル
@@ -172,33 +177,11 @@ set nrformats=                " 10進数でインクリメント
 " set encoding=utf-8
 " set fileencodings=sjis,utf-8
 
-""" 言語設定
-" Go
-" set path+=$GOPATH/src/**
-" let g:gofmt_command = 'goimports'
-" " au BufWritePre *.go Fmt
-" au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
-" au FileType go compiler go
-
-" Go
-" filetype plugin indent off
-" set runtimepath+=$GOROOT/misc/vim
-" filetype plugin indent on
-" syntax on
-" autocmd FileType go autocmd BufWritePre <buffer> Fmt
-" exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-
-" for golang {{{
-set path+=$GOPATH/src/**
+""" Go
+" フォーマット時に使っていないimportを削除する
 let g:gofmt_command = 'goimports'
-au BufWritePre *.go Fmt
-au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
-au FileType go compiler go
-" 保存時にFmtする
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-" }}}
-
-syntax on
+" 保存時にフォーマットする
+auto BufWritePre *.go Fmt
 
 """ カラースキーム
 " let g:hybrid_use_Xresources = 1
