@@ -109,9 +109,9 @@ NeoBundle 'scrooloose/syntastic'
 "   \ }
 
 " 言語サポート
-NeoBundle 'Blackrush/vim-gocode'
-" NeoBundle 'dgryski/vim-godef'
-" NeoBundle 'vim-jp/vim-go-extra'
+" NeoBundle 'Blackrush/vim-gocode'
+NeoBundle 'dgryski/vim-godef'
+NeoBundle 'vim-jp/vim-go-extra'
 NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 
 """ APIドキュメントを参照する
@@ -174,10 +174,10 @@ set nrformats=                " 10進数でインクリメント
 
 """ 言語設定
 " Go
-set path+=$GOPATH/src/**
-let g:gofmt_command = 'goimports'
-" au BufWritePre *.go Fmt
-au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
+" set path+=$GOPATH/src/**
+" let g:gofmt_command = 'goimports'
+" " au BufWritePre *.go Fmt
+" au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 " au FileType go compiler go
 
 " Go
@@ -187,6 +187,16 @@ au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 " syntax on
 " autocmd FileType go autocmd BufWritePre <buffer> Fmt
 " exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+
+" for golang {{{
+set path+=$GOPATH/src/**
+let g:gofmt_command = 'goimports'
+au BufWritePre *.go Fmt
+au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
+au FileType go compiler go
+" 保存時にFmtする
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+" }}}
 
 syntax on
 
@@ -308,8 +318,13 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
 " キーマップ
-" 全部入りで開く
-nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+nnoremap [unite]  <Nop>
+nmap     <Space>u [unite]
+" ファイル処理
+nnoremap <silent> [unite]f :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+" アウトライン
+nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
+" nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
