@@ -224,16 +224,18 @@ augroup END
 "---------------------------------------------------------------------------
 " キーマップ
 
-" ctrl-cを無効化
+""" 調教用 {{{
+" ctrl-cを無効化 {{{
 inoremap <C-c> <Nop>
-" カーソルキーを無効化
+" }}}
+" カーソルキーを無効化 {{{
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+" }}}
+""" }}}
 
-" ESC置き換え
-" imap <C-Space> <ESC>
 " 挿入モードでの移動
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
@@ -295,7 +297,7 @@ nnoremap q/ <Nop>
 nnoremap q? <Nop>
 
 " [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
-nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+" nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 
 "---------------------------------------------------------------------------
 " プラグインのオプションとキーマップ
@@ -305,12 +307,11 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 let g:unite_enable_start_insert=1
 " キーマップ
 nnoremap [unite]  <Nop>
-nmap     <Space>u [unite]
+nmap     ,u       [unite]
 " ファイル処理
 nnoremap <silent> [unite]f :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " アウトライン
 nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-" nnoremap <silent> <Space>u :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -328,7 +329,7 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
 " 現在開いているバッファをIDE風に開く
-nnoremap <silent> <Space>f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
+nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit -toggle<CR>
 "現在開いているバッファのディレクトリを開く
 " nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
@@ -547,8 +548,8 @@ let g:indent_guides_color_change_percent = 12
 " let g:syntastic_warning_symbol = '⚠'
 
 " caw.vim
-nmap <Space>/ <Plug>(caw:i:toggle)
-vmap <Space>/ <Plug>(caw:i:toggle)
+nmap     ,c  <Plug>(caw:i:toggle)
+vmap     ,c  <Plug>(caw:i:toggle)
 
 " vim-smartchr
 " inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
@@ -564,13 +565,24 @@ let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
 let g:EasyMotion_startofline = 0
+" ジャンプ先を大文字で表示
+let g:EasyMotion_use_upper = 1
+" Enter/Space 入力で最初のマッチにジャンプ
+let g:EasyMotion_enter_jump_first = 1
+let g:EasyMotion_space_jump_first = 1
 " キーマップ
-nmap <Space>s <Plug>(easymotion-s2)
-xmap <Space>s <Plug>(easymotion-s2)
-omap <Space>s <Plug>(easymotion-s2)
-nmap <Space>j <Plug>(easymotion-j)
-nmap <Space>k <Plug>(easymotion-k)
-nmap <Space>l <Plug>(easymotion-bd-jk)
+" 2-key Find Motion
+map s <Plug>(easymotion-s2)
+" Line Motion
+map j <Plug>(easymotion-j)
+map k <Plug>(easymotion-k)
+" map l <Plug>(easymotion-bd-jk)
+" Search Motion
+set nohlsearch
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 """ showmarks
 " let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
