@@ -1,5 +1,8 @@
 filetype off
 
+set rtp+=$GOROOT/misc/vim
+exe "set rtp+=" . globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
+
 "---------------------------------------------------------------------------
 " プラグイン
 
@@ -84,11 +87,12 @@ NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
 
 """ シンタックスハイライト
-NeoBundle 'digitaltoad/vim-jade'      " Jade
-NeoBundle 'cakebaker/scss-syntax.vim' " Sass
-NeoBundle 'wavded/vim-stylus'         " Stylus
+NeoBundle 'digitaltoad/vim-jade'            " Jade
+NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
+NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
-NeoBundle 'kchmck/vim-coffee-script'  " CoffeeScript
+NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
+NeoBundle 'endel/actionscript.vim'          " ActionScript
 
 """ ステータスライン
 NeoBundle 'itchyny/lightline.vim'
@@ -107,23 +111,26 @@ NeoBundle 'scrooloose/syntastic'
 "   \ }
 
 " 言語サポート
-" NeoBundle 'Blackrush/vim-gocode'
+NeoBundleLazy 'Blackrush/vim-gocode', {
+      \ 'autoload': {
+      \   'filetypes': ['go']
+      \ }
+      \}
 NeoBundle 'dgryski/vim-godef'
-NeoBundle 'vim-jp/vim-go-extra'
-NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 
 """ APIドキュメントを参照する
 NeoBundle 'thinca/vim-ref'
 
 """ 外部ツール起動
+NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 NeoBundle 'rizzatti/dash.vim'           " Dash
-
 
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 
-"---------------------------------------------------------------------------
+
+"--------------------------------------------------------------------------
 " オプション
 
 """ ファイル
@@ -171,33 +178,13 @@ set nrformats=                " 10進数でインクリメント
 " set encoding=utf-8
 " set fileencodings=sjis,utf-8
 
-""" 言語設定
-" Go
-" set path+=$GOPATH/src/**
-" let g:gofmt_command = 'goimports'
-" " au BufWritePre *.go Fmt
-" au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
-" au FileType go compiler go
-
-" Go
-" filetype plugin indent off
-" set runtimepath+=$GOROOT/misc/vim
-" filetype plugin indent on
-" syntax on
-" autocmd FileType go autocmd BufWritePre <buffer> Fmt
-" exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-
-" for golang {{{
-set path+=$GOPATH/src/**
+""" Go
+" フォーマット時に使っていないimportを削除する
 let g:gofmt_command = 'goimports'
-au BufWritePre *.go Fmt
-au BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
-au FileType go compiler go
-" 保存時にFmtする
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-" }}}
-
-syntax on
+" 保存時にフォーマットする
+autocmd BufWritePre *.go Fmt
+" タブでインデント、プレビュー補完
+autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 
 """ カラースキーム
 " let g:hybrid_use_Xresources = 1
@@ -568,7 +555,7 @@ vmap <Space>/ <Plug>(caw:i:toggle)
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
 " inoremap <expr> : smartchr#loop(': ', ':')
-" inoremap <expr> , smartchr#loop(', ', ',')
+inoremap <expr> , smartchr#loop(', ', ',')
 
 """ EasyMotion
 " デフォルトのキーマップを設定しない
