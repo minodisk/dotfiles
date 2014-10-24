@@ -150,6 +150,7 @@ set autoindent
 set smarttab
 set smartindent
 set expandtab shiftwidth=2 tabstop=2
+set textwidth=0                       " 勝手に改行しない
 
 """ コマンドライン
 set wildmenu
