@@ -21,6 +21,7 @@ NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/unite-outline'
+NeoBundle 'Shougo/unite-help'
 
 """ vimfiler
 NeoBundle 'Shougo/vimfiler'
@@ -79,6 +80,10 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 """ 整形
 NeoBundle 'Align'               " 特定文字ベースの文書整形
+
+""" help
+NeoBundle 'vim-jp/vimdoc-ja'
+" NeoBundle 'thinca/vim-ft-help_fold'
 
 """ カラーリング
 highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
@@ -172,7 +177,8 @@ set smartcase
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
 set nrformats=                " 10進数でインクリメント
-
+set keywordprg=:help          " Kでヘルプを引く
+set helplang=ja,en            " 日本語ヘルプを優先
 
 " 文字コード
 " set encoding=utf-8
@@ -192,10 +198,6 @@ autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 " colorscheme hybrid
 highlight LineNr ctermfg=243 ctermbg=236
 highlight CursorLineNr ctermfg=221 ctermbg=221
-
-" 日本語ヘルプ
-" helptags $HOME/.vim/vimdoc-ja/doc
-" set helplang=ja
 
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
