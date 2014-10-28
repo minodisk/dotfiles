@@ -5,7 +5,7 @@ augroup highlightIdegraphicSpace
   autocmd VimEnter,WinEnter * match IdeographicSpace /　/
 augroup END
 
-set guifont=SourceCodePro-Regular:h12
+set guifont=SourceCodePro-Light:h12
 colorscheme hybrid
 highlight LineNr guifg=#707880 guibg=#404040
 highlight CursorLineNr guibg=#303030

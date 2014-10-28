@@ -181,8 +181,8 @@ set keywordprg=:help          " Kでヘルプを引く
 set helplang=ja,en            " 日本語ヘルプを優先
 
 " 文字コード
-" set encoding=utf-8
-" set fileencodings=sjis,utf-8
+set encoding=utf-8
+set fileencodings=sjis,utf-8
 
 """ Go
 " フォーマット時に使っていないimportを削除する
@@ -304,14 +304,22 @@ nnoremap q? <Nop>
 "---------------------------------------------------------------------------
 " プラグインのオプションとキーマップ
 
-""" unite
+" unite {{{
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+" 大文字小文字を区別しない
+let g:unite_enable_smart_case=1
 " キーマップ
 nnoremap [unite]  <Nop>
 nmap     ,u       [unite]
 " ファイル処理
 nnoremap <silent> [unite]f :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
+" grep検索
+nnoremap <silent> [unite]g :<C-u>Unite grep -buffer-name=search-buffer<CR>
+" 再表示
+nnoremap <silent> [unite]r :<C-u>UniteResume<CR>
+" grep検索結果再表示
+nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
 " アウトライン
 nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
 " ウィンドウを分割して開く
@@ -323,6 +331,13 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+" agでgrep検索
+if executable('ag')
+  let g:unite_source_grep_command='ag'
+  let g:unite_source_grep_default_opts='--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt=''
+endif
+" }}}
 
 """ vimfiler
 " vimデフォルトのエクスプローラをvimfilerで置き換える
