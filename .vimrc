@@ -1,7 +1,7 @@
 filetype off
 
-set rtp+=$GOROOT/misc/vim
-exe "set rtp+=" . globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
+" set rtp+=$GOROOT/misc/vim
+" exe "set rtp+=" . globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
 
 "---------------------------------------------------------------------------
 " プラグイン
@@ -116,12 +116,14 @@ NeoBundle 'scrooloose/syntastic'
 "   \ }
 
 " 言語サポート
-NeoBundleLazy 'Blackrush/vim-gocode', {
-      \ 'autoload': {
-      \   'filetypes': ['go']
-      \ }
-      \}
-NeoBundle 'dgryski/vim-godef'
+NeoBundle 'google/vim-ft-go'
+NeoBundle 'vim-jp/vim-go-extra'
+" NeoBundleLazy 'Blackrush/vim-gocode', {
+"       \ 'autoload': {
+"       \   'filetypes': ['go']
+"       \ }
+"       \}
+" NeoBundle 'dgryski/vim-godef'
 
 """ APIドキュメントを参照する
 NeoBundle 'thinca/vim-ref'
@@ -184,13 +186,14 @@ set helplang=ja,en            " 日本語ヘルプを優先
 set encoding=utf-8
 set fileencodings=sjis,utf-8
 
-""" Go
-" フォーマット時に使っていないimportを削除する
+" Go {{{
+" フォーマット時にimportを整理
 let g:gofmt_command = 'goimports'
 " 保存時にフォーマットする
 autocmd BufWritePre *.go Fmt
 " タブでインデント、プレビュー補完
 autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
+" }}}
 
 """ カラースキーム
 " let g:hybrid_use_Xresources = 1
@@ -226,17 +229,15 @@ augroup END
 "---------------------------------------------------------------------------
 " キーマップ
 
-""" 調教用 {{{
-" ctrl-cを無効化 {{{
+" 調教用 {{{
+" ctrl-cを無効化
 inoremap <C-c> <Nop>
-" }}}
-" カーソルキーを無効化 {{{
+" カーソルキーを無効化
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 " }}}
-""" }}}
 
 " 挿入モードでの移動
 inoremap <C-j> <Down>
