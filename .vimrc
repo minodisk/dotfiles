@@ -86,7 +86,8 @@ NeoBundle 'vim-jp/vimdoc-ja'
 " NeoBundle 'thinca/vim-ft-help_fold'
 
 """ カラーリング
-highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
+NeoBundle 'morhetz/gruvbox'
+" highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
@@ -196,11 +197,14 @@ autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 " }}}
 
 """ カラースキーム
-" let g:hybrid_use_Xresources = 1
-" let g:hybrid_use_iTerm_colors = 1
-" colorscheme hybrid
-highlight LineNr ctermfg=243 ctermbg=236
-highlight CursorLineNr ctermfg=221 ctermbg=221
+syntax enable
+set background=dark
+if !has("gui_running")
+  let g:gruvbox_italic=0
+endif
+colorscheme gruvbox
+highlight LineNr ctermfg=243
+highlight CursorLineNr ctermfg=214
 
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
@@ -474,7 +478,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " liteline.vim {{{
 let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
+  \ 'colorscheme': 'default',
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
