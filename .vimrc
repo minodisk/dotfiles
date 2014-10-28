@@ -1,9 +1,5 @@
 filetype off
 
-" set rtp+=$GOROOT/misc/vim
-" exe "set rtp+=" . globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
-
-"---------------------------------------------------------------------------
 " プラグイン
 
 if !1 | finish | endif
@@ -185,7 +181,7 @@ set helplang=ja,en            " 日本語ヘルプを優先
 
 " 文字コード
 set encoding=utf-8
-set fileencodings=sjis,utf-8
+set fileencodings=utf-8
 
 " Go {{{
 " フォーマット時にimportを整理
@@ -205,6 +201,13 @@ endif
 colorscheme gruvbox
 highlight LineNr ctermfg=243
 highlight CursorLineNr ctermfg=214
+
+" http://hamberg.no/erlend/posts/2014-03-09-change-vim-cursor-in-iterm.html
+" Change cursor shape between insert and normal mode in iTerm2.app
+if $TERM_PROGRAM =~ "iTerm"
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
 
 """ grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
