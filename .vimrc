@@ -46,7 +46,7 @@ NeoBundle 'Shougo/neosnippet-snippets'
 
 NeoBundle 'mattn/webapi-vim'    " HTTPライブラリ
 NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
-NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピーして一度に持ち運ぶ
+" NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピーして一度に持ち運ぶ
 
 """ 補完
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
@@ -239,7 +239,7 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 " }}}
 
-" 挿入モードでの移動
+" インサートモードでの移動 {{{
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-h> <Left>
@@ -247,17 +247,23 @@ inoremap <C-l> <Right>
 inoremap <C-0> 0
 inoremap <C-6> ^
 inoremap <C-4> $
-" ウィンドウ移動
+" }}}
+
+" ウィンドウのフォーカス移動 {{{
 nnoremap ,h <C-w>h
 nnoremap ,j <C-w>j
 nnoremap ,k <C-w>k
 nnoremap ,l <C-w>l
-nnoremap ,w <C-w>w
+nnoremap ,n <C-w>w    " 次
+" }}}
+
+" ウィンドウを移動 {{{
 nnoremap ,H <C-w>H
 nnoremap ,J <C-w>J
 nnoremap ,K <C-w>K
 nnoremap ,L <C-w>L
-nnoremap ,r <C-w>r
+nnoremap ,N <C-w>r    " 回転
+" }}}
 
 " ノーマルモードでEnterで改行入力
 noremap <CR> o<ESC>
@@ -310,6 +316,8 @@ nnoremap q? <Nop>
 let g:unite_enable_start_insert=1
 " 大文字小文字を区別しない
 let g:unite_enable_smart_case=1
+" yank履歴
+let g:unite_source_history_yank_enable=1
 " キーマップ
 nnoremap [unite]  <Nop>
 nmap     ,u       [unite]
@@ -317,12 +325,14 @@ nmap     ,u       [unite]
 nnoremap <silent> [unite]f :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
 " grep検索
 nnoremap <silent> [unite]g :<C-u>Unite grep -buffer-name=search-buffer<CR>
+" yank履歴
+nnoremap <silent> [unite]y :<C-u>Unite history/yank<CR>
+" アウトライン
+nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
 " 再表示
 nnoremap <silent> [unite]r :<C-u>UniteResume<CR>
 " grep検索結果再表示
 nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
-" アウトライン
-nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -340,7 +350,7 @@ if executable('ag')
 endif
 " }}}
 
-""" vimfiler
+" vimfiler {{{
 " vimデフォルトのエクスプローラをvimfilerで置き換える
 let g:vimfiler_as_default_explorer = 1
 " セーフモードを無効にした状態で起動する
@@ -360,8 +370,9 @@ nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-qui
 "   endif
 " endfunction
 " nnoremap <expr><Space>f <SID>git_root_dir()
+" }}}
 
-""" neocomplcache
+" neocomplcache {{{
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -441,8 +452,9 @@ let g:neocomplcache_enable_insert_char_pre = 1
 "let g:neocomplcache_enable_auto_select = 1
 "let g:neocomplcache_disable_auto_complete = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+" }}}
 
-""" neosnippet
+" neosnippet {{{
 " For snippet_complete marker.
 if has('conceal')
   set conceallevel=2 concealcursor=i
@@ -458,8 +470,9 @@ imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \ "\<Plug>(neosnippet_expand_or_jump)"
   \: "\<TAB>"
+" }}}
 
-"" liteline.vim
+" liteline.vim {{{
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'mode_map': { 'c': 'NORMAL' },
@@ -512,8 +525,9 @@ endfunction
 function! MyMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
+" }}}
 
-""" eskk.vim
+" eskk.vim {{{
 " " 辞書のパス
 " let g:eskk#dictionary = {
 " \ 'path': "$HOME/.skk/SKK-JISYO.USER",
@@ -528,8 +542,9 @@ endfunction
 " " キーマップ
 " autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
 " autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+" }}}
 
-" vim-operator-surround
+" vim-operator-surround {{{
 nmap <silent>sa <Plug>(operator-surround-append)
 nmap <silent>sd <Plug>(operator-surround-delete)
 nmap <silent>sr <Plug>(operator-surround-replace)
@@ -542,41 +557,47 @@ nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
 " with vim-textobj-between
 nmap <silent>sdb <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
 nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
+" }}}
 
-""" YankRing.vim
-" 履歴ファイルの保存先
-let g:yankring_history_dir = expand('$HOME')
-let g:yankring_history_file = '.vim_yankring_history'
-" 履歴リストの表示
-let g:yankring_max_history = 10
-let g:yankring_window_height = 13
-" キーマップ
-nnoremap <silent> <C-l> :YRShow<CR>
+" " YankRing.vim {{{
+" " 履歴ファイルの保存先
+" let g:yankring_history_dir = expand('$HOME')
+" let g:yankring_history_file = '.vim_yankring_history'
+" " 履歴リストの表示
+" let g:yankring_max_history = 10
+" let g:yankring_window_height = 13
+" " キーマップ
+" nnoremap <silent> <C-l> :YRShow<CR>
+" " }}}
 
-""" indent-guides
+" indent-guides {{{
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 " 明かるくする
 let g:indent_guides_color_change_percent = 12
+" }}}
 
-""" syntastic
+" syntastic {{{
 " let g:syntastic_coffee_checkers = ['coffeelint']
 " let g:syntastic_enable_signs = 1
 " let g:syntastic_error_symbol = '✗'
 " let g:syntastic_warning_symbol = '⚠'
+" }}}
 
-" caw.vim
+" caw.vim {{{
 nmap     ,c  <Plug>(caw:i:toggle)
 vmap     ,c  <Plug>(caw:i:toggle)
+" }}}
 
-" vim-smartchr
+" vim-smartchr {{{
 " inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
 " inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
 " inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
 " inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
+" }}}
 
-""" EasyMotion
+" EasyMotion {{{
 " デフォルトのキーマップを設定しない
 let g:EasyMotion_do_mapping = 0
 " キーワード検索で小文字で入力しても大文字にマッチする
@@ -601,11 +622,11 @@ map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+" }}}
 
-""" showmarks
+" showmarks {{{
 " let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+" }}}
 
-
-"---------------------------------------------------------------------------
 
 filetype on
