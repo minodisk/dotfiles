@@ -1,6 +1,6 @@
 filetype off
 
-" プラグイン
+""" プラグイン {{{
 
 if !1 | finish | endif
 if has('vim_starting')
@@ -10,19 +10,22 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-""" vim-localrc
+" vim-localrc {{{
 NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
+" }}}
 
-""" unite
+" unite {{{
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/unite-help'
+" }}}
 
-""" vimfiler
+" vimfiler {{{
 NeoBundle 'Shougo/vimfiler'
+" }}}
 
-""" vimproc
+" vimproc {{{
 NeoBundle 'Shougo/vimproc.vim', {
   \ 'build': {
   \     'windows' : 'tools\\update-dll-mingw',
@@ -31,33 +34,40 @@ NeoBundle 'Shougo/vimproc.vim', {
   \     'unix' : 'make -f make_unix.mak',
   \   }
   \ }
+" }}}
 
-""" vimshell
+" vimshell {{{
 NeoBundle 'Shougo/vimshell'
+" }}}
 
-""" neocomplcache
+" neocomplcache {{{
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+" }}}
 
+" プラグインの為のライブラリ {{{
 NeoBundle 'mattn/webapi-vim'    " HTTPライブラリ
 NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
 " NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピーして一度に持ち運ぶ
+" }}}
 
-""" 補完
+" 補完 {{{
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
 NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 " NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
+" }}}
 
-""" 移動
+" 移動 {{{
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
 " NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
 " NeoBundle 'showmarks'               " マークを表示する
+" }}}
 
-""" テキストオブジェクト
+" テキストオブジェクト {{{
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-fold'
 NeoBundle 'kana/vim-textobj-indent'
@@ -65,45 +75,54 @@ NeoBundle 'kana/vim-textobj-lastpat'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'thinca/vim-textobj-between'
 NeoBundle 'rhysd/vim-textobj-anyblock'
+" }}}
 
-""" オペレータ
+" オペレータ {{{
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'rhysd/vim-operator-surround'
+" }}}
 
-""" 変換
+" 変換 {{{
 " NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
+" }}}
 
-""" 整形
+" 整形 {{{
 NeoBundle 'Align'               " 特定文字ベースの文書整形
+" }}}
 
-""" help
+" help {{{
 NeoBundle 'vim-jp/vimdoc-ja'
 " NeoBundle 'thinca/vim-ft-help_fold'
+" }}}
 
-""" カラーリング
+" カラーリング {{{
 NeoBundle 'morhetz/gruvbox'
 " highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
+" }}}
 
-""" シンタックスハイライト
+" シンタックスハイライト {{{
 NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
+" }}}
 
-""" ステータスライン
+" ステータスライン {{{
 NeoBundle 'itchyny/lightline.vim'
+" }}}
 
-""" その他
+" Git {{{
 NeoBundle 'tpope/vim-fugitive'  " Git
 NeoBundle 'mattn/gist-vim'      " Gist
+" }}}
 
-""" コードチェック
+" コードチェック {{{
 " Syntastic
 NeoBundle 'scrooloose/syntastic'
 " NeoBundle 'marijnh/tern_for_vim', {
@@ -111,8 +130,9 @@ NeoBundle 'scrooloose/syntastic'
 "   \     'others': 'npm install'
 "   \   }
 "   \ }
+" }}}
 
-" 言語サポート
+" Go
 NeoBundle 'google/vim-ft-go'
 NeoBundle 'vim-jp/vim-go-extra'
 " NeoBundleLazy 'Blackrush/vim-gocode', {
@@ -121,67 +141,87 @@ NeoBundle 'vim-jp/vim-go-extra'
 "       \ }
 "       \}
 " NeoBundle 'dgryski/vim-godef'
+" }}}
 
-""" APIドキュメントを参照する
+" APIドキュメントを参照する {{{
 NeoBundle 'thinca/vim-ref'
+" }}}
 
-""" 外部ツール起動
+" 外部ツール起動 {{{
 NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 NeoBundle 'rizzatti/dash.vim'           " Dash
+" }}}
+
+NeoBundle 'autodate.vim'
 
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 
 
-"--------------------------------------------------------------------------
-" オプション
+""" }}}
+""" オプション {{{
 
-""" ファイル
+" ファイル {{{
 set noswapfile
 set nobackup
 set hidden
 set undodir=~/.vim/undo
+set undofile
+" }}}
 
-""" 不可視文字を表示
+" 不可視文字を表示 {{{
 set list listchars=tab:▸\ ,trail:.,eol:¬
+" }}}
 
-""" UI
+" UI {{{
 set title
 set number
 set laststatus=2
+" }}}
 
-""" エディタ表示
+" エディタ表示 {{{
 set guifont=SourceCodePro-Light:h12
 set showmatch
 set cursorline
+" }}}
 
-""" インデント
+" インデント {{{
 set autoindent
 set smarttab
 set smartindent
 set expandtab shiftwidth=2 tabstop=2
 set textwidth=0                       " 勝手に改行しない
+" }}}
 
-""" コマンドライン
+" 削除
+set backspace=indent,eol,start
+" }}}
+
+" コマンドライン {{{
 set wildmenu
 set showcmd
+" }}}
 
-""" 検索
+" 検索 {{{
 set hlsearch
 set incsearch
 set smartcase
+" }}}
 
-""" その他
+" その他 {{{
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
 set nrformats=                " 10進数でインクリメント
 set keywordprg=:help          " Kでヘルプを引く
 set helplang=ja,en            " 日本語ヘルプを優先
+" }}}
 
-" 文字コード
+" 文字コード {{{
 set encoding=utf-8
-set fileencodings=utf-8
+" set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+" set fileformats=unix,dos,mac
+" }}}
 
 " Go {{{
 " フォーマット時にimportを整理
@@ -192,7 +232,7 @@ autocmd BufWritePre *.go Fmt
 autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
 " }}}
 
-""" カラースキーム
+" カラースキーム {{{
 syntax enable
 set background=dark
 if !has("gui_running")
@@ -201,18 +241,21 @@ endif
 colorscheme gruvbox
 highlight LineNr ctermfg=243
 highlight CursorLineNr ctermfg=214
+" }}}
 
+" Change cursor shape between insert and normal mode in iTerm2.app {{{
 " http://hamberg.no/erlend/posts/2014-03-09-change-vim-cursor-in-iterm.html
-" Change cursor shape between insert and normal mode in iTerm2.app
 if $TERM_PROGRAM =~ "iTerm"
   let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
   let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
+" }}}
 
-""" grep検索の実行後にQuickFix Listを表示する
+" grep検索の実行後にQuickFix Listを表示する {{{
 autocmd QuickFixCmdPost *grep* cwindow
+" }}}
 
-""" 行末スペースの削除
+" 行末スペースの削除 {{{
 function! RTrim()
   let s:cursor = getpos('.')
   %s/\s\+$//e
@@ -220,8 +263,9 @@ function! RTrim()
 endfunction
 " 保存時に実行
 autocmd BufWritePre * call RTrim()
+" }}}
 
-""" 最後のカーソル位置を復元する
+" 最後のカーソル位置を復元する {{{
 function! ResCur()
   if line("'\"") <= line("$")
     normal! g`"
@@ -232,9 +276,26 @@ augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
+" }}}
 
-"---------------------------------------------------------------------------
-" キーマップ
+" クリップボードからの貼り付け時に自動インデントを無効にする {{{
+" http://ttssh2.sourceforge.jp/manual/ja/usage/tips/vim.html
+if &term =~ "xterm"
+  let &t_ti .= "\e[?2004h"
+  let &t_te .= "\e[?2004l"
+  let &pastetoggle = "\e[201~"
+  function XTermPasteBegin(ret)
+    set paste
+    return a:ret
+  endfunction
+  noremap <special> <expr> <Esc>[200~ XTermPasteBegin("0i")
+  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+  cnoremap <special> <Esc>[200~ <nop>
+  cnoremap <special> <Esc>[201~ <nop>
+endif
+" }}}
+
+""" キーマップ {{{
 
 " 調教用 {{{
 " ctrl-cを無効化
@@ -272,14 +333,16 @@ nnoremap ,L <C-w>L
 nnoremap ,N <C-w>r    " 回転
 " }}}
 
-" ノーマルモードでEnterで改行入力
+" ノーマルモードでEnterで改行入力 {{{
 noremap <CR> o<ESC>
+" }}}
 
-" インデントを下げる
+" インデントを下げる {{{
 inoremap <S-TAB>  <ESC><<i
+" }}}
 
+" 使いづらいキーを使いやすいキーに割り当てる {{{
 " http://deris.haten/blog.jp/entry/2013/05/02/192415
-" 使いづらいキーを使いやすいキーに割り当てる
 nnoremap ; :
 nnoremap : ;
 " 表示上の行移動
@@ -291,18 +354,21 @@ nnoremap gk k
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
+" }}}
 
-" very magic で検索する
+" very magic で検索する {{{
 nnoremap / /\v
 " *で検索した時にカーソルが次候補へ移動しないようにする
 nmap * *N
+" }}}
 
-" [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する
+" [VTB:4-6] ヤンクした文字列とカーソル位置の単語を置換する {{{
 nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+" }}}
 
-" [VTB:4-7] コマンド履歴のキーマップを置き換える
+" [VTB:4-7] コマンド履歴のキーマップを置き換える {{{
 " コマンド履歴
 nnoremap <F5> <Esc>q:
 " 検索履歴
@@ -311,12 +377,13 @@ nnoremap <F6> <Esc>q/
 nnoremap q: <Nop>
 nnoremap q/ <Nop>
 nnoremap q? <Nop>
+" }}}
 
-" [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする
+" [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする {{{
 " nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 
-"---------------------------------------------------------------------------
-" プラグインのオプションとキーマップ
+""" }}}
+""" プラグインのオプションとキーマップ {{{
 
 " unite {{{
 " 入力モードで開始する
@@ -481,7 +548,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " liteline.vim {{{
 let g:lightline = {
-  \ 'colorscheme': 'default',
+  \ 'colorscheme': 'gruvbox',
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
@@ -611,7 +678,8 @@ let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
 let g:EasyMotion_startofline = 0
-" ジャンプ先を大文字で表示
+" ジャンプ先を大文字で表示し、小文字の入力でもジャンプする
+let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
 let g:EasyMotion_use_upper = 1
 " Enter/Space 入力で最初のマッチにジャンプ
 let g:EasyMotion_enter_jump_first = 1
@@ -635,5 +703,6 @@ map  N <Plug>(easymotion-prev)
 " let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 " }}}
 
+""" }}}
 
 filetype on
