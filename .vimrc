@@ -89,7 +89,7 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 
 " 整形 {{{
 NeoBundle 'Align'                         " 特定文字ベースの文書整形
-" NeoBundle 'PreserveNoEOL'                 " EOL設定
+NeoBundle 'PreserveNoEOL'                 " EOL設定
 NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
