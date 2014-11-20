@@ -88,7 +88,9 @@ NeoBundle 'tpope/vim-abolish'   " 命名規則
 " }}}
 
 " 整形 {{{
-NeoBundle 'Align'               " 特定文字ベースの文書整形
+NeoBundle 'Align'                         " 特定文字ベースの文書整形
+" NeoBundle 'PreserveNoEOL'                 " EOL設定
+NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
 " help {{{
@@ -105,6 +107,7 @@ NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " }}}
 
 " シンタックスハイライト {{{
+NeoBundle 'othree/html5.vim'                " HTML5
 NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
@@ -223,6 +226,10 @@ set encoding=utf-8
 " set fileformats=unix,dos,mac
 " }}}
 
+" EOL {{{
+" let g:PreserveNoEOL = 1
+" }}}
+
 " Go {{{
 " フォーマット時にimportを整理
 let g:gofmt_command = 'goimports'
@@ -255,15 +262,15 @@ endif
 autocmd QuickFixCmdPost *grep* cwindow
 " }}}
 
-" 行末スペースの削除 {{{
-function! RTrim()
-  let s:cursor = getpos('.')
-  %s/\s\+$//e
-  call setpos('.', s:cursor)
-endfunction
-" 保存時に実行
-autocmd BufWritePre * call RTrim()
-" }}}
+" " 行末スペースの削除 {{{
+" function! RTrim()
+"   let s:cursor = getpos('.')
+"   %s/\s\+$//e
+"   call setpos('.', s:cursor)
+" endfunction
+" " 保存時に実行
+" autocmd BufWritePre * call RTrim()
+" " }}}
 
 " 最後のカーソル位置を復元する {{{
 function! ResCur()
@@ -380,7 +387,7 @@ nnoremap q? <Nop>
 " }}}
 
 " [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする {{{
-" nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 
 """ }}}
 """ プラグインのオプションとキーマップ {{{
@@ -679,24 +686,24 @@ let g:EasyMotion_smartcase = 1
 " JKMotion 時に同カラムで移動する
 let g:EasyMotion_startofline = 0
 " ジャンプ先を大文字で表示し、小文字の入力でもジャンプする
-let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
+let g:EasyMotion_keys = 'JKHFLDYSUAIROEPWBQNCMXTZGV'
 let g:EasyMotion_use_upper = 1
 " Enter/Space 入力で最初のマッチにジャンプ
 let g:EasyMotion_enter_jump_first = 1
 let g:EasyMotion_space_jump_first = 1
 " キーマップ
 " 2-key Find Motion
-map s <Plug>(easymotion-s2)
+map <Space><Space> <Plug>(easymotion-s2)
 " Line Motion
-map j <Plug>(easymotion-j)
-map k <Plug>(easymotion-k)
+map <Space>j <Plug>(easymotion-bd-jk)
+map <Space>k <Plug>(easymotion-bd-jk)
 " map l <Plug>(easymotion-bd-jk)
 " Search Motion
-set nohlsearch
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+" set nohlsearch
+map  <Space>/ <Plug>(easymotion-sn)
+omap <Space>/ <Plug>(easymotion-tn)
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
 " }}}
 
 " showmarks {{{
