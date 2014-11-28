@@ -94,7 +94,7 @@ NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
 " help {{{
-NeoBundle 'vim-jp/vimdoc-ja'
+" NeoBundle 'vim-jp/vimdoc-ja'
 " NeoBundle 'thinca/vim-ft-help_fold'
 " }}}
 
@@ -184,7 +184,7 @@ set laststatus=2
 " }}}
 
 " エディタ表示 {{{
-set guifont=SourceCodePro-Light:h12
+" set guifont=SourceCodePro-Light:h12
 set showmatch
 set cursorline
 " }}}
@@ -438,7 +438,7 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
 " 現在開いているバッファをIDE風に開く
-nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit -toggle<CR>
+nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=50 -no-quit -toggle<CR>
 "現在開いているバッファのディレクトリを開く
 " nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
@@ -570,14 +570,14 @@ let g:lightline = {
   \   'fileencoding': 'MyFileencoding',
   \   'mode': 'MyMode',
   \ },
-  \ 'separator': { 'left': '⮀', 'right': '⮂' },
-  \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+  \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+  \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
   \ }
 function! MyModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 function! MyReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
 endfunction
 function! MyFilename()
   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
@@ -590,7 +590,7 @@ endfunction
 function! MyFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
     let _ = fugitive#head()
-    return strlen(_) ? '⭠ '._ : ''
+    return strlen(_) ? "\ue0a0 " ._ : ''
   endif
   return ''
 endfunction
