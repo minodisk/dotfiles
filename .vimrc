@@ -212,6 +212,19 @@ set incsearch
 set smartcase
 " }}}
 
+" スペルチェック {{{
+set spelllang=en,cjk
+set spell
+" }}}
+
+" クリップボード {{{
+set clipboard+=unnamed
+" }}}
+
+" Diff {{{
+set diffopt+=vertical
+" }}}
+
 " その他 {{{
 set whichwrap=b,s,h,l,<,>,[,]
 set visualbell
@@ -262,7 +275,8 @@ endif
 autocmd QuickFixCmdPost *grep* cwindow
 " }}}
 
-" " 行末スペースの削除 {{{
+" 行末スペースの削除 {{{
+autocmd BufWritePre * :%s/\s\+$//e
 " function! RTrim()
 "   let s:cursor = getpos('.')
 "   %s/\s\+$//e
@@ -270,7 +284,7 @@ autocmd QuickFixCmdPost *grep* cwindow
 " endfunction
 " " 保存時に実行
 " autocmd BufWritePre * call RTrim()
-" " }}}
+" }}}
 
 " 最後のカーソル位置を復元する {{{
 function! ResCur()
@@ -291,7 +305,7 @@ if &term =~ "xterm"
   let &t_ti .= "\e[?2004h"
   let &t_te .= "\e[?2004l"
   let &pastetoggle = "\e[201~"
-  function XTermPasteBegin(ret)
+  function! XTermPasteBegin(ret)
     set paste
     return a:ret
   endfunction
@@ -303,16 +317,6 @@ endif
 " }}}
 
 """ キーマップ {{{
-
-" 調教用 {{{
-" ctrl-cを無効化
-inoremap <C-c> <Nop>
-" カーソルキーを無効化
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-" }}}
 
 " インサートモードでの移動 {{{
 inoremap <C-j> <Down>
