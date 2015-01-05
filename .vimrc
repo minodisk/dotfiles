@@ -122,7 +122,6 @@ NeoBundle 'itchyny/lightline.vim'
 
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'  " Git
-NeoBundle 'mattn/gist-vim'      " Gist
 " }}}
 
 " コードチェック {{{
@@ -148,6 +147,13 @@ NeoBundle 'vim-jp/vim-go-extra'
 
 " APIドキュメントを参照する {{{
 NeoBundle 'thinca/vim-ref'
+" }}}
+
+" Webサービス連携 {{{
+" Gist
+NeoBundle 'mattn/gist-vim'
+" Qiita
+NeoBundle 'mattn/qiita-vim'
 " }}}
 
 " 外部ツール起動 {{{
