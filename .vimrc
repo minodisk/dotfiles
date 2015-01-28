@@ -153,7 +153,8 @@ NeoBundle 'thinca/vim-ref'
 " Gist
 NeoBundle 'mattn/gist-vim'
 " Qiita
-NeoBundle 'mattn/qiita-vim'
+" NeoBundle 'mattn/qiita-vim'
+NeoBundle 'minodisk/qiita-vim'
 " }}}
 
 " 外部ツール起動 {{{
