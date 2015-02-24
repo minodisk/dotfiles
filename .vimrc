@@ -449,7 +449,7 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
 " 現在開いているバッファをIDE風に開く
-nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=50 -no-quit -toggle<CR>
+nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-quit -toggle<CR>
 "現在開いているバッファのディレクトリを開く
 " nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
