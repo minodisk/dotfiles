@@ -15,7 +15,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 
 #補完機能を使用する
-autoload -U compinit promptinit
+autoload -U compinit #promptinit
 compinit
 zstyle ':completion::complete:*' use-cache true
 #zstyle ':completion:*:default' menu select true
@@ -34,14 +34,14 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31
 #コマンドにsudoを付けても補完
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
+# sindresorhus/pure
+autoload -U promptinit && promptinit
+prompt pure
 
 # go
-export GOPATH="$HOME/.go"
+export GOPATH="$HOME"
+export PATH="$GOPATH/bin:$PATH"
 
 # ndenv
 export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
-
-# sindresorhus/pure
-autoload -U promptinit && promptinit
-prompt pure

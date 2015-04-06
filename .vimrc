@@ -484,6 +484,7 @@ nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-qui
 " }}}
 
 " neocomplete {{{
+set completeopt=menu ",preview
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
@@ -721,4 +722,13 @@ augroup PrevimSettings
   autocmd!
   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 augroup END
+" }}}
+
+" vim-go {{{
+let g:go_fmt_command = "goimports"
+au FileType go nmap ,r <Plug>(go-run)
+au FileType go nmap ,b <Plug>(go-build)
+au FileType go nmap ,t <Plug>(go-test)
+au FileType go nmap ,c <Plug>(go-coverage)
+au FileType go nmap ,n <Plug>(go-rename)
 " }}}
