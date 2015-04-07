@@ -445,14 +445,14 @@ nnoremap <silent> [unite]r :<C-u>UniteResume<CR>
 " grep検索結果再表示
 nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
 " ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+autocmd FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 " ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+autocmd FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 " ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+autocmd FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+autocmd FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 " agでgrep検索
 if executable('ag')
   let g:unite_source_grep_command='ag'
@@ -726,9 +726,11 @@ augroup END
 
 " vim-go {{{
 let g:go_fmt_command = "goimports"
-au FileType go nmap ,r <Plug>(go-run)
-au FileType go nmap ,b <Plug>(go-build)
-au FileType go nmap ,t <Plug>(go-test)
-au FileType go nmap ,c <Plug>(go-coverage)
-au FileType go nmap ,n <Plug>(go-rename)
+autocmd FileType go nmap ,r <Plug>(go-run)
+autocmd FileType go nmap ,b <Plug>(go-build)
+autocmd FileType go nmap ,t <Plug>(go-test)
+" autocmd FileType go nmap ,c <Plug>(go-coverage)
+autocmd FileType go nmap ,n <Plug>(go-rename)
+autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
+autocmd FileType go :match goErr /\<err\>/
 " }}}
