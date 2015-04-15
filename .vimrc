@@ -422,6 +422,13 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 """ }}}
 """ プラグインのオプションとキーマップ {{{
 
+" neomru {{{
+" 最近開いたファイルの上限を増やす
+let g:neomru#file_mru_limit=10000
+" 最近開いたディレクトリの上限を増やす
+let g:neomru#directory_mru_limit=10000
+" }}}
+
 " unite {{{
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
