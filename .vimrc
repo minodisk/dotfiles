@@ -92,6 +92,7 @@ NeoBundle 'rhysd/vim-operator-surround'
 " NeoBundle 'tyru/eskk.vim'       " 日本語入力
 NeoBundle 'tpope/vim-abolish'   " 命名規則
 NeoBundle 'mattn/emoji-vim'     " 絵文字
+NeoBundle 'tpope/vim-abolish'
 " }}}
 
 " 整形 {{{
@@ -371,7 +372,8 @@ nnoremap ,N <C-w>r    " 回転
 " }}}
 
 " ノーマルモードでEnterで改行入力 {{{
-noremap <CR> o<ESC>
+" noremap <CR> o<ESC>
+noremap <CR> i<CR><ESC>
 " }}}
 
 " インデントを下げる {{{
