@@ -1,10 +1,12 @@
 export EDITOR='vim'
 export LANG=ja_JP.UTF-8
 
-# プロンプト
-# PROMPT="%{${fg[green]}%}[%n@%m]%{${reset_color}%} %~
-# %# "
-# PROMPT="[%n@%m %~]%(!.#.$) "
+# 履歴
+export HISTFILE=${HOME}/.zsh_history
+export HISTSIZE=1000
+export SAVEHIST=10000
+setopt hist_ignore_dups
+setopt EXTENDED_HISTORY
 
 # エイリアス
 alias la='ls -a'
