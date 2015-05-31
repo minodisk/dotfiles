@@ -1,3 +1,5 @@
+# export PATH=/usr/local/bin:/usr/bin
+export PATH=~/Library/Python/2.7/bin:$PATH
 export EDITOR='vim'
 export LANG=ja_JP.UTF-8
 

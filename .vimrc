@@ -127,7 +127,7 @@ NeoBundle 'endel/actionscript.vim'          " ActionScript
 " }}}
 
 " ステータスライン {{{
-NeoBundle 'itchyny/lightline.vim'
+" NeoBundle 'itchyny/lightline.vim'
 " }}}
 
 " Git {{{
@@ -236,6 +236,8 @@ set smartcase
 " スペルチェック {{{
 set spelllang=en,cjk
 set spell
+hi clear SpellBad
+hi SpellBad cterm=underline
 " }}}
 
 " クリップボード {{{
@@ -281,13 +283,13 @@ set encoding=utf-8
 " }}}
 
 " カラースキーム {{{
-set background=dark
-if !has("gui_running")
-  let g:gruvbox_italic=0
-endif
-colorscheme gruvbox
-highlight LineNr ctermfg=243
-highlight CursorLineNr ctermfg=214
+" set background=dark
+" if !has("gui_running")
+"   let g:gruvbox_italic=0
+" endif
+" colorscheme gruvbox
+" highlight LineNr ctermfg=243
+" highlight CursorLineNr ctermfg=214
 " }}}
 
 " Change cursor shape between insert and normal mode in iTerm2.app {{{
@@ -566,60 +568,69 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \: "\<TAB>"
 " }}}
 
+" powerline {{{
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+set laststatus=2
+set showtabline=2
+set noshowmode
+" }}}
+
 " liteline.vim {{{
-let g:lightline = {
-  \ 'colorscheme': 'gruvbox',
-  \ 'mode_map': { 'c': 'NORMAL' },
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
-  \ },
-  \ 'component_function': {
-  \   'modified': 'MyModified',
-  \   'readonly': 'MyReadonly',
-  \   'fugitive': 'MyFugitive',
-  \   'filename': 'MyFilename',
-  \   'fileformat': 'MyFileformat',
-  \   'filetype': 'MyFiletype',
-  \   'fileencoding': 'MyFileencoding',
-  \   'mode': 'MyMode',
-  \ }
-  \ }
-" ,
-"   \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-"   \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-function! MyModified()
-  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-function! MyReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
-endfunction
-function! MyFilename()
-  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-    \  &ft == 'unite' ? unite#get_status_string() :
-    \  &ft == 'vimshell' ? vimshell#get_status_string() :
-    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-    \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-function! MyFugitive()
-  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? "\ue0a0 " ._ : ''
-  endif
-  return ''
-endfunction
-function! MyFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-function! MyFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-function! MyMode()
-  return winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
+" let g:lightline = {
+"   \ 'colorscheme': 'gruvbox',
+"   \ 'mode_map': { 'c': 'NORMAL' },
+"   \ 'active': {
+"   \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+"   \ },
+"   \ 'component_function': {
+"   \   'modified': 'MyModified',
+"   \   'readonly': 'MyReadonly',
+"   \   'fugitive': 'MyFugitive',
+"   \   'filename': 'MyFilename',
+"   \   'fileformat': 'MyFileformat',
+"   \   'filetype': 'MyFiletype',
+"   \   'fileencoding': 'MyFileencoding',
+"   \   'mode': 'MyMode',
+"   \ }
+"   \ }
+" " ,
+" "   \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+" "   \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+" function! MyModified()
+"   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+" endfunction
+" function! MyReadonly()
+"   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
+" endfunction
+" function! MyFilename()
+"   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+"     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+"     \  &ft == 'unite' ? unite#get_status_string() :
+"     \  &ft == 'vimshell' ? vimshell#get_status_string() :
+"     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+"     \ ('' != MyModified() ? ' ' . MyModified() : '')
+" endfunction
+" function! MyFugitive()
+"   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+"     let _ = fugitive#head()
+"     return strlen(_) ? "\ue0a0 " ._ : ''
+"   endif
+"   return ''
+" endfunction
+" function! MyFileformat()
+"   return winwidth(0) > 70 ? &fileformat : ''
+" endfunction
+" function! MyFiletype()
+"   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+" endfunction
+" function! MyFileencoding()
+"   return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+" endfunction
+" function! MyMode()
+"   return winwidth(0) > 60 ? lightline#mode() : ''
+" endfunction
 " }}}
 
 " eskk.vim {{{
