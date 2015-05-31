@@ -109,6 +109,8 @@ NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " カラーリング {{{
 NeoBundle 'morhetz/gruvbox'
 " highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
+" highlight Normal ctermfg=241                " vim-indent-guides の MacOSX iTerm2.app 対策
+highlight Normal ctermfg=12
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
@@ -680,7 +682,7 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 " 明かるくする
-let g:indent_guides_color_change_percent = 12
+" let g:indent_guides_color_change_percent = 12
 " }}}
 
 " syntastic {{{
