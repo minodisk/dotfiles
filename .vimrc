@@ -113,6 +113,7 @@ NeoBundle 'morhetz/gruvbox'
 highlight Normal ctermfg=12
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
+NeoBundle 'keith/tmux.vim'                  " tmux
 " NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
 " }}}
 
@@ -285,13 +286,13 @@ set encoding=utf-8
 " }}}
 
 " カラースキーム {{{
-" set background=dark
-" if !has("gui_running")
-"   let g:gruvbox_italic=0
-" endif
-" colorscheme gruvbox
-" highlight LineNr ctermfg=243
-" highlight CursorLineNr ctermfg=214
+set background=dark
+if !has("gui_running")
+  let g:gruvbox_italic=0
+endif
+colorscheme gruvbox
+highlight LineNr ctermfg=243
+highlight CursorLineNr ctermfg=214
 " }}}
 
 " Change cursor shape between insert and normal mode in iTerm2.app {{{

@@ -43,7 +43,7 @@ autoload -U promptinit && promptinit
 prompt pure
 
 # go
-export GOPATH="$HOME"
+export GOPATH="$HOME/workspace"
 export PATH="$GOPATH/bin:$PATH"
 
 # ndenv
