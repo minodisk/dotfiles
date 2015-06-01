@@ -39,8 +39,9 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
 # sindresorhus/pure
-autoload -U promptinit && promptinit
-prompt pure
+# autoload -U promptinit && promptinit
+# prompt pure
+. $HOME/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 
 # go
 export GOPATH="$HOME/workspace"
