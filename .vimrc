@@ -127,6 +127,7 @@ NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
+NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 " }}}
 
 " ステータスライン {{{
@@ -176,6 +177,10 @@ NeoBundle 'kannokanno/previm'
 " }}}
 
 NeoBundle 'autodate.vim'
+
+" セッション管理 {{{
+NeoBundle 'tpope/vim-obsession'
+" }}}
 
 call neobundle#end()
 
@@ -683,7 +688,11 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 " 明かるくする
+" let g:indent_guides_auto_colors = 0
 " let g:indent_guides_color_change_percent = 12
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=black guibg=black ctermbg=237 "インデントの色
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey guibg=darkgrey ctermbg=236 "二段階目のインデントの色
+" let g:indent_guides_guide_size = 1 "インデントの色付け幅
 " }}}
 
 " syntastic {{{
