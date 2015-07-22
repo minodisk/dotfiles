@@ -59,10 +59,9 @@ NeoBundle 'alpaca-tc/alpaca_tags'
 " 補完 {{{
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
-NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
+" NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
-" NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'tpope/vim-endwise'
 " }}}
@@ -101,6 +100,10 @@ NeoBundle 'PreserveNoEOL'                 " EOL設定
 NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
+" 検索 {{{
+NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
+" }}}
+
 " help {{{
 " NeoBundle 'vim-jp/vimdoc-ja'
 " NeoBundle 'thinca/vim-ft-help_fold'
@@ -121,6 +124,8 @@ NeoBundle 'keith/tmux.vim'                  " tmux
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'othree/html5.vim'                " HTML5
+" NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}} " JavaScript
+NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
 NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
@@ -134,6 +139,10 @@ NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 
 " ステータスライン {{{
 " NeoBundle 'itchyny/lightline.vim'
+" }}}
+
+" Quickfix {{{
+NeoBundle 'yssl/QFEnter'
 " }}}
 
 " Git {{{
@@ -176,6 +185,7 @@ NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
 NeoBundle 'rizzatti/dash.vim'           " Dash
 NeoBundle 'tyru/open-browser.vim'       " Browser
 NeoBundle 'kannokanno/previm'
+NeoBundle 'mattn/vim-open-atom'         " Atom
 " }}}
 
 NeoBundle 'autodate.vim'
@@ -386,7 +396,7 @@ nnoremap ,N <C-w>r    " 回転
 
 " ノーマルモードでEnterで改行入力 {{{
 " noremap <CR> o<ESC>
-noremap <CR> i<CR><ESC>
+" noremap <CR> i<CR><ESC>
 " }}}
 
 " インデントを下げる {{{
@@ -418,6 +428,13 @@ nmap * *N
 nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+" }}}
+
+" cnext {{{
+nnoremap ,cj :cprevious<CR>
+nnoremap ,ck :cnext<CR>
+nnoremap ,cgg :<C-u>cfirst<CR>
+nnoremap ,cG :<C-u>clast<CR>
 " }}}
 
 " [VTB:4-7] コマンド履歴のキーマップを置き換える {{{
@@ -706,8 +723,8 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey guibg=darkg
 " }}}
 
 " caw.vim {{{
-nmap     ,c  <Plug>(caw:i:toggle)
-vmap     ,c  <Plug>(caw:i:toggle)
+nmap     ,/  <Plug>(caw:i:toggle)
+vmap     ,/  <Plug>(caw:i:toggle)
 " }}}
 
 " vim-smartchr {{{
