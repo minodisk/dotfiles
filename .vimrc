@@ -130,6 +130,7 @@ NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
+NeoBundle 'mxw/vim-jsx'                     " React - jsx
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
@@ -210,6 +211,7 @@ set nobackup
 set hidden
 set undodir=~/.vim/undo
 set undofile
+" set nofixeol
 " }}}
 
 " 不可視文字を表示 {{{
