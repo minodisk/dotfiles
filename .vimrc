@@ -395,7 +395,7 @@ nnoremap ,N <C-w>r    " 回転
 
 " ノーマルモードでEnterで改行入力 {{{
 " noremap <CR> o<ESC>
-noremap <CR> i<CR><ESC>
+" noremap <CR> i<CR><ESC>
 " }}}
 
 " インデントを下げる {{{
