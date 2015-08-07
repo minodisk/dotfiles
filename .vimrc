@@ -212,6 +212,7 @@ set hidden
 set undodir=~/.vim/undo
 set undofile
 " set nofixeol
+set autoread
 " }}}
 
 " 不可視文字を表示 {{{
@@ -300,6 +301,13 @@ set encoding=utf-8
 
 " EJS {{{
 " autocmd BufNewFile,BufRead *.ejs set filetype=erb
+" }}}
+
+" ファイル監視 http://vim-jp.org/vim-users-jp/2011/03/12/Hack-206.html {{{
+augroup vimrc-checktime
+  autocmd!
+  autocmd WinEnter * checktime
+augroup END
 " }}}
 
 " カラースキーム {{{
