@@ -130,8 +130,8 @@ NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
-" NeoBundle 'pangloss/vim-javascript'         " JavaScript
-" NeoBundle 'mxw/vim-jsx'                     " React - jsx
+NeoBundle 'pangloss/vim-javascript'         " JavaScript
+NeoBundle 'mxw/vim-jsx'                     " React - jsx
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
@@ -785,4 +785,8 @@ autocmd FileType go nmap ,t <Plug>(go-test)
 autocmd FileType go nmap ,n <Plug>(go-rename)
 autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
 autocmd FileType go :match goErr /\<err\>/
+" }}}
+
+" vim-jsx {{{
+let g:jsx_ext_required = 0
 " }}}
