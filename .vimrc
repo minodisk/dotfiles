@@ -44,6 +44,7 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'mattn/jscomplete-vim'
 " }}}
 
 " プラグインの為のライブラリ {{{
@@ -78,6 +79,7 @@ NeoBundle 'kana/vim-textobj-fold'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-lastpat'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
+NeoBundle 'osyo-manga/vim-textobj-from_regexp'
 NeoBundle 'thinca/vim-textobj-between'
 NeoBundle 'rhysd/vim-textobj-anyblock'
 " }}}
@@ -124,21 +126,22 @@ NeoBundle 'keith/tmux.vim'                  " tmux
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'othree/html5.vim'                " HTML5
+" NeoBundle 'pangloss/vim-javascript'         " JavaScript
 " NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}} " JavaScript
-NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
+" NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
+" NeoBundle 'mxw/vim-jsx'                     " React - jsx
 NeoBundle 'digitaltoad/vim-jade'            " Jade
+NeoBundle 'slim-template/vim-slim'          " Slim
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 " NeoBundle 'KohPoll/vim-less'
-NeoBundle 'pangloss/vim-javascript'         " JavaScript
-NeoBundle 'mxw/vim-jsx'                     " React - jsx
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'endel/actionscript.vim'          " ActionScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 " }}}
 
 " ステータスライン {{{
-" NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'itchyny/lightline.vim'
 " }}}
 
 " Quickfix {{{
@@ -152,7 +155,7 @@ NeoBundle 'tpope/vim-fugitive'  " Git
 
 " コードチェック {{{
 " Syntastic
-" NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 " NeoBundle 'marijnh/tern_for_vim', {
 "   \ 'build': {
 "   \     'others': 'npm install'
@@ -287,6 +290,8 @@ set encoding=utf-8
 " EOL {{{
 " let g:PreserveNoEOL = 1
 " }}}
+
+let g:jscomplete_use = ['dom', 'moz']
 
 " Go {{{
 " フォーマット時にimportを整理
@@ -458,6 +463,11 @@ nnoremap q? <Nop>
 
 " [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする {{{
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+" }}}
+
+" 言語別インデント設定 {{{
+autocmd! FileType php setlocal shiftwidth=4 tabstop=2 softtabstop=2
+" }}}
 
 """ }}}
 """ プラグインのオプションとキーマップ {{{
@@ -605,68 +615,68 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 " }}}
 
 " powerline {{{
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-set laststatus=2
-set showtabline=2
-set noshowmode
+" python from powerline.vim import setup as powerline_setup
+" python powerline_setup()
+" python del powerline_setup
+" set laststatus=2
+" set showtabline=2
+" set noshowmode
 " }}}
 
 " liteline.vim {{{
-" let g:lightline = {
-"   \ 'colorscheme': 'gruvbox',
-"   \ 'mode_map': { 'c': 'NORMAL' },
-"   \ 'active': {
-"   \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
-"   \ },
-"   \ 'component_function': {
-"   \   'modified': 'MyModified',
-"   \   'readonly': 'MyReadonly',
-"   \   'fugitive': 'MyFugitive',
-"   \   'filename': 'MyFilename',
-"   \   'fileformat': 'MyFileformat',
-"   \   'filetype': 'MyFiletype',
-"   \   'fileencoding': 'MyFileencoding',
-"   \   'mode': 'MyMode',
-"   \ }
-"   \ }
-" " ,
-" "   \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-" "   \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-" function! MyModified()
-"   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-" endfunction
-" function! MyReadonly()
-"   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
-" endfunction
-" function! MyFilename()
-"   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-"     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-"     \  &ft == 'unite' ? unite#get_status_string() :
-"     \  &ft == 'vimshell' ? vimshell#get_status_string() :
-"     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-"     \ ('' != MyModified() ? ' ' . MyModified() : '')
-" endfunction
-" function! MyFugitive()
-"   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-"     let _ = fugitive#head()
-"     return strlen(_) ? "\ue0a0 " ._ : ''
-"   endif
-"   return ''
-" endfunction
-" function! MyFileformat()
-"   return winwidth(0) > 70 ? &fileformat : ''
-" endfunction
-" function! MyFiletype()
-"   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-" endfunction
-" function! MyFileencoding()
-"   return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-" endfunction
-" function! MyMode()
-"   return winwidth(0) > 60 ? lightline#mode() : ''
-" endfunction
+let g:lightline = {
+  \ 'colorscheme': 'gruvbox',
+  \ 'mode_map': { 'c': 'NORMAL' },
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+  \ },
+  \ 'component_function': {
+  \   'modified': 'MyModified',
+  \   'readonly': 'MyReadonly',
+  \   'fugitive': 'MyFugitive',
+  \   'filename': 'MyFilename',
+  \   'fileformat': 'MyFileformat',
+  \   'filetype': 'MyFiletype',
+  \   'fileencoding': 'MyFileencoding',
+  \   'mode': 'MyMode',
+  \ }
+  \ }
+" ,
+"   \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+"   \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+function! MyModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+function! MyReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
+endfunction
+function! MyFilename()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \  &ft == 'unite' ? unite#get_status_string() :
+    \  &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+    \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+function! MyFugitive()
+  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? "\ue0a0 " ._ : ''
+  endif
+  return ''
+endfunction
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+function! MyMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
 " }}}
 
 " eskk.vim {{{
@@ -718,16 +728,31 @@ let g:indent_guides_enable_on_vim_startup = 1
 " 明かるくする
 " let g:indent_guides_auto_colors = 0
 " let g:indent_guides_color_change_percent = 12
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=black guibg=black ctermbg=237 "インデントの色
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey guibg=darkgrey ctermbg=236 "二段階目のインデントの色
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=black guibg=black ctermbg=237 "インデントの色
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey guibg=darkgrey ctermbg=236 "二段階目のインデントの色
 " let g:indent_guides_guide_size = 1 "インデントの色付け幅
 " }}}
 
 " syntastic {{{
-" let g:syntastic_coffee_checkers = ['coffeelint']
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+
 " let g:syntastic_enable_signs = 1
 " let g:syntastic_error_symbol = '✗'
 " let g:syntastic_warning_symbol = '⚠'
+
+let g:syntastic_javascript_checkers = ['babelstandard']
+" let g:syntastic_coffee_checkers = ['coffeelint']
+
+" autocmd bufwritepost *.js silent !babel-standard % --format
+" autocmd bufwritepost *.js !standard %
+" set autoread
 " }}}
 
 " caw.vim {{{
@@ -797,4 +822,5 @@ autocmd FileType go :match goErr /\<err\>/
 
 " vim-jsx {{{
 let g:jsx_ext_required = 0
+let g:jsx_pragma_required = 0
 " }}}
