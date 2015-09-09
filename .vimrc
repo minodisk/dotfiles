@@ -113,8 +113,6 @@ NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
 
 " カラーリング {{{
 NeoBundle 'morhetz/gruvbox'
-" highlight Normal ctermfg=250                " vim-indent-guides の MacOSX iTerm2.app 対策
-" highlight Normal ctermfg=241                " vim-indent-guides の MacOSX iTerm2.app 対策
 highlight Normal ctermfg=12
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
@@ -141,7 +139,8 @@ NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 " }}}
 
 " ステータスライン {{{
-NeoBundle 'itchyny/lightline.vim'
+" NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'bling/vim-airline'
 " }}}
 
 " Quickfix {{{
@@ -318,12 +317,7 @@ augroup END
 
 " カラースキーム {{{
 set background=dark
-if !has("gui_running")
-  let g:gruvbox_italic=0
-endif
 colorscheme gruvbox
-highlight LineNr ctermfg=243
-highlight CursorLineNr ctermfg=214
 " }}}
 
 " Change cursor shape between insert and normal mode in iTerm2.app {{{
@@ -624,76 +618,56 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 " }}}
 
 " liteline.vim {{{
-let g:lightline = {
-  \ 'colorscheme': 'gruvbox',
-  \ 'mode_map': { 'c': 'NORMAL' },
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
-  \ },
-  \ 'component_function': {
-  \   'modified': 'MyModified',
-  \   'readonly': 'MyReadonly',
-  \   'fugitive': 'MyFugitive',
-  \   'filename': 'MyFilename',
-  \   'fileformat': 'MyFileformat',
-  \   'filetype': 'MyFiletype',
-  \   'fileencoding': 'MyFileencoding',
-  \   'mode': 'MyMode',
-  \ }
-  \ }
-" ,
-"   \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-"   \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-function! MyModified()
-  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-function! MyReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
-endfunction
-function! MyFilename()
-  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-    \  &ft == 'unite' ? unite#get_status_string() :
-    \  &ft == 'vimshell' ? vimshell#get_status_string() :
-    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-    \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-function! MyFugitive()
-  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? "\ue0a0 " ._ : ''
-  endif
-  return ''
-endfunction
-function! MyFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-function! MyFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-function! MyMode()
-  return winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-" }}}
-
-" eskk.vim {{{
-" " 辞書のパス
-" let g:eskk#dictionary = {
-" \ 'path': "$HOME/.skk/SKK-JISYO.USER",
-" \ 'sorted': 0,
-" \ 'encoding': 'utf-8',
-" \}
-" let g:eskk#large_dictionary = {
-" \ 'path': '$HOME/.skk/SKK-JISYO.L',
-" \ 'sorted': 1,
-" \ 'encoding': 'euc-jp',
-" \}
-" " キーマップ
-" autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
-" autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+" let g:lightline = {
+"   \ 'colorscheme': 'gruvbox_dark'
+  " \ 'mode_map': { 'c': 'NORMAL' },
+  " \ 'active': {
+  " \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+  " \ },
+  " \ 'component_function': {
+  " \   'modified': 'MyModified',
+  " \   'readonly': 'MyReadonly',
+  " \   'fugitive': 'MyFugitive',
+  " \   'filename': 'MyFilename',
+  " \   'fileformat': 'MyFileformat',
+  " \   'filetype': 'MyFiletype',
+  " \   'fileencoding': 'MyFileencoding',
+  " \   'mode': 'MyMode',
+  " \ }
+  " \ }
+" function! MyModified()
+"   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+" endfunction
+" function! MyReadonly()
+"   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
+" endfunction
+" function! MyFilename()
+"   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+"     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+"     \  &ft == 'unite' ? unite#get_status_string() :
+"     \  &ft == 'vimshell' ? vimshell#get_status_string() :
+"     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+"     \ ('' != MyModified() ? ' ' . MyModified() : '')
+" endfunction
+" function! MyFugitive()
+"   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+"     let _ = fugitive#head()
+"     return strlen(_) ? "\ue0a0 " ._ : ''
+"   endif
+"   return ''
+" endfunction
+" function! MyFileformat()
+"   return winwidth(0) > 70 ? &fileformat : ''
+" endfunction
+" function! MyFiletype()
+"   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+" endfunction
+" function! MyFileencoding()
+"   return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+" endfunction
+" function! MyMode()
+"   return winwidth(0) > 60 ? lightline#mode() : ''
+" endfunction
 " }}}
 
 " vim-operator-surround {{{
@@ -711,53 +685,26 @@ nmap <silent>sdb <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
 nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " }}}
 
-" " YankRing.vim {{{
-" " 履歴ファイルの保存先
-" let g:yankring_history_dir = expand('$HOME')
-" let g:yankring_history_file = '.vim_yankring_history'
-" " 履歴リストの表示
-" let g:yankring_max_history = 10
-" let g:yankring_window_height = 13
-" " キーマップ
-" nnoremap <silent> <C-l> :YRShow<CR>
-" " }}}
-
 " indent-guides {{{
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
-" 明かるくする
-" let g:indent_guides_auto_colors = 0
-" let g:indent_guides_color_change_percent = 12
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=black guibg=black ctermbg=237 "インデントの色
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey guibg=darkgrey ctermbg=236 "二段階目のインデントの色
-" let g:indent_guides_guide_size = 1 "インデントの色付け幅
 " }}}
 
 " syntastic {{{
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
-
-" let g:syntastic_enable_signs = 1
-" let g:syntastic_error_symbol = '✗'
-" let g:syntastic_warning_symbol = '⚠'
-
 let g:syntastic_javascript_checkers = ['babelstandard']
 " let g:syntastic_coffee_checkers = ['coffeelint']
-
-" autocmd bufwritepost *.js silent !babel-standard % --format
-" autocmd bufwritepost *.js !standard %
-" set autoread
 " }}}
 
 " caw.vim {{{
-nmap     ,/  <Plug>(caw:i:toggle)
-vmap     ,/  <Plug>(caw:i:toggle)
+nmap ,/ <Plug>(caw:i:toggle)
+vmap ,/ <Plug>(caw:i:toggle)
 " }}}
 
 " vim-smartchr {{{
@@ -803,10 +750,10 @@ omap <Space>/ <Plug>(easymotion-tn)
 """ }}}
 
 " previm {{{
-augroup PrevimSettings
-  autocmd!
-  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
+" augroup PrevimSettings
+"   autocmd!
+"   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+" augroup END
 " }}}
 
 " vim-go {{{
@@ -824,3 +771,6 @@ autocmd FileType go :match goErr /\<err\>/
 let g:jsx_ext_required = 0
 let g:jsx_pragma_required = 0
 " }}}
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts=1
