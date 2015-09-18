@@ -10,6 +10,17 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+" vimproc {{{
+NeoBundle 'Shougo/vimproc', {
+  \ 'build': {
+  \     'windows' : 'tools\\update-dll-mingw',
+  \     'cygwin' : 'make -f make_cygwin.mak',
+  \     'mac' : 'make -f make_mac.mak',
+  \     'unix' : 'make -f make_unix.mak',
+  \   }
+  \ }
+" }}}
+
 " vim-localrc {{{
 NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 " }}}
@@ -25,26 +36,15 @@ NeoBundle 'Shougo/unite-help'
 NeoBundle 'Shougo/vimfiler'
 " }}}
 
-" vimproc {{{
-NeoBundle 'Shougo/vimproc', {
-  \ 'build': {
-  \     'windows' : 'tools\\update-dll-mingw',
-  \     'cygwin' : 'make -f make_cygwin.mak',
-  \     'mac' : 'make -f make_mac.mak',
-  \     'unix' : 'make -f make_unix.mak',
-  \   }
-  \ }
-" }}}
-
 " vimshell {{{
-NeoBundle 'Shougo/vimshell'
+" NeoBundle 'Shougo/vimshell'
 " }}}
 
 " neocomplete {{{
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'mattn/jscomplete-vim'
+" NeoBundle 'Shougo/neocomplete'
+" NeoBundle 'Shougo/neosnippet'
+" NeoBundle 'Shougo/neosnippet-snippets'
+" NeoBundle 'mattn/jscomplete-vim'
 " }}}
 
 " プラグインの為のライブラリ {{{
@@ -54,7 +54,7 @@ NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
 " }}}
 
 " Ctags {{{
-NeoBundle 'alpaca-tc/alpaca_tags'
+" NeoBundle 'alpaca-tc/alpaca_tags'
 " }}}
 
 " 補完 {{{
@@ -71,8 +71,6 @@ NeoBundle 'jason0x43/vim-js-indent' " TypeScriptインデント
 
 " 移動 {{{
 NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
-" NeoBundle 'macros/matchit.vim'      " %コマンドによるジャンプ機能拡張
-" NeoBundle 'showmarks'               " マークを表示する
 " }}}
 
 " テキストオブジェクト {{{
@@ -92,10 +90,8 @@ NeoBundle 'rhysd/vim-operator-surround'
 " }}}
 
 " 変換 {{{
-" NeoBundle 'tyru/eskk.vim'       " 日本語入力
-NeoBundle 'tpope/vim-abolish'   " 命名規則
-NeoBundle 'mattn/emoji-vim'     " 絵文字
-NeoBundle 'tpope/vim-abolish'
+" NeoBundle 'tpope/vim-abolish'   " 命名規則
+" NeoBundle 'mattn/emoji-vim'     " 絵文字
 " }}}
 
 " 整形 {{{
@@ -108,18 +104,12 @@ NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
 " }}}
 
-" help {{{
-" NeoBundle 'vim-jp/vimdoc-ja'
-" NeoBundle 'thinca/vim-ft-help_fold'
-" }}}
-
 " カラーリング {{{
 NeoBundle 'morhetz/gruvbox'
 highlight Normal ctermfg=12
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
 NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
 NeoBundle 'keith/tmux.vim'                  " tmux
-" NeoBundle 'bronson/vim-trailing-whitespace' " 行末の半角スペース
 " }}}
 
 " シンタックスハイライト {{{
@@ -135,9 +125,7 @@ NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'slim-template/vim-slim'          " Slim
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
-" NeoBundle 'KohPoll/vim-less'
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
-NeoBundle 'endel/actionscript.vim'          " ActionScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 " }}}
 
@@ -147,7 +135,7 @@ NeoBundle 'bling/vim-airline'
 " }}}
 
 " Quickfix {{{
-NeoBundle 'yssl/QFEnter'
+" NeoBundle 'yssl/QFEnter'
 " }}}
 
 " Git {{{
@@ -166,37 +154,32 @@ NeoBundle 'tpope/vim-fugitive'  " Git
 " }}}
 
 " Go
-" NeoBundle 'google/vim-ft-go'
-" NeoBundle 'vim-jp/vim-go-extra'
-" NeoBundle 'nsf/gocode'
-" NeoBundle 'Blackrush/vim-gocode'
 NeoBundle 'fatih/vim-go'
 " }}}
 
 " APIドキュメントを参照する {{{
-NeoBundle 'thinca/vim-ref'
+" NeoBundle 'thinca/vim-ref'
 " }}}
 
 " Webサービス連携 {{{
 " Gist
-NeoBundle 'mattn/gist-vim'
+" NeoBundle 'mattn/gist-vim'
 " Qiita
-" NeoBundle 'mattn/qiita-vim'
-NeoBundle 'minodisk/qiita-vim'
+NeoBundle 'mattn/qiita-vim'
 " }}}
 
 " 外部ツール起動 {{{
-NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
-NeoBundle 'rizzatti/dash.vim'           " Dash
-NeoBundle 'tyru/open-browser.vim'       " Browser
-NeoBundle 'kannokanno/previm'
-NeoBundle 'mattn/vim-open-atom'         " Atom
+" NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
+" NeoBundle 'rizzatti/dash.vim'           " Dash
+" NeoBundle 'tyru/open-browser.vim'       " Browser
+" NeoBundle 'kannokanno/previm'
+" NeoBundle 'mattn/vim-open-atom'         " Atom
 " }}}
 
-NeoBundle 'autodate.vim'
+" NeoBundle 'autodate.vim'
 
 " セッション管理 {{{
-NeoBundle 'tpope/vim-obsession'
+" NeoBundle 'tpope/vim-obsession'
 " }}}
 
 call neobundle#end()
@@ -232,7 +215,6 @@ set laststatus=2
 " }}}
 
 " エディタ表示 {{{
-" set guifont=SourceCodePro-Light:h12
 set showmatch
 set cursorline
 " }}}
@@ -295,22 +277,6 @@ set encoding=utf-8
 
 let g:jscomplete_use = ['dom', 'moz']
 
-" Go {{{
-" フォーマット時にimportを整理
-" let g:go_fmt_command = 'goimports'
-" " タブでインデント、プレビュー補完
-" autocmd BufNewFile,BufRead *.go set noexpandtab completeopt=menu,preview
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_highlight_structs = 1
-" let g:go_highlight_operators = 1
-" let g:go_highlight_build_constraints = 1
-" }}}
-
-" EJS {{{
-" autocmd BufNewFile,BufRead *.ejs set filetype=erb
-" }}}
-
 " ファイル監視 http://vim-jp.org/vim-users-jp/2011/03/12/Hack-206.html {{{
 augroup vimrc-checktime
   autocmd!
@@ -337,14 +303,6 @@ autocmd QuickFixCmdPost *grep* cwindow
 
 " 行末スペースの削除 {{{
 autocmd BufWritePre * :%s/\s\+$//e
-" function! RTrim()
-"   let s:cursor = getpos('.')
-"   %s/\s\+$//e
-"   call setpos('.', s:cursor)
-" endfunction
-" " 保存時に実行
-" autocmd BufWritePre * call RTrim()
-" }}}
 
 " 最後のカーソル位置を復元する {{{
 function! ResCur()
@@ -402,11 +360,6 @@ nnoremap ,J <C-w>J
 nnoremap ,K <C-w>K
 nnoremap ,L <C-w>L
 nnoremap ,N <C-w>r    " 回転
-" }}}
-
-" ノーマルモードでEnterで改行入力 {{{
-" noremap <CR> o<ESC>
-" noremap <CR> i<CR><ESC>
 " }}}
 
 " インデントを下げる {{{
@@ -523,126 +476,38 @@ let g:vimfiler_as_default_explorer = 1
 " セーフモードを無効にした状態で起動する
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
-" 現在開いているバッファをIDE風に開く
 nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-quit -toggle<CR>
-"現在開いているバッファのディレクトリを開く
-" nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
-"現在開いているバッファをIDE風に開く
-" nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
-" function! s:git_root_dir()
-"   if(system('git rev-parse --is-inside-work-tree') == "true\n")
-"     return ':VimFiler -split -simple -winwidth=35 -no-quit ' . system('git rev-parse --show-cdup') . '\<CR>'
-"   else
-"     return ':VimFilerBufferDir -split -simple -winwidth=35 -no-quit\n'
-"   endif
-" endfunction
-" nnoremap <expr><Space>f <SID>git_root_dir()
 " }}}
 
 " neocomplete {{{
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-" set completeopt=menu ",preview
+" "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" " Disable AutoComplPop.
 " let g:acp_enableAtStartup = 0
 " " Use neocomplete.
 " let g:neocomplete#enable_at_startup = 1
 " " Use smartcase.
 " let g:neocomplete#enable_smart_case = 1
 " " Set minimum syntax keyword length.
-" " let g:neocomplete#sources#syntax#min_keyword_length = 3
+" let g:neocomplete#sources#syntax#min_keyword_length = 3
 " let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"
 " " Define dictionary.
 " let g:neocomplete#sources#dictionary#dictionaries = {
-"   \ 'default' : '',
-"   \ 'vimshell' : $HOME.'/.vimshell_hist',
-"   \ 'scheme' : $HOME.'/.gosh_completions'
-"   \ }
+"     \ 'default' : '',
+"     \ 'vimshell' : $HOME.'/.vimshell_hist',
+"     \ 'scheme' : $HOME.'/.gosh_completions'
+"         \ }
+"
+" " Define keyword.
 " if !exists('g:neocomplete#keyword_patterns')
 "     let g:neocomplete#keyword_patterns = {}
 " endif
 " let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+"
 " " Plugin key-mappings.
 " inoremap <expr><C-g>     neocomplete#undo_completion()
 " inoremap <expr><C-l>     neocomplete#complete_common_string()
+"
 " " Recommended key-mappings.
 " " <CR>: close popup and save indent.
 " inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
@@ -658,52 +523,62 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><C-y>  neocomplete#close_popup()
 " inoremap <expr><C-e>  neocomplete#cancel_popup()
+" " Close popup by <Space>.
+" "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+"
+" " For cursor moving in insert mode(Not recommended)
+" "inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+" "inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+" "inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+" "inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+" " Or set this.
+" "let g:neocomplete#enable_cursor_hold_i = 1
+"
+" " AutoComplPop like behavior.
+" "let g:neocomplete#enable_auto_select = 1
+"
+" " Shell like behavior(not recommended).
+" "set completeopt+=longest
+" "let g:neocomplete#enable_auto_select = 1
+" "let g:neocomplete#disable_auto_complete = 1
+" "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+"
 " " Enable omni completion.
 " autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 " autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 " autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType typescript setlocal omnifunc=tsuquyomi#complete
 " autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 " autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"
 " " Enable heavy omni completion.
 " if !exists('g:neocomplete#sources#omni#input_patterns')
 "   let g:neocomplete#sources#omni#input_patterns = {}
 " endif
-" let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-" let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.ts = '[^.]'
-" let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+" "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+" "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+" "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+"
 " " For perlomni.vim setting.
 " " https://github.com/c9s/perlomni.vim
 " let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " }}}
 
 " neosnippet {{{
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+" " For snippet_complete marker.
+" if has('conceal')
+"   set conceallevel=2 concealcursor=i
+" endif
 " キーマップ
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-  \ "\<Plug>(neosnippet_expand_or_jump)"
-  \: "\<TAB>"
-" }}}
-
-" powerline {{{
-" python from powerline.vim import setup as powerline_setup
-" python powerline_setup()
-" python del powerline_setup
-" set laststatus=2
-" set showtabline=2
-" set noshowmode
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
+" " SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"   \ "\<Plug>(neosnippet_expand_or_jump)"
+"   \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"   \ "\<Plug>(neosnippet_expand_or_jump)"
+"   \: "\<TAB>"
 " }}}
 
 " liteline.vim {{{
@@ -799,10 +674,6 @@ vmap ,/ <Plug>(caw:i:toggle)
 " }}}
 
 " vim-smartchr {{{
-" inoremap <expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
-" inoremap <expr> | smartchr#loop(' | ', ' || ', '|')
-" inoremap <expr> & smartchr#loop(' & ', ' && ', '&')
-" inoremap <expr> : smartchr#loop(': ', ':')
 inoremap <expr> , smartchr#loop(', ', ',')
 " }}}
 
@@ -840,13 +711,6 @@ omap <Space>/ <Plug>(easymotion-tn)
 
 """ }}}
 
-" previm {{{
-" augroup PrevimSettings
-"   autocmd!
-"   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-" augroup END
-" }}}
-
 " vim-go {{{
 let g:go_fmt_command = "goimports"
 autocmd FileType go nmap ,r <Plug>(go-run)
@@ -859,8 +723,8 @@ autocmd FileType go :match goErr /\<err\>/
 " }}}
 
 " vim-jsx {{{
-let g:jsx_ext_required = 0
-let g:jsx_pragma_required = 0
+" let g:jsx_ext_required = 0
+" let g:jsx_pragma_required = 0
 " }}}
 
 let g:airline#extensions#tabline#enabled = 1
