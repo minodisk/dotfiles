@@ -50,7 +50,6 @@ NeoBundle 'Shougo/vimfiler'
 " プラグインの為のライブラリ {{{
 NeoBundle 'mattn/webapi-vim'    " HTTPライブラリ
 NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
-" NeoBundle 'vim-scripts/YankRing.vim'  " 複数のテキストデータをコピーして一度に持ち運ぶ
 " }}}
 
 " Ctags {{{
@@ -60,7 +59,6 @@ NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
 " 補完 {{{
 NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
 NeoBundle 'kana/vim-smartchr'   " 入力からの補完
-" NeoBundle 'tpope/vim-surround'  " 選択範囲を括弧やクオートで囲む
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 NeoBundle 'ujihisa/neco-look'   " 英単語
 NeoBundle 'AndrewRadev/switch.vim'
@@ -89,11 +87,6 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'rhysd/vim-operator-surround'
 " }}}
 
-" 変換 {{{
-" NeoBundle 'tpope/vim-abolish'   " 命名規則
-" NeoBundle 'mattn/emoji-vim'     " 絵文字
-" }}}
-
 " 整形 {{{
 NeoBundle 'Align'                         " 特定文字ベースの文書整形
 NeoBundle 'PreserveNoEOL'                 " EOL設定
@@ -101,7 +94,7 @@ NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
 " 検索 {{{
-NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
+" NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
 " }}}
 
 " カラーリング {{{
@@ -423,6 +416,8 @@ imap <C-Tab> <C-x><C-o>
 
 """ }}}
 """ プラグインのオプションとキーマップ {{{
+
+let g:tsuquyomi_disable_quickfix=1
 
 " neomru {{{
 " 最近開いたファイルの上限を増やす
