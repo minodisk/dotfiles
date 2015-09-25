@@ -138,7 +138,7 @@ NeoBundle 'tpope/vim-fugitive'  " Git
 
 " コードチェック {{{
 " Syntastic
-" NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 " NeoBundle 'marijnh/tern_for_vim', {
 "   \ 'build': {
 "   \     'others': 'npm install'
@@ -650,17 +650,17 @@ let g:indent_guides_enable_on_vim_startup = 1
 " }}}
 
 " syntastic {{{
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" " let g:syntastic_check_on_wq = 0
-" let g:syntastic_javascript_checkers = ['standard']
-" " let g:syntastic_coffee_checkers = ['coffeelint']
-" " autocmd bufwritepost *.js silent !standard % --format
-" " set autoread
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['standard']
+" let g:syntastic_coffee_checkers = ['coffeelint']
+" autocmd bufwritepost *.js silent !standard % --format
+" set autoread
 " }}}
 
 " caw.vim {{{
