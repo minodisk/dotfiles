@@ -707,14 +707,19 @@ omap <Space>/ <Plug>(easymotion-tn)
 """ }}}
 
 " vim-go {{{
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
 autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
 autocmd FileType go nmap ,t <Plug>(go-test)
 " autocmd FileType go nmap ,c <Plug>(go-coverage)
 autocmd FileType go nmap ,n <Plug>(go-rename)
-autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
-autocmd FileType go :match goErr /\<err\>/
+" autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
+" autocmd FileType go :match goErr /\<err\>/
 " }}}
 
 " vim-jsx {{{
