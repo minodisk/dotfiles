@@ -50,3 +50,6 @@ export PATH="$GOPATH/bin:$PATH"
 # ndenv
 export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
+
+# docker
+alias dockerstart="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"

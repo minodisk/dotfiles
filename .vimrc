@@ -110,9 +110,10 @@ NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'othree/html5.vim'                " HTML5
 NeoBundle 'leafgarland/typescript-vim'      " TypeScript
+" NeoBundle 'clausreinke/typescript-tools.vim'    " TypeScript Tools
 " NeoBundle 'pangloss/vim-javascript'         " JavaScript
 " NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}} " JavaScript
-" NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
+NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
 " NeoBundle 'mxw/vim-jsx'                     " React - jsx
 NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'slim-template/vim-slim'          " Slim
@@ -250,14 +251,6 @@ set clipboard+=unnamed
 set diffopt+=vertical
 " }}}
 
-" その他 {{{
-set whichwrap=b,s,h,l,<,>,[,]
-set visualbell
-set nrformats=                " 10進数でインクリメント
-set keywordprg=:help          " Kでヘルプを引く
-set helplang=ja,en            " 日本語ヘルプを優先
-" }}}
-
 " 文字コード {{{
 set encoding=utf-8
 " set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
@@ -265,7 +258,19 @@ set encoding=utf-8
 " }}}
 
 " EOL {{{
-" let g:PreserveNoEOL = 1
+let g:PreserveNoEOL = 1
+" }}}
+
+" ファイルタイプ {{{
+au BufNewFile,BufRead *.es6 :set filetype=javascript
+" }}}
+
+" その他 {{{
+set whichwrap=b,s,h,l,<,>,[,]
+set visualbell
+set nrformats=                " 10進数でインクリメント
+set keywordprg=:help          " Kでヘルプを引く
+set helplang=ja,en            " 日本語ヘルプを優先
 " }}}
 
 let g:jscomplete_use = ['dom', 'moz']
@@ -417,7 +422,7 @@ imap <C-Tab> <C-x><C-o>
 """ }}}
 """ プラグインのオプションとキーマップ {{{
 
-let g:tsuquyomi_disable_quickfix=1
+" let g:tsuquyomi_disable_quickfix=1
 
 " neomru {{{
 " 最近開いたファイルの上限を増やす
@@ -559,21 +564,23 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " }}}
 
 " neosnippet {{{
-" " For snippet_complete marker.
-" if has('conceal')
-"   set conceallevel=2 concealcursor=i
-" endif
-" キーマップ
-" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k>     <Plug>(neosnippet_expand_target)
-" " SuperTab like snippets behavior.
-" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"   \ "\<Plug>(neosnippet_expand_or_jump)"
-"   \: pumvisible() ? "\<C-n>" : "\<TAB>"
-" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"   \ "\<Plug>(neosnippet_expand_or_jump)"
-"   \: "\<TAB>"
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<TAB>" : "\<Plug>(neosnippet_expand_or_jump)"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory = '~/.vimsnippets'
 " }}}
 
 " liteline.vim {{{
@@ -653,10 +660,12 @@ let g:indent_guides_enable_on_vim_startup = 1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map={'passive_filetypes': ['typescript']}
 let g:syntastic_javascript_checkers = ['standard']
 " let g:syntastic_coffee_checkers = ['coffeelint']
 " autocmd bufwritepost *.js silent !standard % --format
