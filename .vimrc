@@ -121,6 +121,7 @@ NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
+NeoBundle 'markcornick/vim-terraform'       " Terraform
 " }}}
 
 " ステータスライン {{{
