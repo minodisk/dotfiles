@@ -263,7 +263,8 @@ let g:PreserveNoEOL = 1
 " }}}
 
 " ファイルタイプ {{{
-au BufNewFile,BufRead *.es6 :set filetype=javascript
+au BufNewFile,BufRead *.es6 set filetype=javascript
+au BufNewFile,BufRead *.yaml.* set filetype=yaml
 " }}}
 
 " その他 {{{
