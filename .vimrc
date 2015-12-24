@@ -741,3 +741,8 @@ autocmd FileType go nmap ,n <Plug>(go-rename)
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts=2
+
+call system('type ibus')
+if v:shell_error == 0
+  inoremap <silent> <Esc> <Esc>:<C-u>call system('ibus engine "xkb:us::eng"')<CR>
+endif
