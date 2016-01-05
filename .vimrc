@@ -119,8 +119,10 @@ NeoBundle 'digitaltoad/vim-jade'            " Jade
 NeoBundle 'slim-template/vim-slim'          " Slim
 NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
 NeoBundle 'wavded/vim-stylus'               " Stylus
+NeoBundle 'groenewege/vim-less'
 NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
+NeoBundle 'ekalinin/Dockerfile.vim'         " Dockerfile
 NeoBundle 'markcornick/vim-terraform'       " Terraform
 " }}}
 
