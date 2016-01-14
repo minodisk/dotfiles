@@ -124,6 +124,7 @@ NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
 NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
 NeoBundle 'ekalinin/Dockerfile.vim'         " Dockerfile
 NeoBundle 'markcornick/vim-terraform'       " Terraform
+NeoBundle 'tpope/vim-markdown'
 " }}}
 
 " ステータスライン {{{
@@ -247,7 +248,8 @@ hi SpellBad cterm=underline
 " }}}
 
 " クリップボード {{{
-set clipboard+=unnamed
+" set clipboard+=unnamed
+set clipboard=unnamedplus
 " }}}
 
 " Diff {{{
