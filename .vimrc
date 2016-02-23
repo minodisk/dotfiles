@@ -22,14 +22,14 @@ NeoBundle 'Shougo/vimproc', {
 " }}}
 
 " vim-localrc {{{
-NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
+" NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
 " }}}
 
 " unite {{{
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/unite-help'
+" NeoBundle 'Shougo/unite-outline'
+" NeoBundle 'Shougo/unite-help'
 " }}}
 
 " vimfiler {{{
@@ -57,12 +57,12 @@ NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
 " }}}
 
 " 補完 {{{
-NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
-NeoBundle 'kana/vim-smartchr'   " 入力からの補完
+" NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
+" NeoBundle 'kana/vim-smartchr'   " 入力からの補完
 NeoBundle 'tyru/caw.vim'        " コメントアウト
-NeoBundle 'ujihisa/neco-look'   " 英単語
-NeoBundle 'AndrewRadev/switch.vim'
-NeoBundle 'tpope/vim-endwise'
+" NeoBundle 'ujihisa/neco-look'   " 英単語
+" NeoBundle 'AndrewRadev/switch.vim'
+" NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Quramy/tsuquyomi'        " TypeScript
 NeoBundle 'jason0x43/vim-js-indent' " TypeScriptインデント
 " }}}
@@ -90,7 +90,7 @@ NeoBundle 'rhysd/vim-operator-surround'
 " 整形 {{{
 NeoBundle 'Align'                         " 特定文字ベースの文書整形
 NeoBundle 'PreserveNoEOL'                 " EOL設定
-NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
+" NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 " }}}
 
 " 検索 {{{
@@ -101,11 +101,11 @@ NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
 NeoBundle 'morhetz/gruvbox'
 highlight Normal ctermfg=12
 NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
-NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
-NeoBundle 'keith/tmux.vim'                  " tmux
 " }}}
 
 " シンタックスハイライト {{{
+NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
+NeoBundle 'keith/tmux.vim'                  " tmux
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'othree/html5.vim'                " HTML5
@@ -163,7 +163,7 @@ NeoBundle 'fatih/vim-go'
 " Gist
 " NeoBundle 'mattn/gist-vim'
 " Qiita
-NeoBundle 'mattn/qiita-vim'
+" NeoBundle 'mattn/qiita-vim'
 " }}}
 
 " 外部ツール起動 {{{
@@ -172,6 +172,7 @@ NeoBundle 'mattn/qiita-vim'
 " NeoBundle 'tyru/open-browser.vim'       " Browser
 " NeoBundle 'kannokanno/previm'
 " NeoBundle 'mattn/vim-open-atom'         " Atom
+NeoBundle 'edkolev/tmuxline.vim'
 " }}}
 
 " NeoBundle 'autodate.vim'
@@ -248,8 +249,8 @@ hi SpellBad cterm=underline
 " }}}
 
 " クリップボード {{{
-" set clipboard+=unnamed
-set clipboard=unnamedplus
+set clipboard+=unnamed
+" set clipboard=unnamedplus
 " }}}
 
 " Diff {{{
@@ -503,7 +504,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
     \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+    \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -672,7 +673,14 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map={'passive_filetypes': ['typescript']}
+let g:syntastic_mode_map={
+      \ 'mode': 'active',
+      \ 'passive_filetypes': [
+      \     'typescript',
+      \   ]
+      \ }
+" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+" let g:syntastic_go_checkers = ['gometalinter']
 let g:syntastic_javascript_checkers = ['standard']
 " let g:syntastic_coffee_checkers = ['coffeelint']
 " autocmd bufwritepost *.js silent !standard % --format
@@ -729,6 +737,7 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
+" let g:go_metalinter_command = "gometalinter --linter='vet:go tool vet -composite=false -printfuncs=Infof,Debugf,Warningf,Errorf {pathes}:PATH:LINE:MESSAGE'"
 autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
 autocmd FileType go nmap ,t <Plug>(go-test)

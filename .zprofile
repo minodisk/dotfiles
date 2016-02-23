@@ -52,6 +52,6 @@ export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
 
 # docker
-# alias dockerstart="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
+alias dockerstart="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
