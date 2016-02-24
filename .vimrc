@@ -58,7 +58,7 @@ NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
 
 " 補完 {{{
 " NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
-" NeoBundle 'kana/vim-smartchr'   " 入力からの補完
+NeoBundle 'kana/vim-smartchr'   " 入力からの補完
 NeoBundle 'tyru/caw.vim'        " コメントアウト
 " NeoBundle 'ujihisa/neco-look'   " 英単語
 " NeoBundle 'AndrewRadev/switch.vim'
