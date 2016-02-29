@@ -1,194 +1,46 @@
 filetype off
 
-""" プラグイン {{{
-
-if !1 | finish | endif
-if has('vim_starting')
+if &compatible
   set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
 
-" vimproc {{{
-NeoBundle 'Shougo/vimproc', {
-  \ 'build': {
-  \     'windows' : 'tools\\update-dll-mingw',
-  \     'cygwin' : 'make -f make_cygwin.mak',
-  \     'mac' : 'make -f make_mac.mak',
-  \     'unix' : 'make -f make_unix.mak',
-  \   }
-  \ }
-" }}}
+""" プラグイン {{{
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+" dein.vim がなければ github から落としてくる
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
 
-" vim-localrc {{{
-" NeoBundle 'thinca/vim-localrc'  " ローカルなvimrc
-" }}}
+" 設定開始
+call dein#begin(s:dein_dir)
 
-" unite {{{
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-" NeoBundle 'Shougo/unite-outline'
-" NeoBundle 'Shougo/unite-help'
-" }}}
+" プラグインリストを収めた TOML ファイル
+let s:toml      = '~/.vim/rc/dein.toml'
+let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
 
-" vimfiler {{{
-NeoBundle 'Shougo/vimfiler'
-" }}}
+" TOML を読み込み、キャッシュしておく
+if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#save_cache()
+endif
 
-" vimshell {{{
-" NeoBundle 'Shougo/vimshell'
-" }}}
+" 設定終了
+call dein#end()
 
-" neocomplete {{{
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-" NeoBundle 'mattn/jscomplete-vim'
-" }}}
+" もし、未インストールものものがあったらインストール
+if dein#check_install()
+  call dein#install()
+endif
 
-" プラグインの為のライブラリ {{{
-NeoBundle 'mattn/webapi-vim'    " HTTPライブラリ
-NeoBundle 'tpope/vim-repeat'    " プラグイン機能の繰り返し
-" }}}
-
-" Ctags {{{
-" NeoBundle 'alpaca-tc/alpaca_tags'
-" }}}
-
-" 補完 {{{
-" NeoBundle 'kana/vim-smartinput' " 対応する括弧やクオートを補完
-" NeoBundle 'kana/vim-smartchr'   " 入力からの補完
-NeoBundle 'tyru/caw.vim'        " コメントアウト
-" NeoBundle 'ujihisa/neco-look'   " 英単語
-" NeoBundle 'AndrewRadev/switch.vim'
-" NeoBundle 'tpope/vim-endwise'
-NeoBundle 'Quramy/tsuquyomi'        " TypeScript
-NeoBundle 'jason0x43/vim-js-indent' " TypeScriptインデント
-" }}}
-
-" 移動 {{{
-NeoBundle 'Lokaltog/vim-easymotion' " EasyMotion
-" }}}
-
-" テキストオブジェクト {{{
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'kana/vim-textobj-fold'
-NeoBundle 'kana/vim-textobj-indent'
-NeoBundle 'kana/vim-textobj-lastpat'
-NeoBundle 'osyo-manga/vim-textobj-multiblock'
-NeoBundle 'osyo-manga/vim-textobj-from_regexp'
-NeoBundle 'thinca/vim-textobj-between'
-NeoBundle 'rhysd/vim-textobj-anyblock'
-" }}}
-
-" オペレータ {{{
-NeoBundle 'kana/vim-operator-user'
-NeoBundle 'rhysd/vim-operator-surround'
-" }}}
-
-" 整形 {{{
-NeoBundle 'Align'                         " 特定文字ベースの文書整形
-NeoBundle 'PreserveNoEOL'                 " EOL設定
-" NeoBundle 'editorconfig/editorconfig-vim' " エディタ設定共有
-" }}}
-
-" 検索 {{{
-" NeoBundle 'haya14busa/vim-migemo' " requires: brew install cmigemo
-" }}}
-
-" カラーリング {{{
-NeoBundle 'morhetz/gruvbox'
-highlight Normal ctermfg=12
-NeoBundle 'nathanaelkane/vim-indent-guides' " インデント
-" }}}
-
-" シンタックスハイライト {{{
-NeoBundle 'vim-scripts/AnsiEsc.vim'         " ログファイル
-NeoBundle 'keith/tmux.vim'                  " tmux
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'othree/html5.vim'                " HTML5
-NeoBundle 'leafgarland/typescript-vim'      " TypeScript
-" NeoBundle 'clausreinke/typescript-tools.vim'    " TypeScript Tools
-" NeoBundle 'pangloss/vim-javascript'         " JavaScript
-" NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}} " JavaScript
-NeoBundle 'othree/yajs.vim'                 " JavaScript ES6
-" NeoBundle 'mxw/vim-jsx'                     " React - jsx
-NeoBundle 'digitaltoad/vim-jade'            " Jade
-NeoBundle 'slim-template/vim-slim'          " Slim
-NeoBundle 'cakebaker/scss-syntax.vim'       " Sass
-NeoBundle 'wavded/vim-stylus'               " Stylus
-NeoBundle 'groenewege/vim-less'
-NeoBundle 'kchmck/vim-coffee-script'        " CoffeeScript
-NeoBundle 'cespare/vim-go-templates'        " Golang Default Template
-NeoBundle 'ekalinin/Dockerfile.vim'         " Dockerfile
-NeoBundle 'markcornick/vim-terraform'       " Terraform
-NeoBundle 'tpope/vim-markdown'
-" }}}
-
-" ステータスライン {{{
-" NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'bling/vim-airline'
-" }}}
-
-" Quickfix {{{
-" NeoBundle 'yssl/QFEnter'
-" }}}
-
-" Git {{{
-NeoBundle 'tpope/vim-git'
-NeoBundle 'tpope/vim-fugitive'  " Git
-" }}}
-
-" コードチェック {{{
-" Syntastic
-NeoBundle 'scrooloose/syntastic'
-" NeoBundle 'marijnh/tern_for_vim', {
-"   \ 'build': {
-"   \     'others': 'npm install'
-"   \   }
-"   \ }
-" }}}
-
-" Go
-NeoBundle 'fatih/vim-go'
-" }}}
-
-" APIドキュメントを参照する {{{
-" NeoBundle 'thinca/vim-ref'
-" }}}
-
-" Webサービス連携 {{{
-" Gist
-" NeoBundle 'mattn/gist-vim'
-" Qiita
-" NeoBundle 'mattn/qiita-vim'
-" }}}
-
-" 外部ツール起動 {{{
-" NeoBundle 'JarrodCTaylor/vim-js2coffee' " coffee2js
-" NeoBundle 'rizzatti/dash.vim'           " Dash
-" NeoBundle 'tyru/open-browser.vim'       " Browser
-" NeoBundle 'kannokanno/previm'
-" NeoBundle 'mattn/vim-open-atom'         " Atom
-NeoBundle 'edkolev/tmuxline.vim'
-" }}}
-
-" NeoBundle 'autodate.vim'
-
-" セッション管理 {{{
-" NeoBundle 'tpope/vim-obsession'
-" }}}
-
-call neobundle#end()
 
 syntax enable
 filetype on
 filetype plugin indent on
-
-NeoBundleCheck
-
 
 """ }}}
 """ オプション {{{
@@ -430,8 +282,6 @@ imap <C-Tab> <C-x><C-o>
 """ }}}
 """ プラグインのオプションとキーマップ {{{
 
-" let g:tsuquyomi_disable_quickfix=1
-
 " neomru {{{
 " 最近開いたファイルの上限を増やす
 let g:neomru#file_mru_limit=10000
@@ -591,59 +441,6 @@ endif
 let g:neosnippet#snippets_directory = '~/.vimsnippets'
 " }}}
 
-" liteline.vim {{{
-" let g:lightline = {
-"   \ 'colorscheme': 'gruvbox_dark'
-  " \ 'mode_map': { 'c': 'NORMAL' },
-  " \ 'active': {
-  " \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
-  " \ },
-  " \ 'component_function': {
-  " \   'modified': 'MyModified',
-  " \   'readonly': 'MyReadonly',
-  " \   'fugitive': 'MyFugitive',
-  " \   'filename': 'MyFilename',
-  " \   'fileformat': 'MyFileformat',
-  " \   'filetype': 'MyFiletype',
-  " \   'fileencoding': 'MyFileencoding',
-  " \   'mode': 'MyMode',
-  " \ }
-  " \ }
-" function! MyModified()
-"   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-" endfunction
-" function! MyReadonly()
-"   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
-" endfunction
-" function! MyFilename()
-"   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-"     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-"     \  &ft == 'unite' ? unite#get_status_string() :
-"     \  &ft == 'vimshell' ? vimshell#get_status_string() :
-"     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-"     \ ('' != MyModified() ? ' ' . MyModified() : '')
-" endfunction
-" function! MyFugitive()
-"   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-"     let _ = fugitive#head()
-"     return strlen(_) ? "\ue0a0 " ._ : ''
-"   endif
-"   return ''
-" endfunction
-" function! MyFileformat()
-"   return winwidth(0) > 70 ? &fileformat : ''
-" endfunction
-" function! MyFiletype()
-"   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-" endfunction
-" function! MyFileencoding()
-"   return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-" endfunction
-" function! MyMode()
-"   return winwidth(0) > 60 ? lightline#mode() : ''
-" endfunction
-" }}}
-
 " vim-operator-surround {{{
 nmap <silent>sa <Plug>(operator-surround-append)
 nmap <silent>sd <Plug>(operator-surround-delete)
@@ -679,10 +476,7 @@ let g:syntastic_mode_map={
       \     'typescript',
       \   ]
       \ }
-" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-" let g:syntastic_go_checkers = ['gometalinter']
 let g:syntastic_javascript_checkers = ['standard']
-" let g:syntastic_coffee_checkers = ['coffeelint']
 " autocmd bufwritepost *.js silent !standard % --format
 " set autoread
 " }}}
@@ -724,12 +518,6 @@ omap <Space>/ <Plug>(easymotion-tn)
 " map  N <Plug>(easymotion-prev)
 " }}}
 
-" showmarks {{{
-" let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-" }}}
-
-""" }}}
-
 " vim-go {{{
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -745,11 +533,6 @@ autocmd FileType go nmap ,t <Plug>(go-test)
 autocmd FileType go nmap ,n <Plug>(go-rename)
 " autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
 " autocmd FileType go :match goErr /\<err\>/
-" }}}
-
-" vim-jsx {{{
-" let g:jsx_ext_required = 0
-" let g:jsx_pragma_required = 0
 " }}}
 
 let g:airline#extensions#tabline#enabled = 1
