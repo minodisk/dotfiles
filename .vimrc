@@ -37,7 +37,6 @@ if dein#check_install()
   call dein#install()
 endif
 
-
 syntax enable
 filetype on
 filetype plugin indent on
