@@ -93,7 +93,7 @@ set smartcase
 " }}}
 
 " スペルチェック {{{
-" set spelllang+=cjk
+set spelllang+=cjk
 set spell
 hi clear SpellBad
 hi SpellBad cterm=underline
@@ -101,7 +101,6 @@ hi SpellBad cterm=underline
 
 " クリップボード {{{
 set clipboard+=unnamed
-" set clipboard=unnamedplus
 " }}}
 
 " Diff {{{
@@ -110,8 +109,6 @@ set diffopt+=vertical
 
 " 文字コード {{{
 set encoding=utf-8
-" set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
-" set fileformats=unix,dos,mac
 " }}}
 
 " EOL {{{
@@ -336,7 +333,7 @@ let g:vimfiler_safe_mode_by_default = 0
 nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-quit -toggle<CR>
 " }}}
 
-" neocomplete {{{
+
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -353,7 +350,7 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
     \ 'scheme' : $HOME.'/.gosh_completions'
-    \ }
+        \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -369,27 +366,17 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
 " Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
 " AutoComplPop like behavior.
 "let g:neocomplete#enable_auto_select = 1
@@ -414,11 +401,11 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
+" let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-" }}}
+
 
 " neosnippet {{{
 " Plugin key-mappings.
@@ -437,7 +424,7 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 " Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory = '~/.vimsnippets'
+" let g:neosnippet#snippets_directory = '~/.vimsnippets'
 " }}}
 
 " vim-operator-surround {{{

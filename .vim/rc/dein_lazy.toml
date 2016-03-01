@@ -5,19 +5,20 @@ repo = 'Shougo/unite.vim'
 repo = 'Shougo/neomru.vim'
 on_source = ['unite.vim']
 
+# neocomplete
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+on_i = 1
+[[plugins]]
+repo = 'Shougo/neosnippet'
+on_source = ['neocomplete.vim']
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_source = ['neocomplete.vim']
+
 # vimfiler
 [[plugins]]
 repo = 'Shougo/vimfiler'
-
-# neocomplete
-[[plugins]]
-repo = 'Shougo/neocomplete'
-[[plugins]]
-repo = 'Shougo/neosnippet'
-on_source = ['neocomplete']
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-on_source = ['neocomplete']
 
 [[plugins]]
 repo = 'Quramy/tsuquyomi'        # TypeScript
