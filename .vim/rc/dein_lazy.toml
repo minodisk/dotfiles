@@ -20,11 +20,15 @@ on_source = ['neocomplete.vim']
 [[plugins]]
 repo = 'Shougo/vimfiler'
 
+# TypeScript
 [[plugins]]
-repo = 'Quramy/tsuquyomi'        # TypeScript
+repo = 'Quramy/tsuquyomi'
 on_ft = ['typescript']
 [[plugins]]
-repo = 'jason0x43/vim-js-indent' # TypeScriptインデント
+repo = 'jason0x43/vim-js-indent'
+on_ft = ['typescript']
+[[plugins]]
+repo = 'Chiel92/vim-autoformat'
 on_ft = ['typescript']
 
 # シンタックスハイライト

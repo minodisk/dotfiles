@@ -4,7 +4,6 @@ if &compatible
   set nocompatible
 endif
 
-""" プラグイン {{{
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 " dein.vim がなければ github から落としてくる
@@ -14,25 +13,15 @@ if &runtimepath !~# '/dein.vim'
   endif
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
-
-" 設定開始
 call dein#begin(s:dein_dir)
-
-" プラグインリストを収めた TOML ファイル
 let s:toml      = '~/.vim/rc/dein.toml'
 let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
-
-" TOML を読み込み、キャッシュしておく
 if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
   call dein#save_cache()
 endif
-
-" 設定終了
 call dein#end()
-
-" もし、未インストールものものがあったらインストール
 if dein#check_install()
   call dein#install()
 endif
@@ -41,16 +30,13 @@ syntax enable
 filetype on
 filetype plugin indent on
 
-""" }}}
-""" オプション {{{
-
 " ファイル {{{
 set noswapfile
 set nobackup
 set hidden
 set undodir=~/.vim/undo
 set undofile
-" set nofixeol
+set nofixeol
 set autoread
 " }}}
 
@@ -374,7 +360,8 @@ endfunction
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#close_popup()."\<C-h>"
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
@@ -504,7 +491,14 @@ omap <Space>/ <Plug>(easymotion-tn)
 " map  N <Plug>(easymotion-prev)
 " }}}
 
-" vim-go {{{
+" tsuquyomi
+autocmd FileType typescript nmap ,n <Plug>(TsuquyomiRenameSymbolC)
+autocmd FileType typescript nmap ,d <Plug>(TsuquyomiDefinition)
+autocmd FileType typescript nmap ,b <Plug>(TsuquyomiGoBack)
+autocmd FileType typescript nmap ,r <Plug>(TsuquyomiReference)
+autocmd FileType typescript setlocal completeopt+=preview
+
+" vim-go
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
@@ -515,7 +509,7 @@ let g:go_fmt_command = "goimports"
 autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
 autocmd FileType go nmap ,t <Plug>(go-test)
-" autocmd FileType go nmap ,c <Plug>(go-coverage)
+autocmd FileType go nmap ,v <Plug>(go-coverage)
 autocmd FileType go nmap ,n <Plug>(go-rename)
 " autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
 " autocmd FileType go :match goErr /\<err\>/
