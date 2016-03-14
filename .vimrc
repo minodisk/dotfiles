@@ -31,9 +31,15 @@ filetype on
 filetype plugin indent on
 
 " ファイル {{{
-set noswapfile
-set nobackup
 set hidden
+
+silent !mkdir ~/.vim > /dev/null 2>&1
+silent !mkdir ~/.vim/swap > /dev/null 2>&1
+silent !mkdir ~/.vim/backup > /dev/null 2>&1
+silent !mkdir ~/.vim/undo > /dev/null 2>&1
+
+set directory=~/.vim/swap
+set backupdir=~/.vim/backup
 set undodir=~/.vim/undo
 set undofile
 set nofixeol
@@ -388,7 +394,7 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
+let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
@@ -450,8 +456,8 @@ let g:syntastic_mode_map={
       \   ]
       \ }
 let g:syntastic_javascript_checkers = ['standard']
-" autocmd bufwritepost *.js silent !standard % --format
-" set autoread
+autocmd bufwritepost *.js silent !standard-format -w %
+set autoread
 " }}}
 
 " caw.vim {{{
