@@ -182,45 +182,10 @@ endif
 
 """ キーマップ {{{
 
-" インサートモードでの移動 {{{
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-inoremap <C-0> 0
-inoremap <C-6> ^
-inoremap <C-4> $
-" }}}
-
-" ウィンドウのフォーカス移動 {{{
-nnoremap ,h <C-w>h
-nnoremap ,j <C-w>j
-nnoremap ,k <C-w>k
-nnoremap ,l <C-w>l
-nnoremap ,n <C-w>w    " 次
-" }}}
-
-" ウィンドウを移動 {{{
-nnoremap ,H <C-w>H
-nnoremap ,J <C-w>J
-nnoremap ,K <C-w>K
-nnoremap ,L <C-w>L
-nnoremap ,N <C-w>r    " 回転
-" }}}
-
 " インデントを下げる {{{
 inoremap <S-TAB>  <ESC><<i
 " }}}
 
-" 使いづらいキーを使いやすいキーに割り当てる {{{
-" http://deris.haten/blog.jp/entry/2013/05/02/192415
-nnoremap ; :
-nnoremap : ;
-" 表示上の行移動
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
 " 誤操作すると困るキーを無効化
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
@@ -237,24 +202,6 @@ nmap * *N
 nnoremap <silent> cy  ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 vnoremap <silent> cy  c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
-" }}}
-
-" cnext {{{
-nnoremap ,cj :cprevious<CR>
-nnoremap ,ck :cnext<CR>
-nnoremap ,cgg :<C-u>cfirst<CR>
-nnoremap ,cG :<C-u>clast<CR>
-" }}}
-
-" [VTB:4-7] コマンド履歴のキーマップを置き換える {{{
-" コマンド履歴
-nnoremap <F5> <Esc>q:
-" 検索履歴
-nnoremap <F6> <Esc>q/
-" デフォルトのキーマップを無効化
-nnoremap q: <Nop>
-nnoremap q/ <Nop>
-nnoremap q? <Nop>
 " }}}
 
 " [VTB:4-16] 検索結果ハイライトをESCキーの連打でリセットする {{{
