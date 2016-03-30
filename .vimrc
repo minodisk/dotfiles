@@ -110,6 +110,7 @@ let g:PreserveNoEOL = 1
 " ファイルタイプ {{{
 au BufNewFile,BufRead *.es6 set filetype=javascript
 au BufNewFile,BufRead *.yaml.* set filetype=yaml
+au BufNewFile,BufRead conf.d/*.conf set filetype=nginx
 " }}}
 
 " その他 {{{
@@ -209,7 +210,8 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 " }}}
 
 " 言語別インデント設定 {{{
-autocmd! FileType php setlocal shiftwidth=4 tabstop=2 softtabstop=2
+" autocmd! FileType php setlocal shiftwidth=4 tabstop=2 softtabstop=2
+autocmd! FileType php setlocal noexpandtab
 " }}}
 
 imap <C-Tab> <C-x><C-o>

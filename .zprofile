@@ -51,7 +51,10 @@ export PATH="$GOPATH/bin:$PATH"
 export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
 
+# app engine
+export PATH="$HOME/go_appengine:$PATH"
+
 # docker
-alias dockerstart="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
+alias docker-start="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
