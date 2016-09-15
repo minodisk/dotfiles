@@ -4,24 +4,27 @@ if &compatible
   set nocompatible
 endif
 
-let s:dein_dir = expand('~/.cache/dein')
+let s:dein_dir = expand('~/.vim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-" dein.vim がなければ github から落としてくる
 if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_dir)
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
   endif
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
-call dein#begin(s:dein_dir)
-let s:toml      = '~/.vim/rc/dein.toml'
-let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
-if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+
+  let g:rc_dir    = expand('~/.vim/rc')
+  let s:toml      = g:rc_dir . '/dein.toml'
+  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
-  call dein#save_cache()
+  call dein#end()
+  call dein#save_state()
 endif
-call dein#end()
 if dein#check_install()
   call dein#install()
 endif
@@ -42,7 +45,7 @@ set directory=~/.vim/swap
 set backupdir=~/.vim/backup
 set undodir=~/.vim/undo
 set undofile
-set nofixeol
+" set nofixeol
 set autoread
 " }}}
 
@@ -108,9 +111,25 @@ let g:PreserveNoEOL = 1
 " }}}
 
 " ファイルタイプ {{{
-au BufNewFile,BufRead *.es6 set filetype=javascript
-au BufNewFile,BufRead *.yaml.* set filetype=yaml
-au BufNewFile,BufRead conf.d/*.conf set filetype=nginx
+autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
+autocmd BufNewFile,BufRead *.es6 set filetype=javascript
+autocmd BufNewFile,BufRead *.yaml.* set filetype=yaml
+autocmd BufNewFile,BufRead *.md.* set filetype=markdown
+autocmd BufNewFile,BufRead nginx/*.conf set filetype=nginx
+autocmd BufNewFile,BufRead apache/*.conf set filetype=apache
+" function MultiExtensionFiletype()
+"     let ft_default=&filetype
+"     let ft_prefix=substitute(matchstr(expand('%'),'\..\+\.'),'\.','','g')
+"     sil exe "set filetype=" . ft_prefix  . "." . ft_default
+" endfunction
+" autocmd BufNewFile,BufRead,BufReadPre *.*.* call MultiExtensionFiletype()
+" }}}
+
+" autoformat {{{
+let g:formatdef_css = '"stylefmt"'
+let g:formatters_css = ['css']
+" autocmd BufWrite *.ts,*.tsx :Autoformat
+" autocmd BufWrite *.css :Autoformat
 " }}}
 
 " その他 {{{
@@ -119,6 +138,7 @@ set visualbell
 set nrformats=                " 10進数でインクリメント
 set keywordprg=:help          " Kでヘルプを引く
 set helplang=ja,en            " 日本語ヘルプを優先
+set noswapfile
 " }}}
 
 let g:jscomplete_use = ['dom', 'moz']
@@ -133,6 +153,13 @@ augroup END
 " カラースキーム {{{
 set t_Co=256
 set background=dark
+autocmd ColorScheme * highlight Normal ctermbg=none
+autocmd ColorScheme * highlight LineNr ctermbg=none
+autocmd ColorScheme * highlight VertSplit ctermbg=none
+autocmd ColorScheme * highlight CursorLine ctermbg=none
+autocmd ColorScheme * highlight CursorLineNr ctermbg=none
+autocmd ColorScheme * highlight IndentGuidesOdd ctermbg=none
+autocmd ColorScheme * highlight IndentGuidesEven ctermbg=none
 colorscheme gruvbox
 " }}}
 
@@ -151,6 +178,7 @@ autocmd QuickFixCmdPost *grep* cwindow
 " 行末スペースの削除 {{{
 autocmd BufWritePre * :%s/\s\+$//e
 
+" 最後のカーソル位置を復元する {{{
 " 最後のカーソル位置を復元する {{{
 function! ResCur()
   if line("'\"") <= line("$")
@@ -187,11 +215,14 @@ endif
 inoremap <S-TAB>  <ESC><<i
 " }}}
 
-" 誤操作すると困るキーを無効化
+" 誤操作すると困るキーを無効化 {{{
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q <Nop>
 " }}}
+
+nnoremap <Tab> :lnext<CR>
+nnoremap <S-Tab> :lprev<CR>
 
 " very magic で検索する {{{
 nnoremap / /\v
@@ -210,8 +241,10 @@ nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 " }}}
 
 " 言語別インデント設定 {{{
-" autocmd! FileType php setlocal shiftwidth=4 tabstop=2 softtabstop=2
-autocmd! FileType php setlocal noexpandtab
+autocmd FileType php setlocal noexpandtab
+" }}}
+" 拡張子別インデント設定 {{{
+autocmd BufNewFile,BufRead *.d.ts setlocal tabstop=4 shiftwidth=4
 " }}}
 
 imap <C-Tab> <C-x><C-o>
@@ -265,13 +298,12 @@ if executable('ag')
 endif
 " }}}
 
-" vimfiler {{{
 " vimデフォルトのエクスプローラをvimfilerで置き換える
 let g:vimfiler_as_default_explorer = 1
 " セーフモードを無効にした状態で起動する
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
-nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-quit -toggle<CR>
+nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=40 -no-quit -toggle<CR>
 " }}}
 
 
@@ -285,24 +317,20 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
+      \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
+      \ 'scheme' : $HOME.'/.gosh_completions'
+      \ }
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+  let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
 " Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
@@ -312,19 +340,18 @@ function! s:my_cr_function()
   "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#close_popup()."\<C-h>"
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
 " AutoComplPop like behavior.
 "let g:neocomplete#enable_auto_select = 1
-
 " Shell like behavior(not recommended).
-"set completeopt+=longest
+" set completeopt+=longest
 "let g:neocomplete#enable_auto_select = 1
 "let g:neocomplete#disable_auto_complete = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
@@ -343,24 +370,22 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
+" let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
+" let g:neocomplete#omni_patterns.go = '\h\w*\.\?'
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-
 " neosnippet {{{
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
 " SuperTab like snippets behavior.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<TAB>" : "\<Plug>(neosnippet_expand_or_jump)"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<TAB>" : "\<Plug>(neosnippet_expand_or_jump)"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>" "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 " For conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
@@ -386,8 +411,10 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 
 " indent-guides {{{
 " 自動起動
-let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_enable_on_vim_startup = 1
 " }}}
+let g:indentLine_color_term = 243
+" let g:indentLine_char = '┆'
 
 " syntastic {{{
 set statusline+=%#warningmsg#
@@ -397,21 +424,21 @@ set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_mode_map={
-      \ 'mode': 'active',
-      \ 'passive_filetypes': [
-      \     'typescript',
-      \   ]
+      \   'mode': 'active'
       \ }
 let g:syntastic_javascript_checkers = ['standard']
+let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
+let g:syntastic_css_checkers = ['stylelint']
+" let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
 autocmd bufwritepost *.js silent !standard-format -w %
 set autoread
 " }}}
 
 " caw.vim {{{
-nmap ,/ <Plug>(caw:i:toggle)
-vmap ,/ <Plug>(caw:i:toggle)
+nmap ,/ <Plug>(caw:hatpos:toggle)
+vmap ,/ <Plug>(caw:hatpos:toggle)
 " }}}
 
 " vim-smartchr {{{
@@ -451,7 +478,13 @@ autocmd FileType typescript nmap ,n <Plug>(TsuquyomiRenameSymbolC)
 autocmd FileType typescript nmap ,d <Plug>(TsuquyomiDefinition)
 autocmd FileType typescript nmap ,b <Plug>(TsuquyomiGoBack)
 autocmd FileType typescript nmap ,r <Plug>(TsuquyomiReference)
-autocmd FileType typescript setlocal completeopt+=preview
+" autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd FileType typescript setlocal completeopt+=longest
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.typescript = '[^. *\t]\.\w*\|\h\w*::'
+let g:tsuquyomi_disable_quickfix = 1
 
 " vim-go
 let g:go_highlight_functions = 1
@@ -465,7 +498,6 @@ autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
 autocmd FileType go nmap ,t <Plug>(go-test)
 autocmd FileType go nmap ,v <Plug>(go-coverage)
-autocmd FileType go nmap ,n <Plug>(go-rename)
 " autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
 " autocmd FileType go :match goErr /\<err\>/
 " }}}

@@ -21,15 +21,12 @@ on_source = ['neocomplete.vim']
 repo = 'Shougo/vimfiler'
 
 # TypeScript
-[[plugins]]
-repo = 'Quramy/tsuquyomi'
-on_ft = ['typescript']
-[[plugins]]
-repo = 'jason0x43/vim-js-indent'
-on_ft = ['typescript']
-[[plugins]]
-repo = 'Chiel92/vim-autoformat'
-on_ft = ['typescript']
+# [[plugins]]
+# repo = 'jason0x43/vim-js-indent'
+# on_ft = ['typescript']
+# [[plugins]]
+# repo = 'Chiel92/vim-autoformat'
+# on_ft = ['typescript']
 
 # シンタックスハイライト
 [[plugins]]
@@ -38,6 +35,9 @@ on_ft = ['log']
 [[plugins]]
 repo = 'keith/tmux.vim'                  # tmux
 on_ft = ['tmux']
+[[plugins]]
+repo = 'nginx.vim'
+on_ft = ['nginx']
 [[plugins]]
 repo = 'vim-ruby/vim-ruby'
 on_ft = ['ruby']
@@ -54,8 +54,8 @@ on_ft = ['typescript']
 repo = 'othree/yajs.vim'                 # JavaScript ES6
 on_ft = ['javascript']
 [[plugins]]
-repo = 'digitaltoad/vim-jade'            # Jade
-on_ft = ['jade']
+repo = 'digitaltoad/vim-pug'
+on_ft = ['pug']
 [[plugins]]
 repo = 'slim-template/vim-slim'          # Slim
 on_ft = ['slim']
@@ -70,10 +70,10 @@ repo = 'groenewege/vim-less'
 on_ft = ['less']
 [[plugins]]
 repo = 'kchmck/vim-coffee-script'        # CoffeeScript
-on_ft = ['coffeescript']
-[[plugins]]
-repo = 'cespare/vim-go-templates'        # Golang Default Template
-on_ft = ['template']
+on_ft = ['coffee']
+# [[plugins]]
+# repo = 'cespare/vim-go-templates'        # Golang Default Template
+# on_ft = ['template']
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'         # Dockerfile
 on_ft = ['dockerfile']
