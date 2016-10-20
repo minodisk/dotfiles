@@ -55,6 +55,8 @@ repo = 'thinca/vim-textobj-between'
 repo = 'rhysd/vim-textobj-anyblock'
 [[plugins]]
 repo = 'lucapette/vim-textobj-underscore'
+[[plugins]]
+repo = 'tpope/vim-abolish'
 
 # オペレータ
 [[plugins]]
@@ -74,12 +76,16 @@ repo = 'Chiel92/vim-autoformat'
 [[plugins]]
 repo = 'morhetz/gruvbox'
 [[plugins]]
-# repo = 'nathanaelkane/vim-indent-guides' # インデント
-repo = 'Yggdroot/indentLine'
+repo = 'nathanaelkane/vim-indent-guides' # インデント
+# repo = 'Yggdroot/indentLine'
 
 # ステータスライン
+# [[plugins]]
+# repo = 'bling/vim-airline'
 [[plugins]]
-repo = 'bling/vim-airline'
+repo = 'itchyny/lightline.vim'
+[[plugins]]
+repo = 'shinchu/lightline-gruvbox.vim'
 
 # Git
 [[plugins]]

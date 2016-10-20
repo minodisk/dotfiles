@@ -112,17 +112,13 @@ let g:PreserveNoEOL = 1
 
 " ファイルタイプ {{{
 autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
-autocmd BufNewFile,BufRead *.es6 set filetype=javascript
-autocmd BufNewFile,BufRead *.yaml.* set filetype=yaml
-autocmd BufNewFile,BufRead *.md.* set filetype=markdown
-autocmd BufNewFile,BufRead nginx/*.conf set filetype=nginx
-autocmd BufNewFile,BufRead apache/*.conf set filetype=apache
-" function MultiExtensionFiletype()
-"     let ft_default=&filetype
-"     let ft_prefix=substitute(matchstr(expand('%'),'\..\+\.'),'\.','','g')
-"     sil exe "set filetype=" . ft_prefix  . "." . ft_default
-" endfunction
-" autocmd BufNewFile,BufRead,BufReadPre *.*.* call MultiExtensionFiletype()
+autocmd BufNewFile,BufRead,BufReadPre *.es6 set filetype=javascript
+autocmd BufNewFile,BufRead,BufReadPre *.yaml.* set filetype=yaml
+autocmd BufNewFile,BufRead,BufReadPre *.md.* set filetype=markdown
+autocmd BufNewFile,BufRead,BufReadPre nginx/*.conf set filetype=nginx
+autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
+autocmd BufNewFile,BufRead,BufReadPre *.tmpl set filetype=gotexttmpl
+
 " }}}
 
 " autoformat {{{
@@ -153,13 +149,13 @@ augroup END
 " カラースキーム {{{
 set t_Co=256
 set background=dark
-autocmd ColorScheme * highlight Normal ctermbg=none
-autocmd ColorScheme * highlight LineNr ctermbg=none
-autocmd ColorScheme * highlight VertSplit ctermbg=none
-autocmd ColorScheme * highlight CursorLine ctermbg=none
-autocmd ColorScheme * highlight CursorLineNr ctermbg=none
-autocmd ColorScheme * highlight IndentGuidesOdd ctermbg=none
-autocmd ColorScheme * highlight IndentGuidesEven ctermbg=none
+" autocmd ColorScheme * highlight Normal ctermbg=none
+" autocmd ColorScheme * highlight LineNr ctermbg=236 guibg=#32302f
+" autocmd ColorScheme * highlight VertSplit ctermbg=none
+" autocmd ColorScheme * highlight CursorLine ctermbg=none
+" autocmd ColorScheme * highlight CursorLineNr ctermbg=none
+" autocmd ColorScheme * highlight IndentGuidesOdd ctermbg=none
+" autocmd ColorScheme * highlight IndentGuidesEven ctermbg=none
 colorscheme gruvbox
 " }}}
 
@@ -177,8 +173,8 @@ autocmd QuickFixCmdPost *grep* cwindow
 
 " 行末スペースの削除 {{{
 autocmd BufWritePre * :%s/\s\+$//e
+" }}}
 
-" 最後のカーソル位置を復元する {{{
 " 最後のカーソル位置を復元する {{{
 function! ResCur()
   if line("'\"") <= line("$")
@@ -304,6 +300,9 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 " キーマップ
 nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=40 -no-quit -toggle<CR>
+autocmd FileType vimfiler nunmap <buffer> <C-l>
+" autocmd FileType vimfiler nmap <C-l> <C-w>l
+autocmd FileType vimfiler nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
 " }}}
 
 
@@ -411,9 +410,9 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 
 " indent-guides {{{
 " 自動起動
-" let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 1
 " }}}
-let g:indentLine_color_term = 243
+" let g:indentLine_color_term = 243
 " let g:indentLine_char = '┆'
 
 " syntastic {{{
@@ -431,6 +430,7 @@ let g:syntastic_mode_map={
 let g:syntastic_javascript_checkers = ['standard']
 let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
 let g:syntastic_css_checkers = ['stylelint']
+let g:syntastic_go_checkers = ['go']
 " let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
 autocmd bufwritepost *.js silent !standard-format -w %
 set autoread
@@ -502,8 +502,68 @@ autocmd FileType go nmap ,v <Plug>(go-coverage)
 " autocmd FileType go :match goErr /\<err\>/
 " }}}
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts=2
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline_powerline_fonts=2
+let g:lightline = {
+  \ 'colorscheme': 'gruvbox',
+  \ 'mode_map': { 'c': 'NORMAL' },
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+  \ },
+  \ 'component_function': {
+  \   'modified': 'LightLineModified',
+  \   'readonly': 'LightLineReadonly',
+  \   'fugitive': 'LightLineFugitive',
+  \   'filename': 'LightLineFilename',
+  \   'fileformat': 'LightLineFileformat',
+  \   'filetype': 'LightLineFiletype',
+  \   'fileencoding': 'LightLineFileencoding',
+  \   'mode': 'LightLineMode',
+  \ },
+  \ 'separator': { 'left': '', 'right': '' },
+  \ 'subseparator': { 'left': '|', 'right': '|' }
+  \ }
+
+function! LightLineModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightLineReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔒' : ''
+endfunction
+
+function! LightLineFilename()
+  return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \  &ft == 'unite' ? unite#get_status_string() :
+    \  &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+    \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+endfunction
+
+function! LightLineFugitive()
+  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+    let branch = fugitive#head()
+    return branch !=# '' ? '⎇  '.branch : ''
+  endif
+  return ''
+endfunction
+
+function! LightLineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightLineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightLineFileencoding()
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+
+function! LightLineMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
 
 call system('type ibus')
 if v:shell_error == 0
