@@ -1,0 +1,111 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_source = ['denite.vim']
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['denite.vim']
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/vimfiler'
+on_source = ['vimproc.vim', 'unite.vim']
+
+# プラグインの為のライブラリ
+# [[plugins]]
+# repo = 'mattn/webapi-vim'    # HTTPライブラリ
+# [[plugins]]
+# repo = 'tpope/vim-repeat'    # プラグイン機能の繰り返し
+
+# 補完
+[[plugins]]
+repo = 'cohama/lexima.vim'   # 対応する括弧やクオートを補完
+[[plugins]]
+repo = 'kana/vim-smartchr'   # 入力からの補完
+[[plugins]]
+repo = 'tyru/caw.vim'        # コメントアウト
+
+# 移動
+[[plugins]]
+repo = 'Lokaltog/vim-easymotion' # EasyMotion
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+
+# テキストオブジェクト
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+[[plugins]]
+repo = 'kana/vim-textobj-fold'
+[[plugins]]
+repo = 'kana/vim-textobj-indent'
+[[plugins]]
+repo = 'kana/vim-textobj-lastpat'
+[[plugins]]
+repo = 'osyo-manga/vim-textobj-multiblock'
+[[plugins]]
+repo = 'osyo-manga/vim-textobj-from_regexp'
+[[plugins]]
+repo = 'thinca/vim-textobj-between'
+[[plugins]]
+repo = 'rhysd/vim-textobj-anyblock'
+[[plugins]]
+repo = 'lucapette/vim-textobj-underscore'
+[[plugins]]
+repo = 'tpope/vim-abolish'
+
+# オペレータ
+[[plugins]]
+repo = 'kana/vim-operator-user'
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+
+# 整形
+[[plugins]]
+repo = 'Align'                         # 特定文字ベースの文書整形
+[[plugins]]
+repo = 'PreserveNoEOL'                 # EOL設定
+[[plugins]]
+repo = 'Chiel92/vim-autoformat'
+
+# カラーリング
+[[plugins]]
+repo = 'morhetz/gruvbox'
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides' # インデント
+# repo = 'Yggdroot/indentLine'
+
+# ステータスライン
+# [[plugins]]
+# repo = 'bling/vim-airline'
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+[[plugins]]
+repo = 'shinchu/lightline-gruvbox.vim'
+
+# Git
+[[plugins]]
+repo = 'tpope/vim-git'
+[[plugins]]
+repo = 'tpope/vim-fugitive'  # Git
+
+# コードチェック
+# [[plugins]]
+# repo = 'neomake/neomake'
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+# 外部ツール起動
+[[plugins]]
+repo = 'edkolev/tmuxline.vim'
