@@ -1,0 +1,4 @@
+.config/nvim
+!.config/nvim/init.vim
+!.config/nvim/dein/dein.toml
+!.config/nvim/dein/dein_lazy.toml

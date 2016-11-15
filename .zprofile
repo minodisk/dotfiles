@@ -2,15 +2,23 @@
 export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
 
 # go
-export GOPATH="$HOME/workspace/go"
+export GOPATH="$HOME/Workspace/go"
 export PATH="$GOPATH/bin:$PATH"
 
 # ndenv
 export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
 
+# rbenv
+eval "$(rbenv init -)"
+
 # app engine
 export PATH="$HOME/go_appengine:$PATH"
+
+# vim
+alias rvim='vim'
+alias vim='nvim'
+alias vi='nvim'
 
 # docker
 alias docker-rm="docker rm \`docker ps -a -q\`"
