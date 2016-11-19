@@ -98,7 +98,8 @@ hi SpellBad cterm=underline
 " }}}
 
 " クリップボード {{{
-set clipboard+=unnamed
+" set clipboard+=unnamed
+set clipboard+=unnamedplus
 " }}}
 
 " Diff {{{
@@ -234,7 +235,7 @@ endif
 """ キーマップ {{{
 
 " インデントを下げる {{{
-inoremap <S-TAB>  <ESC><<i
+inoremap <S-TAB> <ESC><<i
 " }}}
 
 " 誤操作すると困るキーを無効化 {{{
@@ -295,45 +296,6 @@ let g:neomru#file_mru_limit=10000
 let g:neomru#directory_mru_limit=10000
 " " }}}
 
-" " unite {{{
-" " 入力モードで開始する
-" let g:unite_enable_start_insert=1
-" " 大文字小文字を区別しない
-" let g:unite_enable_smart_case=1
-" " yank履歴
-" let g:unite_source_history_yank_enable=1
-" " キーマップ
-" nnoremap [unite]  <Nop>
-" nmap     ,u       [unite]
-" " ファイル処理
-" nnoremap <silent> [unite]f :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file file/new<CR>
-" " grep検索
-" nnoremap <silent> [unite]g :<C-u>Unite grep -buffer-name=search-buffer<CR>
-" " yank履歴
-" nnoremap <silent> [unite]y :<C-u>Unite history/yank<CR>
-" " アウトライン
-" nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-" " 再表示
-" nnoremap <silent> [unite]r :<C-u>UniteResume<CR>
-" " grep検索結果再表示
-" nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
-" " ウィンドウを分割して開く
-" autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" autocmd FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" " ウィンドウを縦に分割して開く
-" autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" autocmd FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" " ESCキーを2回押すと終了する
-" autocmd FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
-" autocmd FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
-" " agでgrep検索
-" if executable('ag')
-"   let g:unite_source_grep_command='ag'
-"   let g:unite_source_grep_default_opts='--nogroup --nocolor --column'
-"   let g:unite_source_grep_recursive_opt=''
-" endif
-" " }}}
-
 " vimデフォルトのエクスプローラをvimfilerで置き換える
 let g:vimfiler_as_default_explorer = 1
 " セーフモードを無効にした状態で起動する
@@ -344,94 +306,6 @@ autocmd FileType vimfiler nunmap <buffer> <C-l>
 " autocmd FileType vimfiler nmap <C-l> <C-w>l
 autocmd FileType vimfiler nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
 " }}}
-
-
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-" let g:acp_enableAtStartup = 0
-" " Use neocomplete.
-" let g:neocomplete#enable_at_startup = 1
-" " Use smartcase.
-" let g:neocomplete#enable_smart_case = 1
-" " Set minimum syntax keyword length.
-" let g:neocomplete#sources#syntax#min_keyword_length = 3
-" let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-" " Define dictionary.
-" let g:neocomplete#sources#dictionary#dictionaries = {
-"       \ 'default' : '',
-"       \ 'vimshell' : $HOME.'/.vimshell_hist',
-"       \ 'scheme' : $HOME.'/.gosh_completions'
-"       \ }
-" " Define keyword.
-" if !exists('g:neocomplete#keyword_patterns')
-"   let g:neocomplete#keyword_patterns = {}
-" endif
-" let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-" " Plugin key-mappings.
-" inoremap <expr><C-g> neocomplete#undo_completion()
-" inoremap <expr><C-l> neocomplete#complete_common_string()
-" " Recommended key-mappings.
-" " <CR>: close popup and save indent.
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function()
-"   return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-"   " For no inserting <CR> key.
-"   "return pumvisible() ? "\<C-y>" : "\<CR>"
-" endfunction
-" " <TAB>: completion.
-" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" " <C-h>, <BS>: close popup and delete backword char.
-" inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-" " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplete#close_popup()."\<C-h>"
-" " Close popup by <Space>.
-" "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-" " AutoComplPop like behavior.
-" "let g:neocomplete#enable_auto_select = 1
-" " Shell like behavior(not recommended).
-" " set completeopt+=longest
-" "let g:neocomplete#enable_auto_select = 1
-" "let g:neocomplete#disable_auto_complete = 1
-" "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" " Enable omni completion.
-" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-" if !exists('g:neocomplete#sources#omni#input_patterns')
-"   let g:neocomplete#sources#omni#input_patterns = {}
-" endif
-" "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-" "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-" "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" " let g:neocomplete#sources#omni#input_patterns.go = '\h\w\.\w*'
-" " let g:neocomplete#omni_patterns.go = '\h\w*\.\?'
-" " For perlomni.vim setting.
-" " https://github.com/c9s/perlomni.vim
-" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-" " neosnippet {{{
-" " Plugin key-mappings.
-" imap <C-k> <Plug>(neosnippet_expand_or_jump)
-" smap <C-k> <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k> <Plug>(neosnippet_expand_target)
-" " SuperTab like snippets behavior.
-" " imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<TAB>" : "\<Plug>(neosnippet_expand_or_jump)"
-" " smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>" "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" " For conceal markers.
-" if has('conceal')
-"   set conceallevel=2 concealcursor=niv
-" endif
-" " Tell Neosnippet about the other snippets
-" " let g:neosnippet#snippets_directory = '~/.vimsnippets'
-" " }}}
 
 " vim-operator-surround {{{
 nmap <silent>sa <Plug>(operator-surround-append)
@@ -452,8 +326,6 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " 自動起動
 let g:indent_guides_enable_on_vim_startup = 1
 " }}}
-" let g:indentLine_color_term = 243
-" let g:indentLine_char = '┆'
 
 " syntastic {{{
 " set statusline+=%#warningmsg#
@@ -487,21 +359,6 @@ let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
 autocmd bufwritepost *.js silent !standard-format -w %
 set autoread
 " }}}
-
-""" neomake
-" autocmd BufRead,BufNewFile,BufWritePost * Neomake
-" let g:neomake_open_list = 1
-" let g:neomake_typescript_tsc_maker = {
-"         \ 'args': [
-"             \ '--project', getcwd(), '--noEmit'
-"         \ ],
-"         \ 'append_file': 0,
-"         \ 'errorformat':
-"             \ '%E%f %#(%l\,%c): error %m,' .
-"             \ '%E%f %#(%l\,%c): %m,' .
-"             \ '%Eerror %m,' .
-"             \ '%C%\s%\+%m'
-"         \ }
 
 " vim-flow {{{
 let g:flow#autoclose = 1
@@ -545,20 +402,16 @@ omap <Space>/ <Plug>(easymotion-tn)
 " }}}
 
 " vim-go
-autocmd FileType go nmap ,n <Plug>(GoRename)
-autocmd FileType go nmap ,d <Plug>(GoDef)
+autocmd FileType go nmap ,r <Plug>(go-run)
+autocmd FileType go nmap ,t <Plug>(go-test)
+autocmd FileType go nmap ,n <Plug>(go-rename)
+autocmd FileType go nmap ,d <Plug>(go-def)
 
 " tsuquyomi
 autocmd FileType typescript nmap ,n <Plug>(TsuquyomiRenameSymbolC)
 autocmd FileType typescript nmap ,d <Plug>(TsuquyomiDefinition)
 autocmd FileType typescript nmap ,b <Plug>(TsuquyomiGoBack)
 autocmd FileType typescript nmap ,r <Plug>(TsuquyomiReference)
-" autocmd FileType typescript setlocal completeopt+=menu,preview
-" autocmd FileType typescript setlocal completeopt+=longest
-" if !exists('g:neocomplete#force_omni_input_patterns')
-"   let g:neocomplete#force_omni_input_patterns = {}
-" endif
-" let g:neocomplete#force_omni_input_patterns.typescript = '[^.[:digit:] *\t]\.\w*' " '[^. *\t]\.\w*\|\h\w*::'
 let g:tsuquyomi_disable_quickfix = 1
 
 " vim-go
@@ -573,8 +426,6 @@ autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
 autocmd FileType go nmap ,t <Plug>(go-test)
 autocmd FileType go nmap ,v <Plug>(go-coverage)
-" autocmd FileType go :highlight goErr gui=underline guifg=#8ec07c "83a598
-" autocmd FileType go :match goErr /\<err\>/
 " }}}
 
 let g:lightline = {
@@ -592,10 +443,10 @@ let g:lightline = {
   \   'filetype': 'LightLineFiletype',
   \   'fileencoding': 'LightLineFileencoding',
   \   'mode': 'LightLineMode',
-  \ },
-  \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-  \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
   \ }
+  \ }
+  " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+  " \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 
 function! LightLineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -604,15 +455,6 @@ endfunction
 function! LightLineReadonly()
   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔒' : ''
 endfunction
-
-" function! LightLineFilename()
-"   return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-"     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-"     \  &ft == 'unite' ? unite#get_status_string() :
-"     \  &ft == 'vimshell' ? vimshell#get_status_string() :
-"     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-"     \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
-" endfunction
 
 function! LightLineFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
@@ -638,7 +480,7 @@ function! LightLineMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-call system('type ibus')
-if v:shell_error == 0
-  inoremap <silent> <Esc> <Esc>:<C-u>call system('ibus engine "xkb:us::eng"')<CR>
-endif
+function! InactivateInputMethod()
+  call system('fcitx-remote -c')
+endfunction
+autocmd InsertLeave * call InactivateInputMethod()

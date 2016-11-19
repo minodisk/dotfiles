@@ -2,6 +2,7 @@
 export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
 
 # go
+export PATH="/usr/local/go/bin:$PATH"
 export GOPATH="$HOME/Workspace/go"
 export PATH="$GOPATH/bin:$PATH"
 
@@ -10,6 +11,7 @@ export PATH="$HOME/.ndenv/bin:$PATH"
 eval "$(ndenv init -)"
 
 # rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # app engine
