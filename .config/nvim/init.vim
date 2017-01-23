@@ -20,6 +20,7 @@ if dein#load_state(s:dein_dir)
   let s:lazy_toml = s:vim_dir . '/dein_lazy.toml'
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#add('minodisk/nvim-finder')
   call dein#end()
   call dein#save_state()
 endif
@@ -31,22 +32,27 @@ syntax enable
 filetype on
 filetype plugin indent on
 
-if has('mac') && has('nvim')
-  " Hack to get C-h working in NeoVim
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
+if has('nvim')
   nmap <BS> <C-W>h
 endif
 
 " ファイル {{{
 set hidden
 
-silent !mkdir ~/.vim > /dev/null 2>&1
-silent !mkdir ~/.vim/swap > /dev/null 2>&1
-silent !mkdir ~/.vim/backup > /dev/null 2>&1
-silent !mkdir ~/.vim/undo > /dev/null 2>&1
+let s:swap_dir   = s:vim_dir . '/swap'
+let s:backup_dir = s:vim_dir . '/backup'
+let s:undo_dir   = s:vim_dir . '/undo'
+execute 'silent !mkdir ' . s:swap_dir   . ' > /dev/null 2>&1'
+execute 'silent !mkdir ' . s:backup_dir . ' > /dev/null 2>&1'
+execute 'silent !mkdir ' . s:undo_dir   . ' > /dev/null 2>&1'
+execute 'set directory=' . s:swap_dir
+execute 'set backupdir=' . s:backup_dir
+execute 'set undodir=' . s:undo_dir
 
-set directory=~/.vim/swap
-set backupdir=~/.vim/backup
-set undodir=~/.vim/undo
 set undofile
 " set nofixeol
 set autoread
@@ -123,7 +129,6 @@ autocmd BufNewFile,BufRead,BufReadPre *.md.* set filetype=markdown
 autocmd BufNewFile,BufRead,BufReadPre nginx/*.conf set filetype=nginx
 autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
 autocmd BufNewFile,BufRead,BufReadPre *.tmpl set filetype=gotexttmpl
-
 " }}}
 
 " autodate {{{
@@ -278,14 +283,17 @@ imap <C-Tab> <C-x><C-o>
 """ denite.nvim
 nmap ,, [denite]
 nnoremap <silent> [denite]f :<C-u>Denite file_rec<CR>
-nnoremap <silent> [denite]g :<C-u>Denite grep<CR>
+nnoremap <silent> [denite]g :<C-u>Denite -auto_preview grep<CR>
 nnoremap <silent> [denite]l :<C-u>Denite line<CR>
 nnoremap <silent> [denite]m :<C-u>Denite file_mru<CR>
 nnoremap <silent> [denite]y :<C-u>Denite neoyank<CR>
 
 """ deoplete.nvim
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
 " let g:deoplete#sources#tss#javascript_support = 1
+autocmd Filetype typescript :TSStart
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
@@ -296,16 +304,19 @@ let g:neomru#file_mru_limit=10000
 let g:neomru#directory_mru_limit=10000
 " " }}}
 
-" vimデフォルトのエクスプローラをvimfilerで置き換える
-let g:vimfiler_as_default_explorer = 1
-" セーフモードを無効にした状態で起動する
-let g:vimfiler_safe_mode_by_default = 0
-" キーマップ
-nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=40 -no-quit -toggle<CR>
-autocmd FileType vimfiler nunmap <buffer> <C-l>
+" " vimデフォルトのエクスプローラをvimfilerで置き換える
+" " let g:vimfiler_as_default_explorer = 1
+" " セーフモードを無効にした状態で起動する
+" let g:vimfiler_safe_mode_by_default = 0
+" " キーマップ
+" nnoremap <silent> ,f :<C-u>VimFilerBufferDir -split -simple -winwidth=30 -no-quit -toggle<CR>
+" autocmd FileType vimfiler nunmap <buffer> <C-l>
 " autocmd FileType vimfiler nmap <C-l> <C-w>l
-autocmd FileType vimfiler nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
-" }}}
+" " autocmd FileType vimfiler nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
+
+" nvim-finder
+let g:finder_indent=' '
+nnoremap <silent> ,f :<C-u>Finder<CR>
 
 " vim-operator-surround {{{
 nmap <silent>sa <Plug>(operator-surround-append)
@@ -373,39 +384,33 @@ vmap ,/ <Plug>(caw:hatpos:toggle)
 inoremap <expr> , smartchr#loop(', ', ',')
 " }}}
 
-" EasyMotion {{{
-" デフォルトのキーマップを設定しない
-let g:EasyMotion_do_mapping = 0
-" キーワード検索で小文字で入力しても大文字にマッチする
-let g:EasyMotion_smartcase = 1
-" JKMotion 時に同カラムで移動する
-let g:EasyMotion_startofline = 0
-" ジャンプ先を大文字で表示し、小文字の入力でもジャンプする
-let g:EasyMotion_keys = 'JKHFLDYSUAIROEPWBQNCMXTZGV'
-let g:EasyMotion_use_upper = 1
-" Enter/Space 入力で最初のマッチにジャンプ
-let g:EasyMotion_enter_jump_first = 1
-let g:EasyMotion_space_jump_first = 1
-" キーマップ
-" 2-key Find Motion
-map <Space><Space> <Plug>(easymotion-s2)
-" Line Motion
-map <Space>j <Plug>(easymotion-bd-jk)
-map <Space>k <Plug>(easymotion-bd-jk)
-" map l <Plug>(easymotion-bd-jk)
-" Search Motion
-" set nohlsearch
-map  <Space>/ <Plug>(easymotion-sn)
-omap <Space>/ <Plug>(easymotion-tn)
-" map  n <Plug>(easymotion-next)
-" map  N <Plug>(easymotion-prev)
-" }}}
-
-" vim-go
-autocmd FileType go nmap ,r <Plug>(go-run)
-autocmd FileType go nmap ,t <Plug>(go-test)
-autocmd FileType go nmap ,n <Plug>(go-rename)
-autocmd FileType go nmap ,d <Plug>(go-def)
+" " EasyMotion {{{
+" " デフォルトのキーマップを設定しない
+" let g:EasyMotion_do_mapping = 0
+" " キーワード検索で小文字で入力しても大文字にマッチする
+" let g:EasyMotion_smartcase = 1
+" " JKMotion 時に同カラムで移動する
+" let g:EasyMotion_startofline = 0
+" " ジャンプ先を大文字で表示し、小文字の入力でもジャンプする
+" let g:EasyMotion_keys = 'JKHFLDYSUAIROEPWBQNCMXTZGV'
+" let g:EasyMotion_use_upper = 1
+" " Enter/Space 入力で最初のマッチにジャンプ
+" let g:EasyMotion_enter_jump_first = 1
+" let g:EasyMotion_space_jump_first = 1
+" " キーマップ
+" " 2-key Find Motion
+" map <Space><Space> <Plug>(easymotion-s2)
+" " Line Motion
+" map <Space>j <Plug>(easymotion-bd-jk)
+" map <Space>k <Plug>(easymotion-bd-jk)
+" " map l <Plug>(easymotion-bd-jk)
+" " Search Motion
+" " set nohlsearch
+" map  <Space>/ <Plug>(easymotion-sn)
+" omap <Space>/ <Plug>(easymotion-tn)
+" " map  n <Plug>(easymotion-next)
+" " map  N <Plug>(easymotion-prev)
+" " }}}
 
 " tsuquyomi
 autocmd FileType typescript nmap ,n <Plug>(TsuquyomiRenameSymbolC)
@@ -422,10 +427,13 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
 " let g:go_metalinter_command = "gometalinter --linter='vet:go tool vet -composite=false -printfuncs=Infof,Debugf,Warningf,Errorf {pathes}:PATH:LINE:MESSAGE'"
-autocmd FileType go nmap ,r <Plug>(go-run)
 autocmd FileType go nmap ,b <Plug>(go-build)
-autocmd FileType go nmap ,t <Plug>(go-test)
 autocmd FileType go nmap ,v <Plug>(go-coverage)
+autocmd FileType go nmap ,d <Plug>(go-def)
+autocmd FileType go nmap ,n <Plug>(go-rename)
+autocmd FileType go nmap ,r <Plug>(go-run)
+autocmd FileType go nmap ,t <Plug>(go-test)
+
 " }}}
 
 let g:lightline = {

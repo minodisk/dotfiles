@@ -16,16 +16,16 @@ repo = 'Shougo/deoplete.nvim'
 repo = 'Shougo/vimproc.vim'
 build = 'make'
 
-[[plugins]]
-repo = 'Shougo/unite.vim'
-
-[[plugins]]
-repo = 'Shougo/vimfiler'
-on_source = ['vimproc.vim', 'unite.vim']
-
-# プラグインの為のライブラリ
 # [[plugins]]
-# repo = 'mattn/webapi-vim'    # HTTPライブラリ
+# repo = 'Shougo/unite.vim'
+
+# [[plugins]]
+# repo = 'Shougo/vimfiler'
+# on_source = ['vimproc.vim', 'unite.vim']
+
+[[plugin]]
+repo = 'minodisk/nvim-finder'
+
 # [[plugins]]
 # repo = 'tpope/vim-repeat'    # プラグイン機能の繰り返し
 
@@ -84,11 +84,8 @@ repo = 'Chiel92/vim-autoformat'
 repo = 'morhetz/gruvbox'
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides' # インデント
-# repo = 'Yggdroot/indentLine'
 
 # ステータスライン
-# [[plugins]]
-# repo = 'bling/vim-airline'
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 [[plugins]]

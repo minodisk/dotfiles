@@ -17,10 +17,16 @@
 # repo = 'Chiel92/vim-autoformat'
 # on_ft = ['typescript']
 
-# TypeScript
+# deoplete
 [[plugins]]
 repo = 'mhartington/deoplete-typescript'
 on_ft = ['typescript']
+# [[plugins]]
+# repo = 'zchee/deoplete-go'
+# on_ft = ['go']
+# build = 'make'
+
+# TypeScript
 [[plugins]]
 repo = 'Quramy/tsuquyomi'
 on_ft = ['typescript']
@@ -88,7 +94,3 @@ on_ft = ['toml']
 [[plugins]]
 repo = 'fatih/vim-go'
 on_ft = ['go', 'gohtmltmpl', 'gotexttmpl']
-[[plugins]]
-repo = 'zchee/deoplete-go'
-on_ft = ['go']
-build = 'make'
