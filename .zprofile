@@ -1,5 +1,6 @@
 # git
 export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
+export GIT_TERMINAL_PROMPT=1
 
 # go
 export PATH="/usr/local/go/bin:$PATH"
@@ -18,7 +19,7 @@ eval "$(rbenv init -)"
 export PATH="$HOME/go_appengine:$PATH"
 
 # vim
-alias rvim='vim'
+alias ovim='vim'
 alias vim='nvim'
 alias vi='nvim'
 
@@ -33,3 +34,8 @@ alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
 # tmux
 # alias tmux="tmux attach || tmux new-session \; source-file ~/.tmux.session"
 # alias exit="tmux detach"
+
+# ranger
+alias f='ranger'
+
+alias bfg='java -jar ~/jar/bfg-1.12.8.jar'

@@ -26,17 +26,32 @@ bindkey '^[[B' history-substring-search-down
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX=""
-ZSH_THEME_GIT_PROMPT_SEPARATOR=" "
+ZSH_THEME_GIT_PROMPT_SEPARATOR=""
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[cyan]%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[red]%}%{● %G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg_bold[red]%}%{✖ %G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg_bold[blue]%}%{✚ %G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND=" %{$fg_bold[white]%}%{↓%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD=" %{$fg_bold[white]%}%{↑%G%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED=" %{$fg_bold[white]%}%{…%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔ %G%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[red]%}%{o%G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg_bold[red]%}%{x%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg_bold[blue]%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_bold[white]%}%{↓%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[white]%}%{↑%G%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[white]%}%{…%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
 # PROMPT='%.%{$fg_bold[red]%}❯%{$fg_bold[yellow]%}❯%{$fg_bold[green]%}❯${reset_color} '
-PROMPT='%. ❯ '
-RPROMPT='$(git_super_status)'
+PROMPT='%. $(git_super_status) $ '
+# RPROMPT=''
 
 source ~/.zprofile
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/usr/local/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/usr/local/google-cloud-sdk/completion.zsh.inc'
+
+# peco
+function peco-history-selection() {
+  BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+  CURSOR=$#BUFFER
+  zle reset-prompt
+}
+zle -N peco-history-selection
+bindkey '^R' peco-history-selection

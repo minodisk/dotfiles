@@ -1,6 +1,6 @@
+# Darkness wares
 [[plugins]]
 repo = 'Shougo/dein.vim'
-
 [[plugins]]
 repo = 'Shougo/denite.nvim'
 [[plugins]]
@@ -11,39 +11,25 @@ repo = 'Shougo/neomru.vim'
 on_source = ['denite.vim']
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
-
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
 build = 'make'
 
-# [[plugins]]
-# repo = 'Shougo/unite.vim'
-
-# [[plugins]]
-# repo = 'Shougo/vimfiler'
-# on_source = ['vimproc.vim', 'unite.vim']
-
-[[plugin]]
-repo = 'minodisk/nvim-finder'
-
-# [[plugins]]
-# repo = 'tpope/vim-repeat'    # プラグイン機能の繰り返し
-
-# 補完
+# Completion in insert mode
 [[plugins]]
-repo = 'cohama/lexima.vim'   # 対応する括弧やクオートを補完
+repo = 'cohama/lexima.vim'
 [[plugins]]
-repo = 'kana/vim-smartchr'   # 入力からの補完
+repo = 'kana/vim-smartchr'
 [[plugins]]
-repo = 'tyru/caw.vim'        # コメントアウト
+repo = 'tyru/caw.vim'
 
-# 移動
+# Jumping cursor
 [[plugins]]
-repo = 'Lokaltog/vim-easymotion' # EasyMotion
+repo = 'Lokaltog/vim-easymotion'
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
 
-# テキストオブジェクト
+# Text object
 [[plugins]]
 repo = 'kana/vim-textobj-user'
 [[plugins]]
@@ -65,44 +51,46 @@ repo = 'lucapette/vim-textobj-underscore'
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
-# オペレータ
+# Operator
 [[plugins]]
 repo = 'kana/vim-operator-user'
 [[plugins]]
 repo = 'rhysd/vim-operator-surround'
 
-# 整形
+# Alignment
 [[plugins]]
-repo = 'Align'                         # 特定文字ベースの文書整形
-[[plugins]]
-repo = 'PreserveNoEOL'                 # EOL設定
+repo = 'Align'
 [[plugins]]
 repo = 'Chiel92/vim-autoformat'
+[[plugins]]
+repo = 'PreserveNoEOL'
 
-# カラーリング
+# Coloring
 [[plugins]]
 repo = 'morhetz/gruvbox'
 [[plugins]]
-repo = 'nathanaelkane/vim-indent-guides' # インデント
+repo = 'nathanaelkane/vim-indent-guides'
 
-# ステータスライン
+# Status line
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 [[plugins]]
 repo = 'shinchu/lightline-gruvbox.vim'
 
+# Window
+[[plugins]]
+repo = 'kana/vim-submode'
+
 # Git
 [[plugins]]
 repo = 'tpope/vim-git'
 [[plugins]]
-repo = 'tpope/vim-fugitive'  # Git
+repo = 'tpope/vim-fugitive'
 
-# コードチェック
-# [[plugins]]
-# repo = 'neomake/neomake'
+# Syntax checker
 [[plugins]]
 repo = 'scrooloose/syntastic'
 
-# 外部ツール起動
-[[plugins]]
-repo = 'edkolev/tmuxline.vim'
+# Status line exporter
+# [[plugins]]
+# repo = 'edkolev/tmuxline.vim'
