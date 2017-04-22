@@ -55,3 +55,6 @@ function peco-history-selection() {
 }
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
+
+# Clamshell
+gconftool-2 --type string --set /apps/gnome-power-manager/buttons/lid_ac "nothing"

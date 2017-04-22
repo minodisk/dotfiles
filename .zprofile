@@ -3,9 +3,8 @@ export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
 export GIT_TERMINAL_PROMPT=1
 
 # go
-export PATH="/usr/local/go/bin:$PATH"
-export GOPATH="$HOME/Workspace/go"
-export PATH="$GOPATH/bin:$PATH"
+export GOPATH="$HOME/go"
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 
 # ndenv
 export PATH="$HOME/.ndenv/bin:$PATH"
@@ -24,7 +23,10 @@ alias vim='nvim'
 alias vi='nvim'
 
 # docker
-alias docker-rm="docker rm \`docker ps -a -q\`"
+alias docker-compose-up="docker-compose stop && docker-compose rm -f && docker-compose build && docker-compose up"
+alias docker-ps="docker ps -a -q"
+alias docker-stop-all="docker stop \`docker-ps\`"
+alias docker-rm="docker rm \`docker-ps\`"
 alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
 # alias docker-start="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
 # alias docker-stop-all="docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)"
