@@ -9,12 +9,12 @@ Plug 'Shougo/dein.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-fold'
 Plug 'kana/vim-textobj-indent'
@@ -27,9 +27,9 @@ Plug 'lucapette/vim-textobj-underscore'
 Plug 'tpope/vim-abolish'
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-operator-surround'
-Plug 'Align'
+Plug 'vim-scripts/Align'
 Plug 'Chiel92/vim-autoformat'
-Plug 'PreserveNoEOL'
+Plug 'vim-scripts/PreserveNoEOL'
 Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'itchyny/lightline.vim'
@@ -37,22 +37,27 @@ Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'kana/vim-submode'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/syntastic'
+" Plug 'w0rp/ale'
+Plug 'neomake/neomake'
 Plug 'minodisk/nvim-finder', { 'do': ':FinderInstallBinary' }
-" Plug 'mhartington/deoplete-typescript', { 'for': ['typescript'] }
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
-Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
-Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
+" Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
+Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
+" Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
-Plug 'nginx.vim', { 'for': ['nginx'] }
+Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
-Plug 'keith/tmux.vim', { 'for': ['tmux'] }
-Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
+" Plug 'keith/tmux.vim', { 'for': ['tmux'] }
 Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
+Plug 'tmhedberg/matchit'
+Plug 'hail2u/vim-css3-syntax'
+" Plug 'fleischie/vim-styled-components', { 'for': ['javascript', 'typescript'] }
+Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
 call plug#end()
 
 let g:plug_timeout = 180
@@ -128,26 +133,31 @@ set keywordprg=:help
 set helplang=ja,en
 set noswapfile
 set background=dark
-set t_Co=256
 set completeopt=menuone
-set autoread
+set t_Co=256
 
 scriptencoding utf-8
 
 colorscheme gruvbox
-highlight clear SpellBad
-highlight SpellBad cterm=underline
 
-augroup scheme
+function! AttachScheme()
+  highlight clear SpellBad
+  highlight SpellBad                  cterm=underline
+  highlight Normal                    ctermbg=none
+  highlight SignColumn                ctermbg=none
+  highlight LineNr                    ctermbg=234
+  highlight CursorLineNr              ctermbg=234
+  highlight IndentGuidesOdd           ctermbg=236
+  highlight IndentGuidesEven          ctermbg=237
+  highlight CursorLine                ctermbg=238
+  highlight Cursor                    ctermbg=239
+  highlight ALEErrorSign              ctermbg=none ctermfg=167
+  highlight ALEWarningSign            ctermbg=none ctermfg=214
+endfunction
+
+augroup additional_colorscheme
   autocmd!
-  autocmd VimEnter,ColorScheme * highlight Normal           ctermbg=none
-  autocmd VimEnter,ColorScheme * highlight SignColumn       ctermbg=none
-  autocmd VimEnter,ColorScheme * highlight LineNr           ctermbg=234
-  autocmd VimEnter,Colorscheme * highlight CursorLineNr     ctermbg=234
-  autocmd VimEnter,Colorscheme * highlight IndentGuidesOdd  ctermbg=236
-  autocmd VimEnter,Colorscheme * highlight IndentGuidesEven ctermbg=237
-  autocmd VimEnter,Colorscheme * highlight CursorLine       ctermbg=238
-  autocmd VimEnter,Colorscheme * highlight Cursor           ctermbg=239
+  autocmd VimEnter,Colorscheme * call AttachScheme()
 augroup END
 
 augroup file_type
@@ -164,6 +174,7 @@ augroup END
 augroup indent_setting
   autocmd!
   autocmd FileType php setlocal noexpandtab
+  autocmd FileType html setlocal expandtab
   autocmd BufNewFile,BufRead *.d.ts setlocal tabstop=4 shiftwidth=4
   autocmd FileType python setlocal tabstop=2 shiftwidth=2
 augroup END
@@ -180,6 +191,10 @@ augroup delete_spaces
 augroup END
 
 " Cursor shape
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
 if has('nvim')
   nmap <BS> <C-W>h
 
@@ -203,6 +218,9 @@ else
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
+
+" Python3
+let g:python3_host_prog = '/usr/bin/python3'
 
 " PreserveNoEOL
 let g:PreserveNoEOL = 1
@@ -271,6 +289,9 @@ nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 " Reset highlight of searching result
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <C-x><C-o>
+" Jump cursor to next/prev location list
+nmap <silent> <C-n> :lne<CR>
+nmap <silent> <C-N> :lp<CR>
 
 """ denite.nvim
 nmap ,, [denite]
@@ -285,15 +306,22 @@ let g:neomru#directory_mru_limit=10000
 
 """ deoplete.nvim
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#input_patterns = {}
+let g:deoplete#input_patterns.typescript = '\w*'
 let g:deoplete#omni_patterns = {}
 let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
+let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+" let g:deoplete#omni_patterns.typescript = '[^. *\t]\.\w*'
+" let g:deoplete#omni_patterns.typescript = '\w\+'
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 " let g:deoplete#sources#tss#javascript_support = 1
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" augroup ts_server
-"   autocmd!
-"   autocmd Filetype typescript :TSStart
-" augroup END
+
+" vim-flow
+let g:flow#autoclose = 1
+let g:flow#enable = 0
 
 " nvim-finder
 nnoremap <silent> ,f :<C-u>Finder<CR>
@@ -316,43 +344,102 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
 
-" syntastic {{{
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_mode_map={
-    \ 'mode': 'active',
-  \ }
-    " \ 'passive_filetypes': ['go']
-let g:go_list_type = "quickfix"
+" format
+function! FormatStandard()
+  silent !standard --fix %
+  " edit!
+  " syntax on
+  " call AttachScheme()
+endfunction
+" augroup standard
+"   autocmd!
+"   autocmd BufWritePost *.js call FormatStandard()
+" augroup END
 
-highlight SyntasticErrorSign ctermfg=167
-let g:syntastic_error_symbol = "▶"
-highlight SyntasticStyleErrorSign ctermfg=214
-let g:syntastic_style_error_symbol = "▶"
-highlight SyntasticWarningSign ctermfg=88
-let g:syntastic_warning_symbol = "▷"
-highlight SyntasticStyleWarningSign ctermfg=136
-let g:syntastic_style_warning_symbol = "▷"
-
-let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
-let g:syntastic_css_checkers = ['stylelint']
-let g:syntastic_go_checkers = ['go']
-let g:syntastic_javascript_checkers = ['flow']
-let g:syntastic_javascript_checkers = ['standard']
-let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
-augroup standard
-  autocmd!
-  autocmd BufWritePost *.js silent !standard-format -w %
-augroup END
+" ale {{{
+" let g:ale_sign_error = '▶'
+" let g:ale_sign_warning = '▶'
+" let g:ale_sign_info = '？'
+" let g:ale_sign_style_error = '▷'
+" let g:ale_sign_style_warning = '▷'
+" let g:ale_echo_msg_format = '%linter% %severity%: %s'
+" let g:ale_javascript_standard_options = '--parser babel-eslint --plugin flowtype'
+" let g:ale_linters = {
+" \ 'css': ['stylelint'],
+" \ 'javascript': ['flow', 'standard'],
+" \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
+" \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
+" \}
+" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-N> <Plug>(ale_next_wrap)
+" augroup ale
+"   autocmd!
+"   autocmd User ALELint call lightline#update()
+" augroup END
+" function! ALEError()
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   return printf(
+"   \   '%d',
+"   \   all_errors
+"   \)
+" endfunction
+" function! ALEWarning()
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   let l:all_non_errors = l:counts.total - l:all_errors
+"   return printf(
+"   \   '%d',
+"   \   all_non_errors
+"   \)
+" endfunction
 " }}}
 
-" vim-flow
-let g:flow#autoclose = 1
+" {{{
+augroup neomake_hooks
+  autocmd!
+  autocmd BufWritePost * Neomake
+  autocmd User NeomakeJobFinished call lightline#update()
+augroup END
+
+function! NeomakeErrors()
+  let l:counts = neomake#statusline#LoclistCounts()
+  return printf(
+  \   '%d',
+  \   l:counts.E
+  \)
+endfunction
+function! NeomakeWarnings()
+  let l:counts = neomake#statusline#LoclistCounts()
+  return printf(
+  \   '%d',
+  \   l:counts.W
+  \)
+endfunction
+" }}}
+
+" syntastic {{{
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 1
+" let g:syntastic_mode_map={
+"     \ 'mode': 'active',
+"   \ }
+"     " \ 'passive_filetypes': ['go']
+" let g:go_list_type = "quickfix"
+"
+" let g:syntastic_error_symbol = "▶"
+" let g:syntastic_style_error_symbol = "▶"
+" let g:syntastic_warning_symbol = "▷"
+" let g:syntastic_style_warning_symbol = "▷"
+"
+" let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
+" let g:syntastic_css_checkers = ['stylelint']
+" let g:syntastic_go_checkers = ['go']
+" " let g:syntastic_javascript_checkers = ['flow']
+" let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
+" }}}
 
 " caw.vim
 nmap ,/ <Plug>(caw:hatpos:toggle)
@@ -389,14 +476,26 @@ inoremap <expr> , smartchr#loop(', ', ',')
 " " map  N <Plug>(easymotion-prev)
 
 " tsuquyomi
-augroup tsuquyomi
+" augroup tsuquyomi
+"   autocmd!
+"   autocmd FileType typescript nmap <buffer> ,n <Plug>(TsuquyomiRenameSymbolC)
+"   autocmd FileType typescript nmap <buffer> ,d <Plug>(TsuquyomiDefinition)
+"   autocmd FileType typescript nmap <buffer> ,b <Plug>(TsuquyomiGoBack)
+"   autocmd FileType typescript nmap <buffer> ,r <Plug>(TsuquyomiReference)
+"   autocmd Filetype typescript :TsuquyomiStartServer
+" augroup END
+" let g:tsuquyomi_disable_quickfix = 1
+" let g:tsuquyomi_save_onrename = 0
+
+" nvim-typescript {{{
+augroup typescript_shorthands
   autocmd!
-  autocmd FileType typescript nmap ,n :<Plug>(TsuquyomiRenameSymbolC)<CR>
-  autocmd FileType typescript nmap ,d :<Plug>(TsuquyomiDefinition)<CR>
-  autocmd FileType typescript nmap ,b :<Plug>(TsuquyomiGoBack)<CR>
-  autocmd FileType typescript nmap ,r :<Plug>(TsuquyomiReference)<CR>
+  autocmd FileType typescript nmap <buffer> ,d :TSDefPreview<CR>
+  autocmd FileType typescript nmap <buffer> ,n :TSRename<CR>
+  autocmd FileType typescript nmap <buffer> ,r :TSRefs<CR>
+  autocmd FileType typescript nmap <buffer> ,t :TSType<CR>
 augroup END
-let g:tsuquyomi_disable_quickfix = 1
+" }}}
 
 " vim-go
 let g:go_highlight_functions = 1
@@ -404,31 +503,31 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-let g:go_fmt_command = "gofmt"
-let g:go_fmt_options = "-s"
-function! GoImports()
-  let a:cursor_pos = getpos('.')
-  call system('goimports -w=true ' . expand('%'))
-  edit!
-  call setpos('.', a:cursor_pos)
-endfunction
-augroup vim_go
+let g:go_fmt_command = "goimports"
+augroup vimgo
   autocmd!
   autocmd FileType go nmap ,b :<Plug>(go-build)<CR>
-  autocmd FileType go nmap ,v :<Plug>(go-coverage)<CR>
   autocmd FileType go nmap ,d :<Plug>(go-def)<CR>
-  autocmd FileType go nmap ,n :GoRename<CR>
+  autocmd FileType go nmap ,n :<Plug>(go-rename)<CR>
   autocmd FileType go nmap ,r :<Plug>(go-run)<CR>
   autocmd FileType go nmap ,t :<Plug>(go-test)<CR>
-  " autocmd BufWritePost *.go silent :GoImports
-  autocmd BufWritePost *.go silent :call GoImports()
+  autocmd FileType go nmap ,v :<Plug>(go-coverage)<CR>
 augroup END
 
 let g:lightline = {
   \ 'colorscheme': 'gruvbox',
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+  \   'left': [
+  \     [ 'mode', 'paste' ],
+  \     [ 'fugitive', 'filename', 'modified' ],
+  \   ],
+  \   'right': [
+  \     [ 'lineinfo' ],
+  \     [ 'percent' ],
+  \     [ 'fileformat', 'fileencoding', 'filetype' ],
+  \     [ 'warning', 'error' ],
+  \   ],
   \ },
   \ 'component_function': {
   \   'modified': 'LightLineModified',
@@ -439,7 +538,15 @@ let g:lightline = {
   \   'filetype': 'LightLineFiletype',
   \   'fileencoding': 'LightLineFileencoding',
   \   'mode': 'LightLineMode',
-  \ }
+  \ },
+  \ 'component_expand': {
+  \   'error': 'NeomakeErrors',
+  \   'warning': 'NeomakeWarnings',
+  \ },
+  \ 'component_type': {
+  \   'error': 'error',
+  \   'warning': 'warning',
+  \ },
   \ }
   " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
   " \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }

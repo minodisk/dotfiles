@@ -7,15 +7,15 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 
 # ndenv
-export PATH="$HOME/.ndenv/bin:$PATH"
-eval "$(ndenv init -)"
+# export PATH="$HOME/.ndenv/bin:$PATH"
+# eval "$(ndenv init -)"
 
 # rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+# export PATH="$HOME/.rbenv/bin:$PATH"
+# eval "$(rbenv init -)"
 
 # app engine
-export PATH="$HOME/go_appengine:$PATH"
+# export PATH="$HOME/go_appengine:$PATH"
 
 # vim
 alias ovim='vim'
@@ -38,6 +38,7 @@ alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
 # alias exit="tmux detach"
 
 # ranger
-alias f='ranger'
+# alias f='ranger'
 
+# BFG
 alias bfg='java -jar ~/jar/bfg-1.12.8.jar'

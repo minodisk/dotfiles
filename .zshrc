@@ -4,10 +4,11 @@ zplug "mollifier/anyframe"
 zplug "mollifier/cd-gitroot"
 zplug "b4b4r07/enhancd", use:enhancd.sh
 zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting", nice:10
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
 zplug "felixr/docker-zsh-completion"
 zplug "olivierverdier/zsh-git-prompt", use:zshrc.sh
+zplug "littleq0903/gcloud-zsh-completion"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -18,7 +19,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load #--verbose
 
 # history
 bindkey '^[[A' history-substring-search-up
@@ -39,14 +40,6 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
 PROMPT='%. $(git_super_status) $ '
 # RPROMPT=''
 
-source ~/.zprofile
-
-# The next line updates PATH for the Google Cloud SDK.
-source '/usr/local/google-cloud-sdk/path.zsh.inc'
-
-# The next line enables shell command completion for gcloud.
-source '/usr/local/google-cloud-sdk/completion.zsh.inc'
-
 # peco
 function peco-history-selection() {
   BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
@@ -56,5 +49,57 @@ function peco-history-selection() {
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
-# Clamshell
-gconftool-2 --type string --set /apps/gnome-power-manager/buttons/lid_ac "nothing"
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/minodisk/google-cloud-sdk/path.zsh.inc' ]; then source '/home/minodisk/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/minodisk/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/minodisk/google-cloud-sdk/completion.zsh.inc'; fi
+
+# git
+export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
+export GIT_TERMINAL_PROMPT=1
+
+# go
+export GOPATH="$HOME/go"
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+
+# ndenv
+# export PATH="$HOME/.ndenv/bin:$PATH"
+# eval "$(ndenv init -)"
+
+# rbenv
+# export PATH="$HOME/.rbenv/bin:$PATH"
+# eval "$(rbenv init -)"
+
+# app engine
+# export PATH="$HOME/go_appengine:$PATH"
+
+# vim
+alias ovim='vim'
+alias vim='nvim'
+alias vi='nvim'
+
+# docker
+alias docker-compose-up="docker-compose stop && docker-compose rm -f && docker-compose build && docker-compose up"
+alias docker-ps="docker ps -a -q"
+alias docker-stop-all="docker stop \`docker-ps\`"
+alias docker-rm="docker rm \`docker-ps\`"
+alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
+# alias docker-start="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
+# alias docker-stop-all="docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)"
+# fpath=(~/.zsh/completion $fpath)
+# autoload -Uz compinit && compinit -i
+
+# tmux
+# alias tmux="tmux attach || tmux new-session \; source-file ~/.tmux.session"
+# alias exit="tmux detach"
+
+# ranger
+# alias f='ranger'
+
+# BFG
+alias bfg='java -jar /usr/local/jar/bfg.jar'
+
+# Android
+export ANDROID_HOME=${HOME}/Android/Sdk
+export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
