@@ -49,12 +49,6 @@ function peco-history-selection() {
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/minodisk/google-cloud-sdk/path.zsh.inc' ]; then source '/home/minodisk/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/minodisk/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/minodisk/google-cloud-sdk/completion.zsh.inc'; fi
-
 # git
 export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
 export GIT_TERMINAL_PROMPT=1
@@ -103,3 +97,11 @@ alias bfg='java -jar /usr/local/jar/bfg.jar'
 # Android
 export ANDROID_HOME=${HOME}/Android/Sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/minodisk/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/minodisk/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

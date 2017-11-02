@@ -43,6 +43,9 @@ Plug 'minodisk/nvim-finder', { 'do': ':FinderInstallBinary' }
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
 " Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
 Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
 " Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
@@ -205,6 +208,9 @@ if has('nvim')
   tnoremap <silent> <C-l> <C-\><C-n><C-w>l
   augroup term_mode
     autocmd!
+    autocmd TermOpen * setlocal scrollback=10000
+    autocmd TermOpen * setlocal nonumber
+    autocmd TermOpen * startinsert
     autocmd BufWinEnter,WinEnter term://* startinsert
   augroup END
 
