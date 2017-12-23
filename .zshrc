@@ -3,7 +3,7 @@ source ~/.zplug/init.zsh
 zplug "mollifier/anyframe"
 zplug "mollifier/cd-gitroot"
 zplug "b4b4r07/enhancd", use:enhancd.sh
-zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-history-substring-search", hook-build:"__zsh_version 4.3"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
 zplug "felixr/docker-zsh-completion"
@@ -40,6 +40,9 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
 PROMPT='%. $(git_super_status) $ '
 # RPROMPT=''
 
+# yarn
+export PATH="$HOME/.yarn/bin:$PATH"
+
 # peco
 function peco-history-selection() {
   BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
@@ -55,7 +58,7 @@ export GIT_TERMINAL_PROMPT=1
 
 # go
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+export PATH="$PATH:/usr/lib/go-1.9.2/bin:$HOME/go/bin"
 
 # ndenv
 # export PATH="$HOME/.ndenv/bin:$PATH"
@@ -69,9 +72,7 @@ export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 # export PATH="$HOME/go_appengine:$PATH"
 
 # vim
-alias ovim='vim'
-alias vim='nvim'
-alias vi='nvim'
+alias vi='vim'
 
 # docker
 alias docker-compose-up="docker-compose stop && docker-compose rm -f && docker-compose build && docker-compose up"
@@ -99,6 +100,8 @@ export ANDROID_HOME=${HOME}/Android/Sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+if [ -f '/home/minodisk/.zsecret' ]; then source '/home/minodisk/.zsecret'; fi
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc'; fi

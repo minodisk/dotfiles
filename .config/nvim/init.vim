@@ -9,12 +9,10 @@ Plug 'Shougo/dein.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
-" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
 Plug 'Lokaltog/vim-easymotion'
-" Plug 'christoomey/vim-tmux-navigator'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-fold'
 Plug 'kana/vim-textobj-indent'
@@ -37,56 +35,31 @@ Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'kana/vim-submode'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
-" Plug 'w0rp/ale'
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
+" Plug 'neomake/neomake'
 Plug 'minodisk/nvim-finder', { 'do': ':FinderInstallBinary' }
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
-" Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
 Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
-" Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
-Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
-" Plug 'keith/tmux.vim', { 'for': ['tmux'] }
 Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'tmhedberg/matchit'
 Plug 'hail2u/vim-css3-syntax'
-" Plug 'fleischie/vim-styled-components', { 'for': ['javascript', 'typescript'] }
 Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
+Plug 'haya14busa/vim-gtrans'
 call plug#end()
 
 let g:plug_timeout = 180
-
 let s:vim_dir = expand('~/.config/nvim')
-" let s:dein_dir = s:vim_dir . '/dein'
-" let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-" if &runtimepath !~# '/dein.vim'
-"   if !isdirectory(s:dein_repo_dir)
-"     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-"   endif
-"   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-" endif
-" let dein#types#git#clone_depth = 1
-" if dein#load_state(s:dein_dir)
-"   call dein#begin(s:dein_dir)
-"   let s:toml      = s:vim_dir . '/dein.toml'
-"   let s:lazy_toml = s:vim_dir . '/dein_lazy.toml'
-"   call dein#load_toml(s:toml,      {'lazy': 0})
-"   call dein#load_toml(s:lazy_toml, {'lazy': 1})
-"   call dein#end()
-"   call dein#save_state()
-" endif
-" if dein#check_install()
-"   call dein#install()
-" endif
 
 syntax enable
 filetype on
@@ -193,37 +166,25 @@ augroup delete_spaces
   autocmd BufWritePre * :%s/\s\+$//e
 augroup END
 
-" Cursor shape
+" Move window
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
-if has('nvim')
-  nmap <BS> <C-W>h
+tnoremap <silent> <C-h> <C-\><C-n><C-w>h
+tnoremap <silent> <C-j> <C-\><C-n><C-w>j
+tnoremap <silent> <C-k> <C-\><C-n><C-w>k
+tnoremap <silent> <C-l> <C-\><C-n><C-w>l
 
-  tnoremap <silent> <ESC> <C-\><C-n>
-  tnoremap <silent> <C-h> <C-\><C-n><C-w>h
-  tnoremap <silent> <C-j> <C-\><C-n><C-w>j
-  tnoremap <silent> <C-k> <C-\><C-n><C-w>k
-  tnoremap <silent> <C-l> <C-\><C-n><C-w>l
-  augroup term_mode
-    autocmd!
-    autocmd TermOpen * setlocal scrollback=10000
-    autocmd TermOpen * setlocal nonumber
-    autocmd TermOpen * startinsert
-    autocmd BufWinEnter,WinEnter term://* startinsert
-  augroup END
-
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-elseif empty('$TMUX')
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-else
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-endif
+" Terminal mode
+tnoremap <silent> <ESC> <C-\><C-n>
+augroup term_mode
+  autocmd!
+  autocmd TermOpen * setlocal scrollback=10000
+  autocmd TermOpen * setlocal nonumber
+  autocmd TermOpen * startinsert
+  autocmd BufWinEnter,WinEnter term://* startinsert
+augroup END
 
 " Python3
 let g:python3_host_prog = '/usr/bin/python3'
@@ -312,6 +273,8 @@ let g:neomru#directory_mru_limit=10000
 
 """ deoplete.nvim
 let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_debug = 1
+" let g:deoplete#enable_profile = 1
 let g:deoplete#input_patterns = {}
 let g:deoplete#input_patterns.typescript = '\w*'
 let g:deoplete#omni_patterns = {}
@@ -350,101 +313,65 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 " indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
 
-" format
-function! FormatStandard()
-  silent !standard --fix %
-  " edit!
-  " syntax on
-  " call AttachScheme()
-endfunction
-" augroup standard
-"   autocmd!
-"   autocmd BufWritePost *.js call FormatStandard()
-" augroup END
-
 " ale {{{
 " let g:ale_sign_error = '▶'
 " let g:ale_sign_warning = '▶'
 " let g:ale_sign_info = '？'
 " let g:ale_sign_style_error = '▷'
 " let g:ale_sign_style_warning = '▷'
-" let g:ale_echo_msg_format = '%linter% %severity%: %s'
-" let g:ale_javascript_standard_options = '--parser babel-eslint --plugin flowtype'
-" let g:ale_linters = {
-" \ 'css': ['stylelint'],
-" \ 'javascript': ['flow', 'standard'],
-" \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
-" \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-" \}
-" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-N> <Plug>(ale_next_wrap)
-" augroup ale
-"   autocmd!
-"   autocmd User ALELint call lightline#update()
-" augroup END
-" function! ALEError()
-"   let l:counts = ale#statusline#Count(bufnr(''))
-"   let l:all_errors = l:counts.error + l:counts.style_error
-"   return printf(
-"   \   '%d',
-"   \   all_errors
-"   \)
-" endfunction
-" function! ALEWarning()
-"   let l:counts = ale#statusline#Count(bufnr(''))
-"   let l:all_errors = l:counts.error + l:counts.style_error
-"   let l:all_non_errors = l:counts.total - l:all_errors
-"   return printf(
-"   \   '%d',
-"   \   all_non_errors
-"   \)
-" endfunction
+let g:ale_echo_msg_format = '%linter% %severity%: %s'
+let g:ale_linters = {
+\ 'css': ['stylelint'],
+\ 'javascript': ['flow'],
+\ 'typescript': ['tsserver', 'tslint', 'typecheck'],
+\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
+\}
+nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+nmap <silent> <C-N> <Plug>(ale_next_wrap)
+augroup ale
+  autocmd!
+  autocmd User ALELint call lightline#update()
+augroup END
+function! ALEErrors()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  return printf(
+  \   '%d',
+  \   all_errors
+  \)
+endfunction
+function! ALEWarnings()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return printf(
+  \   '%d',
+  \   all_non_errors
+  \)
+endfunction
 " }}}
 
 " {{{
-augroup neomake_hooks
-  autocmd!
-  autocmd BufWritePost * Neomake
-  autocmd User NeomakeJobFinished call lightline#update()
-augroup END
+" augroup neomake_hooks
+"   autocmd!
+"   autocmd BufWritePost * Neomake
+"   autocmd User NeomakeJobFinished call lightline#update()
+" augroup END
 
-function! NeomakeErrors()
-  let l:counts = neomake#statusline#LoclistCounts()
-  return printf(
-  \   '%d',
-  \   l:counts.E
-  \)
-endfunction
-function! NeomakeWarnings()
-  let l:counts = neomake#statusline#LoclistCounts()
-  return printf(
-  \   '%d',
-  \   l:counts.W
-  \)
-endfunction
-" }}}
-
-" syntastic {{{
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 1
-" let g:syntastic_mode_map={
-"     \ 'mode': 'active',
-"   \ }
-"     " \ 'passive_filetypes': ['go']
-" let g:go_list_type = "quickfix"
-"
-" let g:syntastic_error_symbol = "▶"
-" let g:syntastic_style_error_symbol = "▶"
-" let g:syntastic_warning_symbol = "▷"
-" let g:syntastic_style_warning_symbol = "▷"
-"
-" let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
-" let g:syntastic_css_checkers = ['stylelint']
-" let g:syntastic_go_checkers = ['go']
-" " let g:syntastic_javascript_checkers = ['flow']
-" let g:syntastic_css_stylelint_exec = 'stylelint-config-standard'
+" function! NeomakeErrors()
+  " let l:counts = neomake#statusline#LoclistCounts()
+  " return printf(
+  " \   '%d',
+  " \   l:counts.E
+"   \)
+" endfunction
+" function! NeomakeWarnings()
+"   let l:counts = neomake#statusline#LoclistCounts()
+"   return printf(
+"   \   '%d',
+"   \   l:counts.W
+"   \)
+" endfunction
 " }}}
 
 " caw.vim
@@ -480,18 +407,6 @@ inoremap <expr> , smartchr#loop(', ', ',')
 " omap <Space>/ <Plug>(easymotion-tn)
 " " map  n <Plug>(easymotion-next)
 " " map  N <Plug>(easymotion-prev)
-
-" tsuquyomi
-" augroup tsuquyomi
-"   autocmd!
-"   autocmd FileType typescript nmap <buffer> ,n <Plug>(TsuquyomiRenameSymbolC)
-"   autocmd FileType typescript nmap <buffer> ,d <Plug>(TsuquyomiDefinition)
-"   autocmd FileType typescript nmap <buffer> ,b <Plug>(TsuquyomiGoBack)
-"   autocmd FileType typescript nmap <buffer> ,r <Plug>(TsuquyomiReference)
-"   autocmd Filetype typescript :TsuquyomiStartServer
-" augroup END
-" let g:tsuquyomi_disable_quickfix = 1
-" let g:tsuquyomi_save_onrename = 0
 
 " nvim-typescript {{{
 augroup typescript_shorthands
@@ -545,13 +460,13 @@ let g:lightline = {
   \   'fileencoding': 'LightLineFileencoding',
   \   'mode': 'LightLineMode',
   \ },
-  \ 'component_expand': {
-  \   'error': 'NeomakeErrors',
-  \   'warning': 'NeomakeWarnings',
-  \ },
   \ 'component_type': {
   \   'error': 'error',
   \   'warning': 'warning',
+  \ },
+  \ 'component_expand': {
+  \   'error': 'ALEErrors',
+  \   'warning': 'ALEWarnings',
   \ },
   \ }
   " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
