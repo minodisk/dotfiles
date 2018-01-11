@@ -11,8 +11,8 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
@@ -41,7 +41,9 @@ Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
+" Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
 Plug 'othree/yajs.vim', { 'for': ['javascript'] }
+Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'prettier/vim-prettier', {
@@ -58,7 +60,11 @@ Plug 'tmhedberg/matchit'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 " Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
 Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
-Plug 'haya14busa/vim-gtrans'
+Plug 'haya14busa/vim-gtrans', {
+  \ 'do': 'go get github.com/haya14busa/gtrans' }
+Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
+
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 let g:plug_timeout = 180
@@ -87,7 +93,7 @@ set title
 set number
 set laststatus=2
 set showmatch
-set cursorline
+" set cursorline
 set autoindent
 set smarttab
 set smartindent
@@ -145,11 +151,12 @@ augroup END
 " Delete spaces at the end of line
 augroup delete_spaces
   autocmd!
-  autocmd BufWritePre * :%s/\s\+$//e
+  autocmd BufWritePre * :%s/\s\+$//ge
 augroup END
 augroup prettier
   autocmd!
-  autocmd BufWritePre *.js :Prettier
+  let g:prettier#autoformat = 0
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
 augroup END
 
 " Move window
@@ -187,6 +194,13 @@ nnoremap ,,t :<C-u>call OpenTerm()<CR>
 
 " Python3
 " let g:python3_host_prog = '/usr/bin/python3'
+
+" vim-javascript
+let g:javascript_plugin_flow = 1
+
+" rust
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = "cargo fmt --"
 
 " PreserveNoEOL
 let g:PreserveNoEOL = 1

@@ -4,7 +4,7 @@ zplug "mollifier/anyframe"
 zplug "mollifier/cd-gitroot"
 zplug "b4b4r07/enhancd", use:enhancd.sh
 zplug "zsh-users/zsh-history-substring-search", hook-build:"__zsh_version 4.3"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-completions"
 zplug "felixr/docker-zsh-completion"
 zplug "olivierverdier/zsh-git-prompt", use:zshrc.sh
@@ -36,9 +36,9 @@ ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_bold[white]%}%{↓%G%}"
 ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[white]%}%{↑%G%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[white]%}%{…%G%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
-# PROMPT='%.%{$fg_bold[red]%}❯%{$fg_bold[yellow]%}❯%{$fg_bold[green]%}❯${reset_color} '
 PROMPT='%. $(git_super_status) $ '
-# RPROMPT=''
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # yarn
 export PATH="$HOME/.yarn/bin:$PATH"
@@ -58,21 +58,22 @@ export GIT_TERMINAL_PROMPT=1
 
 # go
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/lib/go-1.9.2/bin:$HOME/go/bin"
+export PATH="$HOME/go/bin:$PATH"
 
-# ndenv
-# export PATH="$HOME/.ndenv/bin:$PATH"
-# eval "$(ndenv init -)"
+# rust
+# export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# n
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
 # rbenv
 # export PATH="$HOME/.rbenv/bin:$PATH"
 # eval "$(rbenv init -)"
 
-# app engine
-# export PATH="$HOME/go_appengine:$PATH"
-
 # vim
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
 
 # docker
 alias docker-compose-up="docker-compose stop && docker-compose rm -f && docker-compose build && docker-compose up"
@@ -80,31 +81,25 @@ alias docker-ps="docker ps -a -q"
 alias docker-stop-all="docker stop \`docker-ps\`"
 alias docker-rm="docker rm \`docker-ps\`"
 alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
-# alias docker-start="bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'"
-# alias docker-stop-all="docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)"
-# fpath=(~/.zsh/completion $fpath)
-# autoload -Uz compinit && compinit -i
 
 # tmux
-# alias tmux="tmux attach || tmux new-session \; source-file ~/.tmux.session"
-# alias exit="tmux detach"
-
-# ranger
-# alias f='ranger'
+alias tmux="tmux attach || tmux new-session \; source-file ~/.tmux.session"
+alias exit="tmux detach"
 
 # BFG
 alias bfg='java -jar /usr/local/jar/bfg.jar'
+
+# teensy_loader
+alias teensy_loader_="teensy_loader --mcu=atmega32u4 -vw"
 
 # Android
 export ANDROID_HOME=${HOME}/Android/Sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
-
-if [ -f '/home/minodisk/.zsecret' ]; then source '/home/minodisk/.zsecret'; fi
+if [ -f "$HOME/.zsecret" ]; then source "$HOME/.zsecret"; fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/minodisk/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/minodisk/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/minodisk/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi

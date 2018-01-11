@@ -5,14 +5,8 @@ if &compatible
 endif
 
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'Shougo/dein.vim'
-Plug 'Shougo/denite.nvim'
-Plug 'Shougo/neomru.vim'
-Plug 'Shougo/deoplete.nvim'
-Plug 'cohama/lexima.vim'
-Plug 'kana/vim-smartchr'
-Plug 'tyru/caw.vim'
-Plug 'Lokaltog/vim-easymotion'
+
+" Text Objects
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-fold'
 Plug 'kana/vim-textobj-indent'
@@ -22,51 +16,83 @@ Plug 'osyo-manga/vim-textobj-from_regexp'
 Plug 'thinca/vim-textobj-between'
 Plug 'rhysd/vim-textobj-anyblock'
 Plug 'lucapette/vim-textobj-underscore'
-Plug 'tpope/vim-abolish'
+
+" Operators
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-operator-surround'
-Plug 'vim-scripts/Align'
-Plug 'Chiel92/vim-autoformat'
-Plug 'vim-scripts/PreserveNoEOL'
+
+" Cursor Supports
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tmhedberg/matchit'
+
+" Input Supports
+Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'cohama/lexima.vim'
+Plug 'kana/vim-smartchr'
+Plug 'tyru/eskk.vim'
+Plug 'tyru/caw.vim'
+
+" Replace Supports
+Plug 'tpope/vim-abolish'
+
+" Mode Supports
+Plug 'kana/vim-submode'
+
+" Visual
 Plug 'morhetz/gruvbox'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'itchyny/lightline.vim'
 Plug 'shinchu/lightline-gruvbox.vim'
-Plug 'kana/vim-submode'
-Plug 'tpope/vim-git'
-Plug 'tpope/vim-fugitive'
+Plug 'nathanaelkane/vim-indent-guides'
+
+" File Operations
+Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neomru.vim'
+
+" Lint / Warn / Error
 Plug 'w0rp/ale'
-" Plug 'neomake/neomake'
-Plug 'minodisk/nvim-finder', { 'do': ':FinderInstallBinary' }
+
+" Languages
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
-Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
+Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
+Plug 'othree/yajs.vim', { 'for': ['javascript'] }
+Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
+Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
+Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'ekalinin/Dockerfile.vim'
+Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
-Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
-Plug 'tmhedberg/matchit'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
-Plug 'haya14busa/vim-gtrans'
+Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
+
+" Formatters
+Plug 'vim-scripts/Align'
+Plug 'vim-scripts/PreserveNoEOL'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
+
+" External Tools
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-fugitive'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'haya14busa/vim-gtrans', {
+  \ 'do': 'go get github.com/haya14busa/gtrans' }
+
 call plug#end()
 
 let g:plug_timeout = 180
-let s:vim_dir = expand('~/.config/nvim')
 
 syntax enable
 filetype on
 filetype plugin indent on
 
-set hidden
-
+let s:vim_dir = expand('~/.config/nvim')
 let s:swap_dir   = s:vim_dir . '/swap'
 let s:backup_dir = s:vim_dir . '/backup'
 let s:undo_dir   = s:vim_dir . '/undo'
@@ -77,6 +103,7 @@ execute 'set directory=' . s:swap_dir
 execute 'set backupdir=' . s:backup_dir
 execute 'set undodir=' . s:undo_dir
 
+set hidden
 set undofile
 " set nofixeol
 set autoread
@@ -85,7 +112,7 @@ set title
 set number
 set laststatus=2
 set showmatch
-set cursorline
+" set cursorline
 set autoindent
 set smarttab
 set smartindent
@@ -99,7 +126,7 @@ set incsearch
 set smartcase
 set spelllang+=cjk
 set spell
-set clipboard+=unnamedplus
+set clipboard=unnamed,unnamedplus
 set diffopt+=vertical
 set encoding=utf-8
 set whichwrap=b,s,h,l,<,>,[,]
@@ -110,38 +137,17 @@ set helplang=ja,en
 set noswapfile
 set background=dark
 set completeopt=menuone
+set noerrorbells visualbell t_vb=
+set ambiwidth=double
 set t_Co=256
 
 scriptencoding utf-8
 
 colorscheme gruvbox
 
-function! AttachScheme()
-  highlight clear SpellBad
-  highlight SpellBad                  cterm=underline
-  highlight Normal                    ctermbg=none
-  highlight SignColumn                ctermbg=none
-  highlight LineNr                    ctermbg=234
-  highlight CursorLineNr              ctermbg=234
-  highlight IndentGuidesOdd           ctermbg=236
-  highlight IndentGuidesEven          ctermbg=237
-  highlight CursorLine                ctermbg=238
-  highlight Cursor                    ctermbg=239
-  highlight ALEErrorSign              ctermbg=none ctermfg=167
-  highlight ALEWarningSign            ctermbg=none ctermfg=214
-endfunction
-
-augroup additional_colorscheme
-  autocmd!
-  autocmd VimEnter,Colorscheme * call AttachScheme()
-augroup END
-
 augroup file_type
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
-  autocmd BufNewFile,BufRead,BufReadPre *.es6 set filetype=javascript
-  autocmd BufNewFile,BufRead,BufReadPre *.yaml.* set filetype=yaml
-  autocmd BufNewFile,BufRead,BufReadPre *.md.* set filetype=markdown
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
   autocmd BufNewFile,BufRead,BufReadPre *.tmpl set filetype=gotexttmpl
@@ -163,7 +169,12 @@ augroup END
 " Delete spaces at the end of line
 augroup delete_spaces
   autocmd!
-  autocmd BufWritePre * :%s/\s\+$//e
+  autocmd BufWritePre * :%s/\s\+$//ge
+augroup END
+augroup prettier
+  autocmd!
+  let g:prettier#autoformat = 0
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
 augroup END
 
 " Move window
@@ -177,29 +188,52 @@ tnoremap <silent> <C-k> <C-\><C-n><C-w>k
 tnoremap <silent> <C-l> <C-\><C-n><C-w>l
 
 " Terminal mode
-tnoremap <silent> <ESC> <C-\><C-n>
+tnoremap <silent> <Esc><Esc> <C-\><C-n>
+tnoremap <silent> <C-[> <C-\><C-n>
 augroup term_mode
   autocmd!
   autocmd TermOpen * setlocal scrollback=10000
   autocmd TermOpen * setlocal nonumber
   autocmd TermOpen * startinsert
-  autocmd BufWinEnter,WinEnter term://* startinsert
+  " autocmd BufWinEnter,WinEnter * if &buftype == 'terminal' | silent! normal i | endif
 augroup END
+function! OpenTerm()
+  bo vertical split Terminal
+  vertical resize 80
+  set wfw
+  call term_start("zsh", {"curwin": 1})
+  setlocal filetype=terminal
+  " setlocal nonumber
+  " setlocal nospell
+  " setlocal list listchars=
+endfunction
+nnoremap ,,t :<C-u>call OpenTerm()<CR>
 
-" Python3
-let g:python3_host_prog = '/usr/bin/python3'
+" eskk
+let g:eskk#directory = '~/.local/share/nvim/eskk'
+let g:eskk#dictionary = {
+      \ 'path': '~/.local/share/skk/.skk-jisyo',
+      \ 'sorted': 0,
+      \ 'encoding': 'utf-8',
+      \ }
+let g:eskk#large_dictionary = {
+      \ 'path': "~/.local/share/skk/SKK-JISYO.L",
+      \ 'sorted': 1,
+      \ 'encoding': 'euc-jp',
+      \ }
+
+" vim-javascript
+let g:javascript_plugin_flow = 1
+
+" rust
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = "cargo fmt --"
 
 " PreserveNoEOL
 let g:PreserveNoEOL = 1
 
 " autodate
 let g:autodate_format="%Y/%m/%d %H:%M:%S"
-
-" autoformat
-let g:formatdef_css = '"stylefmt"'
-let g:formatters_css = ['css']
-
-let g:jscomplete_use = ['dom', 'moz']
 
 " Watch file
 " http://vim-jp.org/vim-users-jp/2011/03/12/Hack-206.html
@@ -208,17 +242,17 @@ augroup check_time
   autocmd WinEnter * checktime
 augroup END
 
-" " Restore cursor position
-" function! s:restore_cursor()
-"   if line("'\"") <= line("$")
-"     normal! g`"
-"     return 1
-"   endif
-" endfunction
-" augroup restore_cursor
-"   autocmd!
-"   autocmd BufWinEnter * call s:restore_cursor()
-" augroup END
+" Restore cursor position
+function! s:restore_cursor()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+augroup restore_cursor
+  autocmd!
+  autocmd BufWinEnter * call s:restore_cursor()
+augroup END
 
 " Disable auto indent in pasting
 " http://ttssh2.sourceforge.jp/manual/ja/usage/tips/vim.html
@@ -246,7 +280,7 @@ nnoremap Q <Nop>
 nnoremap <Tab> :lnext<CR>
 nnoremap <S-Tab> :lprev<CR>
 " Search with very magic
-nnoremap / /\v
+" nnoremap / /\v
 " Don't move cursor when *
 nmap * *N
 " Replace focused word to yanked text
@@ -279,21 +313,47 @@ let g:deoplete#input_patterns = {}
 let g:deoplete#input_patterns.typescript = '\w*'
 let g:deoplete#omni_patterns = {}
 let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
-let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+" let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 " let g:deoplete#omni_patterns.typescript = '[^. *\t]\.\w*'
-" let g:deoplete#omni_patterns.typescript = '\w\+'
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 " let g:deoplete#sources#tss#javascript_support = 1
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-" vim-flow
-let g:flow#autoclose = 1
-let g:flow#enable = 0
+""" neosnippet
+let g:neosnippet#enable_completed_snippet = 1
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
 
-" nvim-finder
-nnoremap <silent> ,f :<C-u>Finder<CR>
+""" prettier
+" set all options as default: http://json.schemastore.org/prettierrc
+let g:prettier#config#single_quote = 'false'
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#jsx_bracket_same_line = 'false'
+let g:prettier#config#trailing_comma = 'all'
+" let g:prettier#config#parser = 'flow'
+" cli-override|file-override|prefer-file
+" let g:prettier#config#config_precedence = 'prefer-file'
+" always|never|preserve
+" let g:prettier#config#prose_wrap = 'preserve'
+
+" tsuquyomi
+let g:tsuquyomi_disable_quickfix = 1
 
 " vim-operator-surround {{{
 nmap <silent>sa <Plug>(operator-surround-append)
@@ -312,13 +372,9 @@ nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 
 " indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_exclude_filetypes = ['terminal']
 
 " ale {{{
-" let g:ale_sign_error = '▶'
-" let g:ale_sign_warning = '▶'
-" let g:ale_sign_info = '？'
-" let g:ale_sign_style_error = '▷'
-" let g:ale_sign_style_warning = '▷'
 let g:ale_echo_msg_format = '%linter% %severity%: %s'
 let g:ale_linters = {
 \ 'css': ['stylelint'],
@@ -332,46 +388,6 @@ augroup ale
   autocmd!
   autocmd User ALELint call lightline#update()
 augroup END
-function! ALEErrors()
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  return printf(
-  \   '%d',
-  \   all_errors
-  \)
-endfunction
-function! ALEWarnings()
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return printf(
-  \   '%d',
-  \   all_non_errors
-  \)
-endfunction
-" }}}
-
-" {{{
-" augroup neomake_hooks
-"   autocmd!
-"   autocmd BufWritePost * Neomake
-"   autocmd User NeomakeJobFinished call lightline#update()
-" augroup END
-
-" function! NeomakeErrors()
-  " let l:counts = neomake#statusline#LoclistCounts()
-  " return printf(
-  " \   '%d',
-  " \   l:counts.E
-"   \)
-" endfunction
-" function! NeomakeWarnings()
-"   let l:counts = neomake#statusline#LoclistCounts()
-"   return printf(
-"   \   '%d',
-"   \   l:counts.W
-"   \)
-" endfunction
 " }}}
 
 " caw.vim
@@ -380,33 +396,6 @@ vmap ,/ <Plug>(caw:hatpos:toggle)
 
 " vim-smartchr
 inoremap <expr> , smartchr#loop(', ', ',')
-
-" " EasyMotion
-" " デフォルトのキーマップを設定しない
-" let g:EasyMotion_do_mapping = 0
-" " キーワード検索で小文字で入力しても大文字にマッチする
-" let g:EasyMotion_smartcase = 1
-" " JKMotion 時に同カラムで移動する
-" let g:EasyMotion_startofline = 0
-" " ジャンプ先を大文字で表示し、小文字の入力でもジャンプする
-" let g:EasyMotion_keys = 'JKHFLDYSUAIROEPWBQNCMXTZGV'
-" let g:EasyMotion_use_upper = 1
-" " Enter/Space 入力で最初のマッチにジャンプ
-" let g:EasyMotion_enter_jump_first = 1
-" let g:EasyMotion_space_jump_first = 1
-" " キーマップ
-" " 2-key Find Motion
-" map <Space><Space> <Plug>(easymotion-s2)
-" " Line Motion
-" map <Space>j <Plug>(easymotion-bd-jk)
-" map <Space>k <Plug>(easymotion-bd-jk)
-" " map l <Plug>(easymotion-bd-jk)
-" " Search Motion
-" " set nohlsearch
-" map  <Space>/ <Plug>(easymotion-sn)
-" omap <Space>/ <Plug>(easymotion-tn)
-" " map  n <Plug>(easymotion-next)
-" " map  N <Plug>(easymotion-prev)
 
 " nvim-typescript {{{
 augroup typescript_shorthands
@@ -441,60 +430,77 @@ let g:lightline = {
   \ 'active': {
   \   'left': [
   \     [ 'mode', 'paste' ],
-  \     [ 'fugitive', 'filename', 'modified' ],
+  \     [ 'fugitive', 'filename' ],
   \   ],
   \   'right': [
-  \     [ 'lineinfo' ],
+  \     [ 'lineinfo', ],
   \     [ 'percent' ],
   \     [ 'fileformat', 'fileencoding', 'filetype' ],
-  \     [ 'warning', 'error' ],
+  \     [ 'warnings', 'errors' ],
   \   ],
   \ },
   \ 'component_function': {
-  \   'modified': 'LightLineModified',
-  \   'readonly': 'LightLineReadonly',
-  \   'fugitive': 'LightLineFugitive',
-  \   'filename': 'LightLineFilename',
-  \   'fileformat': 'LightLineFileformat',
-  \   'filetype': 'LightLineFiletype',
-  \   'fileencoding': 'LightLineFileencoding',
-  \   'mode': 'LightLineMode',
-  \ },
-  \ 'component_type': {
-  \   'error': 'error',
-  \   'warning': 'warning',
+  \   'mode': 'LightlineMode',
+  \   'fugitive': 'LightlineFugitive',
+  \   'filename': 'LightlineFilename',
+  \   'modified': 'LightlineModified',
+  \   'readonly': 'LightlineReadonly',
+  \   'fileformat': 'LightlineFileformat',
+  \   'filetype': 'LightlineFiletype',
+  \   'fileencoding': 'LightlineFileencoding',
   \ },
   \ 'component_expand': {
-  \   'error': 'ALEErrors',
-  \   'warning': 'ALEWarnings',
+  \   'errors': 'LightlineErrors',
+  \   'warnings': 'LightlineWarnings',
+  \ },
+  \ 'component_type': {
+  \   'errors': 'error',
+  \   'warnings': 'warning',
   \ },
   \ }
-  " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-  " \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-function! LightLineModified()
-  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-function! LightLineReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔒' : ''
-endfunction
-function! LightLineFugitive()
+function! LightlineFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
     let branch = fugitive#head()
     return branch !=# '' ? '⎇  '.branch : ''
   endif
   return ''
 endfunction
-function! LightLineFileformat()
+function! LightlineFilename()
+  return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
+function! LightlineReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔒' : ''
+endfunction
+function! LightlineModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+function! LightlineFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
 endfunction
-function! LightLineFiletype()
+function! LightlineFiletype()
   return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
-function! LightLineFileencoding()
+function! LightlineFileencoding()
   return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
-function! LightLineMode()
+function! LightlineMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+function! LightlineErrors()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:errors = l:counts.error + l:counts.style_error
+  return printf('%d', errors)
+endfunction
+function! LightlineWarnings()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:errors = l:counts.error + l:counts.style_error
+  let l:warnings = l:counts.total - l:errors
+  return printf('%d', warnings)
 endfunction
 
 function! s:inactive_input_method()
@@ -504,40 +510,3 @@ augroup inactive_input_method
   autocmd!
   autocmd InsertLeave * call s:inactive_input_method()
 augroup END
-
-nmap <silent> <C-Up> :call <SID>LocationPrevious()<CR>
-nmap <silent> <C-Down> :call <SID>LocationNext()<cr>
-function! <SID>LocationPrevious()
-        try
-                lprev!
-        catch /:E776:/ " No location list
-        catch /:E553:/ " End/Start of location list
-                call <SID>LocationLast()
-        catch /:E926:/ " Location list changed
-                ll!
-        endtry
-endfunction
-function! <SID>LocationNext()
-        try
-                lnext!
-        catch /:E776:/ " No location list
-        catch /:E553:/ " End/Start of location list
-                call <SID>LocationFirst()
-        catch /:E926:/ " Location list changed
-                call <SID>LocationNext()
-        endtry
-endfunction
-function! <SID>LocationFirst()
-        try
-                lfirst!
-        catch /:E926:/ " Location list changed
-                call <SID>LocationFirst()
-        endtry
-endfunction
-function! <SID>LocationLast()
-        try
-                llast!
-        catch /:E926:/ " Location list changed
-                call <SID>LocationLast()
-        endtry
-endfunction
