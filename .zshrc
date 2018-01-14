@@ -21,24 +21,29 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load #--verbose
 
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# prompt
+export GIT_TERMINAL_PROMPT=1
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_SEPARATOR="%F{246}%K{237}  "
+ZSH_THEME_GIT_PROMPT_BRANCH="%{%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{o%G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="$fg[red]%{x%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%F{109}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="$fg[yellow]%{↓%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="$fg[yellow]%{↑%G%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="$fg[magenta]%{…%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}%{✔%G%}"
+PROMPT='%{$fg[black]$bg[blue]%} %. %{%F{109}%K{237}%}%{%F{246}%K{237}%} $(git_super_status)%{%F{246}%K{237}%} %{%F{237}$bg[black]%}%{%f%k${reset_color}%} '
+
 # history
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-ZSH_THEME_GIT_PROMPT_PREFIX=""
-ZSH_THEME_GIT_PROMPT_SUFFIX=""
-ZSH_THEME_GIT_PROMPT_SEPARATOR=""
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[cyan]%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[red]%}%{o%G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg_bold[red]%}%{x%G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg_bold[blue]%}%{+%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg_bold[white]%}%{↓%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[white]%}%{↑%G%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[white]%}%{…%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
-PROMPT='%. $(git_super_status) $ '
-
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# Git
+export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
 
 # yarn
 export PATH="$HOME/.yarn/bin:$PATH"
@@ -52,10 +57,6 @@ function peco-history-selection() {
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
-# git
-export PATH="/usr/local/share/git-core/contrib/diff-highlight:$PATH"
-export GIT_TERMINAL_PROMPT=1
-
 # go
 export GOPATH="$HOME/go"
 export PATH="$HOME/go/bin:$PATH"
@@ -66,10 +67,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # n
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
-
-# rbenv
-# export PATH="$HOME/.rbenv/bin:$PATH"
-# eval "$(rbenv init -)"
 
 # vim
 alias vi='nvim'

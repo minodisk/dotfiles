@@ -43,7 +43,6 @@ Plug 'kana/vim-submode'
 " Visual
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
-Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " File Operations
@@ -81,6 +80,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
   \ 'do': 'go get github.com/haya14busa/gtrans' }
 
@@ -138,7 +138,6 @@ set noswapfile
 set background=dark
 set completeopt=menuone
 set noerrorbells visualbell t_vb=
-set ambiwidth=double
 set t_Co=256
 
 scriptencoding utf-8
@@ -161,16 +160,16 @@ augroup indent_setting
   autocmd FileType python setlocal tabstop=2 shiftwidth=2
 augroup END
 
-" Show QuickFix list after grep
 augroup quick_fix
   autocmd!
   autocmd QuickFixCmdPost *grep* cwindow
 augroup END
-" Delete spaces at the end of line
+
 augroup delete_spaces
   autocmd!
   autocmd BufWritePre * :%s/\s\+$//ge
 augroup END
+
 augroup prettier
   autocmd!
   let g:prettier#autoformat = 0
@@ -355,7 +354,7 @@ let g:prettier#config#trailing_comma = 'all'
 " tsuquyomi
 let g:tsuquyomi_disable_quickfix = 1
 
-" vim-operator-surround {{{
+" vim-operator-surround
 nmap <silent>sa <Plug>(operator-surround-append)
 nmap <silent>sd <Plug>(operator-surround-delete)
 nmap <silent>sr <Plug>(operator-surround-replace)
@@ -368,27 +367,10 @@ nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
 " with vim-textobj-between
 nmap <silent>sdb <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
 nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
-" }}}
 
 " indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_exclude_filetypes = ['terminal']
-
-" ale {{{
-let g:ale_echo_msg_format = '%linter% %severity%: %s'
-let g:ale_linters = {
-\ 'css': ['stylelint'],
-\ 'javascript': ['flow'],
-\ 'typescript': ['tsserver', 'tslint', 'typecheck'],
-\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-\}
-nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-nmap <silent> <C-N> <Plug>(ale_next_wrap)
-augroup ale
-  autocmd!
-  autocmd User ALELint call lightline#update()
-augroup END
-" }}}
 
 " caw.vim
 nmap ,/ <Plug>(caw:hatpos:toggle)
@@ -397,7 +379,7 @@ vmap ,/ <Plug>(caw:hatpos:toggle)
 " vim-smartchr
 inoremap <expr> , smartchr#loop(', ', ',')
 
-" nvim-typescript {{{
+" nvim-typescript
 augroup typescript_shorthands
   autocmd!
   autocmd FileType typescript nmap <buffer> ,d :TSDefPreview<CR>
@@ -405,7 +387,6 @@ augroup typescript_shorthands
   autocmd FileType typescript nmap <buffer> ,r :TSRefs<CR>
   autocmd FileType typescript nmap <buffer> ,t :TSType<CR>
 augroup END
-" }}}
 
 " vim-go
 let g:go_highlight_functions = 1
@@ -424,38 +405,100 @@ augroup vimgo
   autocmd FileType go nmap ,v :<Plug>(go-coverage)<CR>
 augroup END
 
+" ale
+let g:ale_linters = {
+      \ 'css': ['stylelint'],
+      \ 'javascript': ['flow'],
+      \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
+      \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
+      \ }
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '▲'
+nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+nmap <silent> <C-N> <Plug>(ale_next_wrap)
+
+" lightline
+let s:base03  = ['#1d2021', 234]
+let s:base023 = ['#282828', 235]
+let s:base02  = ['#32302f', 236]
+let s:base01  = ['#3c3836', 237]
+let s:base00  = ['#504945', 239]
+let s:base0   = ['#665c54', 241]
+let s:base1   = ['#7c6f64', 243]
+let s:base2   = ['#928374', 245]
+let s:base3   = ['#a89984', 246]
+let s:red     = ['#fb4934', 167]
+let s:green   = ['#b8bb26', 142]
+let s:yellow  = ['#fabd2f', 214]
+let s:blue    = ['#83a598', 109]
+let s:purple  = ['#d3869b', 175]
+let s:aqua    = ['#8ec07c', 108]
+let s:orange  = ['#fe8019', 208]
+let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
+let s:p.normal.left = [ [ s:base02, s:blue ], [ s:base3, s:base01 ] ]
+let s:p.normal.right = [ [ s:base02, s:base0 ], [ s:base1, s:base01 ] ]
+let s:p.inactive.right = [ [ s:base023, s:base01 ], [ s:base00, s:base02 ] ]
+let s:p.inactive.left =  [ [ s:base1, s:base02 ], [ s:base00, s:base023 ] ]
+let s:p.insert.left = [ [ s:base02, s:green ], [ s:base3, s:base01 ] ]
+let s:p.replace.left = [ [ s:base023, s:red ], [ s:base3, s:base01 ] ]
+let s:p.visual.left = [ [ s:base02, s:purple ], [ s:base3, s:base01 ] ]
+let s:p.normal.middle = [ [ s:base2, s:base02 ] ]
+let s:p.inactive.middle = [ [ s:base1, s:base023 ] ]
+let s:p.tabline.left = [ [ s:base3, s:base00 ] ]
+let s:p.tabline.tabsel = [ [ s:base3, s:base03 ] ]
+let s:p.tabline.middle = [ [ s:base2, s:base02 ] ]
+let s:p.tabline.right = [ [ s:base2, s:base00 ] ]
+let s:p.normal.error = [ [ s:base03, s:red ] ]
+let s:p.normal.warning = [ [ s:base023, s:yellow ] ]
+let s:p.normal.ok = [ [ s:base023, s:green ] ]
+let g:lightline#colorscheme#gruvbox#palette = lightline#colorscheme#flatten(s:p)
 let g:lightline = {
   \ 'colorscheme': 'gruvbox',
-  \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
   \   'left': [
   \     [ 'mode', 'paste' ],
-  \     [ 'fugitive', 'filename' ],
+  \     [ 'fugitive' ],
+  \     [ 'filename' ],
   \   ],
   \   'right': [
-  \     [ 'lineinfo', ],
-  \     [ 'percent' ],
+  \     [ 'ok', 'warnings', 'errors' ],
+  \     [ 'lineinfo', 'percent' ],
   \     [ 'fileformat', 'fileencoding', 'filetype' ],
-  \     [ 'warnings', 'errors' ],
   \   ],
+  \ },
+  \ 'inactive': {
+  \   'left': [
+  \     [ 'fugitive' ],
+  \     [ 'filename' ],
+  \   ],
+  \   'right': [
+  \     [ 'lineinfo', 'percent' ],
+  \     [ 'fileformat', 'fileencoding', 'filetype' ],
+  \   ],
+  \ },
+  \ 'separator': { 'left': '', 'right': '' },
+  \ 'subseparator': { 'left': '', 'right': '' },
+  \ 'component': {
+  \   'lineinfo': '%3l:%-2v',
+  \   'percent': '%3p%%',
   \ },
   \ 'component_function': {
   \   'mode': 'LightlineMode',
   \   'fugitive': 'LightlineFugitive',
   \   'filename': 'LightlineFilename',
-  \   'modified': 'LightlineModified',
-  \   'readonly': 'LightlineReadonly',
   \   'fileformat': 'LightlineFileformat',
-  \   'filetype': 'LightlineFiletype',
   \   'fileencoding': 'LightlineFileencoding',
+  \   'filetype': 'LightlineFiletype',
   \ },
   \ 'component_expand': {
   \   'errors': 'LightlineErrors',
   \   'warnings': 'LightlineWarnings',
+  \   'ok': 'LightlineOK',
   \ },
   \ 'component_type': {
   \   'errors': 'error',
   \   'warnings': 'warning',
+  \   'ok': 'ok',
   \ },
   \ }
 function! LightlineFugitive()
@@ -466,11 +509,8 @@ function! LightlineFugitive()
   return ''
 endfunction
 function! LightlineFilename()
-  return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \  &ft == 'unite' ? unite#get_status_string() :
-        \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+  return  ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+        \ (winwidth(0) > 100 ? '' != expand('%') ? expand('%') : '' : '' != expand('%:t') ? expand('%:t') : '') .
         \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
 function! LightlineReadonly()
@@ -480,33 +520,47 @@ function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 function! LightlineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-function! LightlineFiletype()
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  return winwidth(0) > 200 ? &fileformat : ''
 endfunction
 function! LightlineFileencoding()
-  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+  return winwidth(0) > 200 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+function! LightlineFiletype()
+  return winwidth(0) > 200 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 function! LightlineMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 function! LightlineErrors()
   let l:counts = ale#statusline#Count(bufnr(''))
-  let l:errors = l:counts.error + l:counts.style_error
-  return printf('%d', errors)
+  let l:c = l:counts.error + l:counts.style_error
+  return l:c == 0 ? '' : printf('✗ %d', c)
 endfunction
 function! LightlineWarnings()
   let l:counts = ale#statusline#Count(bufnr(''))
-  let l:errors = l:counts.error + l:counts.style_error
-  let l:warnings = l:counts.total - l:errors
-  return printf('%d', warnings)
+  let l:c = l:counts.warning + l:counts.info + l:counts.style_warning
+  return l:c == 0 ? '' : printf('▲ %d', c)
 endfunction
-
-function! s:inactive_input_method()
-  call system('fcitx-remote -c')
+function! LightlineOK()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  return l:counts.total == 0 ? '✓ ' : ''
 endfunction
-augroup inactive_input_method
+augroup LightLineOnALE
   autocmd!
-  autocmd InsertLeave * call s:inactive_input_method()
+  autocmd User ALELint call lightline#update()
 augroup END
+
+" tmuxline
+let g:tmuxline_theme = 'lightline'
+let g:tmuxline_preset = {
+      \ 'a'    : '#S',
+      \ 'win'  : ['#I', '#W'],
+      \ 'cwin' : ['#I', '#W', '#F'],
+      \ 'x'    : [
+      \   '⚡#{battery_percentage}',
+      \ ],
+      \ 'y'    : [
+      \   '#{wifi_ssid}',
+      \ ],
+      \ 'z'    : [ '%Y-%m-%d(%a) %H:%M ' ],
+      \ 'options' : {'status-justify':'left'} }
