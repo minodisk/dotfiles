@@ -472,6 +472,7 @@ let g:lightline = {
   \     [ 'filename' ],
   \   ],
   \   'right': [
+  \     [ 'ok', 'warnings', 'errors' ],
   \     [ 'lineinfo', 'percent' ],
   \     [ 'fileformat', 'fileencoding', 'filetype' ],
   \   ],

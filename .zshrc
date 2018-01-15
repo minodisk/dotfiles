@@ -25,18 +25,20 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # prompt
 export GIT_TERMINAL_PROMPT=1
+bg_base='%K{237}'
+fg_base='%F{246}'
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX=""
 ZSH_THEME_GIT_PROMPT_SEPARATOR=""
 ZSH_THEME_GIT_PROMPT_BRANCH="%{%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[blue]%K{237}%}%{o%G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%K{237}%}%{x%G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[yellow]%K{237}%}%{+%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg[yellow]%K{237}%}%{↓%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[yellow]%K{237}%}%{↑%G%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[magenta]%K{237}%}%{…%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%K{237}%}%{✔%G%}"
-PROMPT='%{$fg[black]$bg[blue]%} %. %{$fg[blue]%K{237}%}%{%F{246}%K{237}%} $(git_super_status)%{%F{246}%K{237}%} %{%F{237}$bg[black]%}%{%f%k${reset_color}%} '
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[blue]%}$bg_base%{o%G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]$bg_base%}%{x%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[yellow]$bg_base%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg[yellow]$bg_base%}%{↓%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[yellow]$bg_base%}%{↑%G%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[magenta]$bg_base%}%{…%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]$bg_base%}%{✔%G%}"
+PROMPT='%{$fg[black]$bg[blue]%} %. %{$fg[blue]$bg_base%}%{$fg_base$bg_base%} $(git_super_status)%{$fg_base$bg_base%} %{%F{237}$bg[black]%}%{%f%k$fg[reset]$bg[reset]%} '
 
 # history
 bindkey '^[[A' history-substring-search-up
