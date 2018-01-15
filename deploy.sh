@@ -1,10 +1,18 @@
 #!/bin/bash
 
-shopt -s dotglob
-for path in $(pwd)/*; do
-  base=$(basename $path)
-  if [[ $base == ".git" || $base == ".gitignore" || $base == "deploy.sh" ]]; then
-    continue
-  fi
-  ln -fs $path ~
+files="
+  .config/alacritty/alacritty.yml
+  .config/nvim/init.vim
+  .config/tmux/tmuxline.conf
+  .tmux.conf
+  .zshrc
+"
+
+for f in $files; do
+  from=$(pwd)/$f
+  to=$HOME/$f
+  cmd="ln -fs $from $to"
+  echo "exec '$cmd'"
+  mkdir -p $(dirname $to)
+  eval $cmd
 done
