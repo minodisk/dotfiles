@@ -55,8 +55,9 @@ Plug 'w0rp/ale'
 " Languages
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
-Plug 'othree/yajs.vim', { 'for': ['javascript'] }
-Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
+" Plug 'othree/yajs.vim', { 'for': ['javascript'] }
+" Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
 Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
@@ -146,6 +147,7 @@ colorscheme gruvbox
 
 augroup file_type
   autocmd!
+  autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
@@ -412,8 +414,28 @@ let g:ale_linters = {
       \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
       \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
       \ }
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '▲'
+" ⊗
+" ⊘
+" ❎
+" ⦸
+" ⯑
+" �
+" ⚠
+" ⛒
+" ⨂
+" ⮾
+" ⮿
+" 🚫
+" 🛇
+" 🛈
+let g:ale_sign_error = '⮿'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_info = '🛈'
+let g:ale_sign_style_error = 'SE'
+let g:ale_sign_style_warning = 'SW'
+let g:ale_echo_msg_error_str = g:ale_sign_error
+let g:ale_echo_msg_warning_str = g:ale_sign_warning
+let g:ale_echo_msg_info_str = g:ale_sign_info
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
@@ -450,6 +472,7 @@ let s:p.tabline.middle = [ [ s:base2, s:base02 ] ]
 let s:p.tabline.right = [ [ s:base2, s:base00 ] ]
 let s:p.normal.error = [ [ s:base03, s:red ] ]
 let s:p.normal.warning = [ [ s:base023, s:yellow ] ]
+let s:p.normal.info = [ [ s:base023, s:blue ] ]
 let s:p.normal.ok = [ [ s:base023, s:green ] ]
 let g:lightline#colorscheme#gruvbox#palette = lightline#colorscheme#flatten(s:p)
 let g:lightline = {
@@ -461,7 +484,7 @@ let g:lightline = {
   \     [ 'filename' ],
   \   ],
   \   'right': [
-  \     [ 'ok', 'warnings', 'errors' ],
+  \     [ 'ok', 'info', 'warnings', 'errors' ],
   \     [ 'lineinfo', 'percent' ],
   \     [ 'fileformat', 'fileencoding', 'filetype' ],
   \   ],
@@ -472,7 +495,6 @@ let g:lightline = {
   \     [ 'filename' ],
   \   ],
   \   'right': [
-  \     [ 'ok', 'warnings', 'errors' ],
   \     [ 'lineinfo', 'percent' ],
   \     [ 'fileformat', 'fileencoding', 'filetype' ],
   \   ],
@@ -494,14 +516,15 @@ let g:lightline = {
   \ 'component_expand': {
   \   'errors': 'LightlineErrors',
   \   'warnings': 'LightlineWarnings',
+  \   'infos': 'LightlineInfos',
   \   'ok': 'LightlineOK',
   \ },
   \ 'component_type': {
   \   'errors': 'error',
   \   'warnings': 'warning',
+  \   'ifnos': 'info',
   \   'ok': 'ok',
-  \ },
-  \ }
+  \ } }
 function! LightlineFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
     let branch = fugitive#head()
@@ -535,12 +558,17 @@ endfunction
 function! LightlineErrors()
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:c = l:counts.error + l:counts.style_error
-  return l:c == 0 ? '' : printf('✗ %d', c)
+  return l:c == 0 ? '' : printf('%s %d', g:ale_sign_error, c)
 endfunction
 function! LightlineWarnings()
   let l:counts = ale#statusline#Count(bufnr(''))
-  let l:c = l:counts.warning + l:counts.info + l:counts.style_warning
-  return l:c == 0 ? '' : printf('▲ %d', c)
+  let l:c = l:counts.warning + l:counts.style_warning
+  return l:c == 0 ? '' : printf('%s %d', g:ale_sign_warning, c)
+endfunction
+function! LightlineInfos()
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:c = l:counts.info
+  return l:c == 0 ? '' : printf('%s %d', g:ale_sign_info, c)
 endfunction
 function! LightlineOK()
   let l:counts = ale#statusline#Count(bufnr(''))
