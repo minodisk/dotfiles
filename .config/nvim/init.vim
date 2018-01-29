@@ -26,7 +26,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tmhedberg/matchit'
 
 " Input Supports
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
@@ -46,19 +46,26 @@ Plug 'itchyny/lightline.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " File Operations
-Plug 'Shougo/denite.nvim'
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
 
 " Lint / Warn / Error
 Plug 'w0rp/ale'
 
 " Languages
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
 " Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 " Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
-Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
+" Plug 'heavenshell/vim-flood'
+" Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
+" Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
+Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
@@ -74,8 +81,9 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
+      \ 'do': 'yarn install',
+      \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
+      \ }
 
 " External Tools
 Plug 'tpope/vim-git'
@@ -83,7 +91,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
-  \ 'do': 'go get github.com/haya14busa/gtrans' }
+      \ 'do': 'go get github.com/haya14busa/gtrans'
+      \ }
 
 call plug#end()
 
@@ -175,7 +184,7 @@ augroup END
 augroup prettier
   autocmd!
   let g:prettier#autoformat = 0
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md Prettier
 augroup END
 
 " Move window
@@ -225,6 +234,16 @@ let g:eskk#large_dictionary = {
 
 " vim-javascript
 let g:javascript_plugin_flow = 1
+
+" Language Client
+" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_serverCommands = {
+"       \ 'javascript': ['flow-language-server', '--stdio'],
+"       \ }
+" let g:LanguageClient_changeThrottle = 0.5
 
 " rust
 let g:rustfmt_autosave = 1
@@ -428,11 +447,12 @@ let g:ale_linters = {
 " 🚫
 " 🛇
 " 🛈
-let g:ale_sign_error = '⮿'
+" ⓘ
+let g:ale_sign_error = '⨂'
 let g:ale_sign_warning = '⚠'
-let g:ale_sign_info = '🛈'
-let g:ale_sign_style_error = 'SE'
-let g:ale_sign_style_warning = 'SW'
+let g:ale_sign_info = 'ⓘ'
+" let g:ale_sign_style_error = 'SE'
+" let g:ale_sign_style_warning = 'SW'
 let g:ale_echo_msg_error_str = g:ale_sign_error
 let g:ale_echo_msg_warning_str = g:ale_sign_warning
 let g:ale_echo_msg_info_str = g:ale_sign_info
