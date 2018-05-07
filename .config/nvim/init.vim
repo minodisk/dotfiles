@@ -154,6 +154,9 @@ scriptencoding utf-8
 
 colorscheme gruvbox
 
+highlight Normal ctermbg=none
+highlight NonText ctermbg=none
+
 augroup file_type
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript
@@ -184,7 +187,7 @@ augroup END
 augroup prettier
   autocmd!
   let g:prettier#autoformat = 0
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md Prettier
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss Prettier
 augroup END
 
 " Move window
@@ -429,7 +432,7 @@ augroup END
 " ale
 let g:ale_linters = {
       \ 'css': ['stylelint'],
-      \ 'javascript': ['flow'],
+      \ 'javascript': ['flow', 'eslint'],
       \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
       \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
       \ }
