@@ -27,6 +27,7 @@ Plug 'tmhedberg/matchit'
 
 " Input Supports
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go', {'do': 'make' }
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
@@ -37,7 +38,6 @@ Plug 'tyru/caw.vim'
 " Replace Supports
 Plug 'tpope/vim-abolish'
 
-" Mode Supports
 Plug 'kana/vim-submode'
 
 " Visual
@@ -52,11 +52,13 @@ Plug 'Shougo/neomru.vim'
 " Lint / Warn / Error
 Plug 'w0rp/ale'
 
+" Language Server
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 " Languages
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
 " Plug 'othree/yajs.vim', { 'for': ['javascript'] }
@@ -76,6 +78,7 @@ Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
+Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
 
 " Formatters
 Plug 'vim-scripts/Align'
@@ -159,6 +162,7 @@ highlight NonText ctermbg=none
 
 augroup file_type
   autocmd!
+  autocmd BufNewFile,BufRead,BufReadPre *.js.flow set filetype=javascript
   autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
@@ -187,7 +191,7 @@ augroup END
 augroup prettier
   autocmd!
   let g:prettier#autoformat = 0
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss Prettier
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.less,*.scss Prettier
 augroup END
 
 " Move window
@@ -239,14 +243,19 @@ let g:eskk#large_dictionary = {
 let g:javascript_plugin_flow = 1
 
 " Language Client
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-" let g:LanguageClient_autoStart = 1
-" let g:LanguageClient_serverCommands = {
-"       \ 'javascript': ['flow-language-server', '--stdio'],
-"       \ }
-" let g:LanguageClient_changeThrottle = 0.5
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['flow-language-server', '--stdio'],
+    \ }
+    " \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    " \ 'javascript': ['javascript-typescript-stdio'],
+    " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    " \ 'python': ['pyls'],
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " rust
 let g:rustfmt_autosave = 1
@@ -335,7 +344,7 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#input_patterns = {}
 let g:deoplete#input_patterns.typescript = '\w*'
 let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
+" let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
 " let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 " let g:deoplete#omni_patterns.typescript = '[^. *\t]\.\w*'
 let g:deoplete#omni#functions = {}
@@ -391,6 +400,16 @@ nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
 " with vim-textobj-between
 nmap <silent>sdb <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
 nmap <silent>srb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
+
+" submode
+call submode#enter_with('bufmove', 'n', '', '<C-w>l', '<C-w>>')
+call submode#enter_with('bufmove', 'n', '', '<C-w>h', '<C-w><')
+call submode#enter_with('bufmove', 'n', '', '<C-w>k', '<C-w>+')
+call submode#enter_with('bufmove', 'n', '', '<C-w>j', '<C-w>-')
+call submode#map('bufmove', 'n', '', 'l', '<C-w>>')
+call submode#map('bufmove', 'n', '', 'h', '<C-w><')
+call submode#map('bufmove', 'n', '', 'k', '<C-w>+')
+call submode#map('bufmove', 'n', '', 'j', '<C-w>-')
 
 " indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
@@ -609,7 +628,7 @@ let g:tmuxline_preset = {
       \ 'win'  : ['#I', '#W'],
       \ 'cwin' : ['#I', '#W', '#F'],
       \ 'x'    : [
-      \   '⚡#{battery_percentage}',
+      \   '⚡ #{battery_percentage}',
       \ ],
       \ 'y'    : [
       \   '#{wifi_ssid}',
