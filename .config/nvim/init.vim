@@ -44,6 +44,7 @@ Plug 'kana/vim-submode'
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'luochen1990/rainbow'
 
 " File Operations
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -61,16 +62,20 @@ Plug 'autozimu/LanguageClient-neovim', {
 " Languages
 Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
-" Plug 'othree/yajs.vim', { 'for': ['javascript'] }
-" Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
+
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
+Plug 'othree/yajs.vim', { 'for': ['javascript'] }
+Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
+
 " Plug 'heavenshell/vim-flood'
 " Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
 " Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
 Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'godlygeek/tabular', { 'for': ['markdown'] }
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -261,6 +266,9 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 let g:rustfmt_autosave = 1
 let g:rustfmt_command = "cargo fmt --"
 
+" markdown
+let g:vim_markdown_folding_disabled = 1
+
 " PreserveNoEOL
 let g:PreserveNoEOL = 1
 
@@ -323,16 +331,25 @@ nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <C-x><C-o>
 " Jump cursor to next/prev location list
-nmap <silent> <C-n> :lne<CR>
+omap <silent> <C-n> :lne<CR>
 nmap <silent> <C-N> :lp<CR>
 
 """ denite.nvim
+call denite#custom#source('file_rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
+call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+      \ [ '*~', '*.o', '*.exe', '*.bak',
+      \ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
+      \ '.hg/', '.git/', '.bzr/', '.svn/',
+      \ 'node_modules/', 'bower_components/', 'tmp/', 'log/', 'vendor/ruby',
+      \ '.idea/', 'dist/',
+      \ 'tags', 'tags-*'])
 nmap ,, [denite]
 nnoremap <silent> [denite]f :<C-u>Denite file_rec<CR>
 nnoremap <silent> [denite]g :<C-u>Denite -auto_preview grep<CR>
 nnoremap <silent> [denite]l :<C-u>Denite line<CR>
 nnoremap <silent> [denite]m :<C-u>Denite file_mru<CR>
 nnoremap <silent> [denite]y :<C-u>Denite neoyank<CR>
+
 " neomru
 let g:neomru#file_mru_limit=10000
 let g:neomru#directory_mru_limit=10000
@@ -371,6 +388,46 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+""" rainbow
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+      \   'ctermfgs': [167, 142, 214, 109, 175, 108, 208],
+      \   'operators': '_,_',
+      \   'parentheses': [
+      \     'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold',
+      \   ],
+      \   'separately': {
+      \     '*': {},
+      \     'tex': {
+      \       'parentheses': [
+      \         'start=/(/ end=/)/', 'start=/\[/ end=/\]/',
+      \       ],
+      \     },
+      \    'lisp': {
+      \      'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+      \     },
+      \     'vim': {
+      \       'parentheses': [
+      \         'start=/(/ end=/)/', 'start=/\[/ end=/\]/',
+      \         'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody',
+      \         'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody',
+      \       ],
+      \     },
+      \     'html': {
+      \       'parentheses': [
+      \         'start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold',
+      \       ],
+      \     },
+      \     'javascript': {
+      \       'parentheses': [
+      \         'start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold',
+      \         'start=/{/ end=/}/ fold',
+      \       ],
+      \     },
+      \     'css': 0,
+      \   },
+      \ }
 
 """ prettier
 " set all options as default: http://json.schemastore.org/prettierrc
