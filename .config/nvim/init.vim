@@ -32,12 +32,10 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
-Plug 'tyru/eskk.vim'
 Plug 'tyru/caw.vim'
 
 " Replace Supports
 Plug 'tpope/vim-abolish'
-
 Plug 'kana/vim-submode'
 
 " Visual
@@ -73,9 +71,12 @@ Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 " Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
-Plug 'mhartington/nvim-typescript', { 'for': ['typescript'] }
-Plug 'godlygeek/tabular', { 'for': ['markdown'] }
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
+Plug 'mhartington/nvim-typescript', {
+    \ 'do': './install.sh',
+    \ 'for': ['typescript']
+    \ }
+" Plug 'godlygeek/tabular', { 'for': ['markdown'] }
+" Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -83,19 +84,22 @@ Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
+Plug 'digitaltoad/vim-pug'
 Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
+Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
 
 " Formatters
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-      \ 'do': 'yarn install',
-      \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
-      \ }
+     \ 'do': 'yarn install',
+     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
+     \ }
 
 " External Tools
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fireplace'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
@@ -195,7 +199,7 @@ augroup END
 
 augroup prettier
   autocmd!
-  let g:prettier#autoformat = 0
+  " let g:prettier#autoformat = 0
   autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.less,*.scss Prettier
 augroup END
 
@@ -231,19 +235,6 @@ function! OpenTerm()
 endfunction
 nnoremap ,,t :<C-u>call OpenTerm()<CR>
 
-" eskk
-let g:eskk#directory = '~/.local/share/nvim/eskk'
-let g:eskk#dictionary = {
-      \ 'path': '~/.local/share/skk/.skk-jisyo',
-      \ 'sorted': 0,
-      \ 'encoding': 'utf-8',
-      \ }
-let g:eskk#large_dictionary = {
-      \ 'path': "~/.local/share/skk/SKK-JISYO.L",
-      \ 'sorted': 1,
-      \ 'encoding': 'euc-jp',
-      \ }
-
 " vim-javascript
 let g:javascript_plugin_flow = 1
 
@@ -267,7 +258,7 @@ let g:rustfmt_autosave = 1
 let g:rustfmt_command = "cargo fmt --"
 
 " markdown
-let g:vim_markdown_folding_disabled = 1
+" let g:vim_markdown_folding_disabled = 1
 
 " PreserveNoEOL
 let g:PreserveNoEOL = 1
@@ -692,3 +683,17 @@ let g:tmuxline_preset = {
       \ ],
       \ 'z'    : [ '%Y-%m-%d(%a) %H:%M ' ],
       \ 'options' : {'status-justify':'left'} }
+
+func! Hankaku()
+  :%s/０/0/g
+  :%s/１/1/g
+  :%s/２/2/g
+  :%s/３/3/g
+  :%s/４/4/g
+  :%s/５/5/g
+  :%s/６/6/g
+  :%s/７/7/g
+  :%s/８/8/g
+  :%s/９/9/g
+endfunc
+command Hankaku :call Hankaku()<CR>

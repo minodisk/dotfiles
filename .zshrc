@@ -68,7 +68,7 @@ export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # n
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 # vim
 alias vi='nvim'
@@ -78,8 +78,8 @@ alias vim='nvim'
 alias docker-compose-up="docker-compose stop && docker-compose rm -f && docker-compose build && docker-compose up"
 alias docker-ps="docker ps -a -q"
 alias docker-stop-all="docker stop \`docker-ps\`"
-alias docker-rm="docker rm \`docker-ps\`"
-alias docker-rmi="docker rmi \`docker images | awk '/^<none>/ { print \$3 }'\`"
+alias docker-rm="docker rm $(docker ps -a -q)"
+alias docker-rmi="docker rmi $(docker images -q)"
 
 # tmux
 alias tmux="tmux attach || tmux new-session \; source-file ~/.tmux.session"
