@@ -343,6 +343,33 @@ you should place your code here."
    '(neo-root-dir-face ((t (:foreground "#689d6a"))))
    '(neo-dir-link-face ((t (:foreground "#458588"))))
    '(neo-file-link-face ((t (:foreground "#ebdbb2")))))
+  ;; Load local node_modules
+  (eval-after-load 'js2-mode
+    '(add-hook 'js2-mode-hook #'add-node-modules-path))
+  (eval-after-load 'rjsx-mode
+    '(add-hook 'rjsx-mode-hook #'add-node-modules-path))
+  (eval-after-load 'typescript-mode
+    '(add-hook 'typescript-mode-hook #'add-node-modules-path))
+  (eval-after-load 'web-mode
+    '(add-hook 'web-mode-hook #'add-node-modules-path))
+  ;; Tide
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+  ;; TSX
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                (setup-tide-mode))))
   ;; Fix the function to jump to definition in TypeScript
   (add-to-list 'spacemacs-jump-handlers-typescript-mode
                '(tide-jump-to-definition :async t))
@@ -354,14 +381,6 @@ you should place your code here."
   (add-hook 'css-mode-hook 'prettier-js-mode)
   ;; ESLint
   (setq js2-mode-show-parse-errors nil js2-mode-show-strict-warnings nil)
-  (eval-after-load 'js2-mode
-    '(add-hook 'js2-mode-hook #'add-node-modules-path))
-  (eval-after-load 'rjsx-mode
-    '(add-hook 'rjsx-mode-hook #'add-node-modules-path))
-  (eval-after-load 'typescript-mode
-    '(add-hook 'typescript-mode-hook #'add-node-modules-path))
-  (eval-after-load 'web-mode
-    '(add-hook 'web-mode-hook #'add-node-modules-path))
   ;; Flow
   ;; (load-file "~/config/spacemacs/flow/flow.el")
   ;; (init-flowjs)
