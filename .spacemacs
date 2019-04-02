@@ -353,6 +353,26 @@ you should place your code here."
     '(add-hook 'typescript-mode-hook #'add-node-modules-path))
   (eval-after-load 'web-mode
     '(add-hook 'web-mode-hook #'add-node-modules-path))
+
+  ;; Tide
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+  ;; TSX
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                (setup-tide-mode))))
+
   ;; Fix the function to jump to definition in TypeScript
   (add-to-list 'spacemacs-jump-handlers-typescript-mode
                '(tide-jump-to-definition :async t))
@@ -369,7 +389,9 @@ you should place your code here."
   (add-hook 'css-mode-hook 'prettier-js-mode)
   ;; ESLint
   (setq js2-mode-show-parse-errors nil js2-mode-show-strict-warnings nil)
-  (add-hook 'rjsx-mode-hook 'flycheck-mode)
+
+  ;; (add-hook 'rjsx-mode-hook 'flycheck-mode)
+
   ;; Flow
   ;; (load-file "~/config/spacemacs/flow/flow.el")
   ;; (init-flowjs)
