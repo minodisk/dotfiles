@@ -48,7 +48,6 @@ values."
             shell-default-position 'right
             shell-default-width 50)
      spell-checking
-     syntax-checking
      version-control
 
      ;; Languages
@@ -335,6 +334,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; Powerline
   (setq powerline-default-separator 'arrow)
+
   ;; NeoTree
   ;; (setq neo-theme (if (display-graphic-p) 'arrow))
   (custom-set-faces
@@ -343,17 +343,8 @@ you should place your code here."
    '(neo-root-dir-face ((t (:foreground "#689d6a"))))
    '(neo-dir-link-face ((t (:foreground "#458588"))))
    '(neo-file-link-face ((t (:foreground "#ebdbb2")))))
-  ;; Fix the function to jump to definition in TypeScript
-  (add-to-list 'spacemacs-jump-handlers-typescript-mode
-               '(tide-jump-to-definition :async t))
-  ;; Prettier
-  (add-hook 'js2-mode-hook 'prettier-js-mode)
-  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
-  (add-hook 'typescript-mode-hook 'prettier-js-mode)
-  (add-hook 'web-mode-hook 'prettier-js-mode)
-  (add-hook 'css-mode-hook 'prettier-js-mode)
-  ;; ESLint
-  (setq js2-mode-show-parse-errors nil js2-mode-show-strict-warnings nil)
+
+  ;; Use local node_modules
   (eval-after-load 'js2-mode
     '(add-hook 'js2-mode-hook #'add-node-modules-path))
   (eval-after-load 'rjsx-mode
@@ -362,12 +353,30 @@ you should place your code here."
     '(add-hook 'typescript-mode-hook #'add-node-modules-path))
   (eval-after-load 'web-mode
     '(add-hook 'web-mode-hook #'add-node-modules-path))
+  ;; Fix the function to jump to definition in TypeScript
+  (add-to-list 'spacemacs-jump-handlers-typescript-mode
+               '(tide-jump-to-definition :async t))
+  ;; Prettier
+  (add-hook 'js2-mode-hook (lambda ()
+                             (flycheck-mode 1)
+                             (prettier-js-mode 1)
+                             (setq flycheck-checker 'javascript-eslint)))
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+  (add-hook 'typescript-mode-hook (lambda ()
+                                    (flycheck-mode 1)
+                                    (prettier-js-mode 1)))
+  (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'css-mode-hook 'prettier-js-mode)
+  ;; ESLint
+  (setq js2-mode-show-parse-errors nil js2-mode-show-strict-warnings nil)
+  (add-hook 'rjsx-mode-hook 'flycheck-mode)
   ;; Flow
   ;; (load-file "~/config/spacemacs/flow/flow.el")
   ;; (init-flowjs)
   ;; Prettier-Eslint
   ;; (eval-after-load 'js2-mode
   ;;   '(add-hook 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'prettier-eslint nil t))))
+
   ;; Magit
   (setq magit-repository-directories '("~/repos/")))
 
@@ -380,7 +389,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter eshell-z eshell-prompt-extras esh-help diff-hl rjsx-mode flycheck-flow company-quickhelp add-node-modules-path company-flow web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor company-web web-completion-data company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete prettier-js web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (tide typescript-mode clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider sesman queue clojure-mode wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter eshell-z eshell-prompt-extras esh-help diff-hl rjsx-mode flycheck-flow company-quickhelp add-node-modules-path company-flow web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor company-web web-completion-data company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete prettier-js web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
