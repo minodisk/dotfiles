@@ -70,10 +70,9 @@ Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 " Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
 " Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
-Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript'] }
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {
-    \ 'do': './install.sh',
-    \ 'for': ['typescript']
+    \ 'do': './install.sh'
     \ }
 " Plug 'godlygeek/tabular', { 'for': ['markdown'] }
 " Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
@@ -326,20 +325,30 @@ omap <silent> <C-n> :lne<CR>
 nmap <silent> <C-N> :lp<CR>
 
 """ denite.nvim
-call denite#custom#source('file_rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
+call denite#custom#source('file/rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [ '*~', '*.o', '*.exe', '*.bak',
-      \ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
-      \ '.hg/', '.git/', '.bzr/', '.svn/',
-      \ 'node_modules/', 'bower_components/', 'tmp/', 'log/', 'vendor/ruby',
-      \ '.idea/', 'dist/',
-      \ 'tags', 'tags-*'])
+     \ [ '*~', '*.o', '*.exe', '*.bak',
+     \ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
+     \ '.hg/', '.git/', '.bzr/', '.svn/',
+     \ 'node_modules/', 'bower_components/', 'tmp/', 'log/', 'vendor/ruby',
+     \ '.idea/', 'dist/',
+     \ 'tags', 'tags-*'])
 nmap ,, [denite]
-nnoremap <silent> [denite]f :<C-u>Denite file_rec<CR>
+nnoremap <silent> [denite]f :<C-u>Denite file/rec<CR>
 nnoremap <silent> [denite]g :<C-u>Denite -auto_preview grep<CR>
 nnoremap <silent> [denite]l :<C-u>Denite line<CR>
 nnoremap <silent> [denite]m :<C-u>Denite file_mru<CR>
 nnoremap <silent> [denite]y :<C-u>Denite neoyank<CR>
+
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>    denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d       denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p       denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q       denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i       denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
+endfunction
 
 " neomru
 let g:neomru#file_mru_limit=10000
@@ -518,14 +527,14 @@ let g:ale_linters = {
 " 🛇
 " 🛈
 " ⓘ
-let g:ale_sign_error = '⨂'
-let g:ale_sign_warning = '⚠'
-let g:ale_sign_info = 'ⓘ'
+" let g:ale_sign_error = '⨂'
+" let g:ale_sign_warning = '⚠'
+" let g:ale_sign_info = 'ⓘ'
 " let g:ale_sign_style_error = 'SE'
 " let g:ale_sign_style_warning = 'SW'
-let g:ale_echo_msg_error_str = g:ale_sign_error
-let g:ale_echo_msg_warning_str = g:ale_sign_warning
-let g:ale_echo_msg_info_str = g:ale_sign_info
+" let g:ale_echo_msg_error_str = g:ale_sign_error
+" let g:ale_echo_msg_warning_str = g:ale_sign_warning
+" let g:ale_echo_msg_info_str = g:ale_sign_info
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
