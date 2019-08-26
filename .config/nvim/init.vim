@@ -27,7 +27,7 @@ Plug 'tmhedberg/matchit'
 
 " Input Supports
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', {'do': 'make' }
+" Plug 'zchee/deoplete-go', {'do': 'make' }
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
@@ -358,17 +358,25 @@ let g:neomru#directory_mru_limit=10000
 let g:deoplete#enable_at_startup = 1
 " let g:deoplete#enable_debug = 1
 " let g:deoplete#enable_profile = 1
-let g:deoplete#input_patterns = {}
-let g:deoplete#input_patterns.typescript = '\w*'
-let g:deoplete#omni_patterns = {}
+" let g:deoplete#input_patterns = {}
+" let g:deoplete#input_patterns.typescript = '\w*'
+" let g:deoplete#omni_patterns = {}
 " let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
 " let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 " let g:deoplete#omni_patterns.typescript = '[^. *\t]\.\w*'
-let g:deoplete#omni#functions = {}
-let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
+" let g:deoplete#omni#functions = {}
+" let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 " let g:deoplete#sources#tss#javascript_support = 1
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ deoplete#manual_complete()
+function! s:check_back_space() abort "{{{
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
 
 """ neosnippet
 let g:neosnippet#enable_completed_snippet = 1
