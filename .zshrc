@@ -65,7 +65,12 @@ export PATH="$HOME/go/bin:$PATH"
 
 # rust
 # export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
+
+# Flutter
+export PATH="$HOME/Library/flutter/bin:$PATH"
+alias flutter-create='(){flutter create --org com.mono0926 -i swift -a kotlin --with-driver-test $1}'
+export PATH="$HOME/.pub-cache/bin:$PATH"
 
 # n
 export PATH=$HOME/.nodebrew/current/bin:$PATH
@@ -92,15 +97,15 @@ alias bfg='java -jar /usr/local/jar/bfg.jar'
 alias teensy_loader_="teensy_loader --mcu=atmega32u4 -vw"
 
 # Android
-export ANDROID_HOME=${HOME}/Android/Sdk
+export ANDROID_HOME=${HOME}/Library/Android/Sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 if [ -f "$HOME/.zsecret" ]; then source "$HOME/.zsecret"; fi
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "$HOME/Library/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/Library/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f "$HOME/Library/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/Library/google-cloud-sdk/completion.zsh.inc"; fi
 
 source ~/.zprofile

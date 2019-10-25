@@ -26,10 +26,10 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tmhedberg/matchit'
 
 " Input Supports
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'zchee/deoplete-go', {'do': 'make' }
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
@@ -51,14 +51,25 @@ Plug 'Shougo/neomru.vim'
 " Lint / Warn / Error
 Plug 'w0rp/ale'
 
-" Language Server
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Language Client
+" Plug 'autozimu/LanguageClient-neovim', {
+"  \ 'branch': 'next',
+"  \ 'do': 'bash install.sh',
+"  \ }
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp', {
+      \ 'do': 'go get golang.org/x/tools/cmd/gopls'
+      \ }
+
+" Completion
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/asyncomplete-neosnippet.vim'
 
 " Languages
-Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl', 'gotexttmpl'] }
+Plug 'fatih/vim-go', {
+      \ 'for': ['go', 'gohtmltmpl', 'gotexttmpl'],
+      \ }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
 
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
@@ -71,9 +82,10 @@ Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 " Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {
-    \ 'do': './install.sh'
-    \ }
+" Plug 'mhartington/nvim-typescript', {
+"    \ 'do': './install.sh'
+"    \ }
+Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescript.tsx'] }
 " Plug 'godlygeek/tabular', { 'for': ['markdown'] }
 " Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
@@ -86,12 +98,15 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'digitaltoad/vim-pug'
 Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
 Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
+Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
+" Plug 'villainy/deoplete-dart', { 'for': ['dart'] }
+Plug 'thosakwe/vim-flutter'
 
 " Formatters
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-     \ 'do': 'yarn install',
+     \ 'do': 'npm i -g prettier',
      \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
      \ }
 
@@ -145,8 +160,8 @@ set showcmd
 set hlsearch
 set incsearch
 set smartcase
-set spelllang+=cjk
-set spell
+" set spelllang+=cjk
+" set spell
 set clipboard=unnamed,unnamedplus
 set diffopt+=vertical
 set encoding=utf-8
@@ -171,7 +186,7 @@ highlight NonText ctermbg=none
 augroup file_type
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPre *.js.flow set filetype=javascript
-  autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript
+  autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript.tsx
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
@@ -198,8 +213,7 @@ augroup END
 
 augroup prettier
   autocmd!
-  " let g:prettier#autoformat = 0
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.less,*.scss Prettier
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.module.css,*.less,*.scss Prettier
 augroup END
 
 " Move window
@@ -234,23 +248,48 @@ function! OpenTerm()
 endfunction
 nnoremap ,,t :<C-u>call OpenTerm()<CR>
 
-" vim-javascript
-let g:javascript_plugin_flow = 1
-
 " Language Client
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['flow-language-server', '--stdio'],
-    \ }
-    " \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    " \ 'javascript': ['javascript-typescript-stdio'],
-    " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    " \ 'python': ['pyls'],
+" let g:LanguageClient_serverCommands = {
+" \ 'dart': ['dart_language_server'],
+" \ }
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" " Or map each action separately
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" Language Server
+if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ })
+endif
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+if executable('dart_language_server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'dart_language_server',
+        \ 'cmd': {server_info->['dart_language_server']},
+        \ 'whitelist': ['dart'],
+        \ })
+endif
+let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'}
+
+" acyncomplete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 " rust
 let g:rustfmt_autosave = 1
@@ -355,28 +394,16 @@ let g:neomru#file_mru_limit=10000
 let g:neomru#directory_mru_limit=10000
 
 """ deoplete.nvim
-let g:deoplete#enable_at_startup = 1
-" let g:deoplete#enable_debug = 1
-" let g:deoplete#enable_profile = 1
-" let g:deoplete#input_patterns = {}
-" let g:deoplete#input_patterns.typescript = '\w*'
-" let g:deoplete#omni_patterns = {}
-" let g:deoplete#omni_patterns.go = '[^. *\t]\.\w*'
-" let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
-" let g:deoplete#omni_patterns.typescript = '[^. *\t]\.\w*'
-" let g:deoplete#omni#functions = {}
-" let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
-" let g:deoplete#sources#tss#javascript_support = 1
-" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ deoplete#manual_complete()
-function! s:check_back_space() abort "{{{
-let col = col('.') - 1
-return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#sources#dart#dart_sdk_path = "/Users/minodisk/Library/dart-sdk"
+" inoremap <silent><expr> <TAB>
+"  \ pumvisible() ? "\<C-n>" :
+"  \ <SID>check_back_space() ? "\<TAB>" :
+"  \ deoplete#manual_complete()
+" function! s:check_back_space() abort "{{{
+" let col = col('.') - 1
+" return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction"}}}
 
 """ neosnippet
 let g:neosnippet#enable_completed_snippet = 1
@@ -503,6 +530,8 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 0
+let g:go_doc_keywordprg_enabled = 0
 augroup vimgo
   autocmd!
   autocmd FileType go nmap ,b :<Plug>(go-build)<CR>
@@ -515,34 +544,34 @@ augroup END
 
 " ale
 let g:ale_linters = {
-      \ 'css': ['stylelint'],
-      \ 'javascript': ['flow', 'eslint'],
-      \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
-      \ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-      \ }
-" ⊗
-" ⊘
-" ❎
-" ⦸
-" ⯑
-" �
-" ⚠
-" ⛒
-" ⨂
-" ⮾
-" ⮿
-" 🚫
-" 🛇
-" 🛈
-" ⓘ
-" let g:ale_sign_error = '⨂'
-" let g:ale_sign_warning = '⚠'
-" let g:ale_sign_info = 'ⓘ'
-" let g:ale_sign_style_error = 'SE'
-" let g:ale_sign_style_warning = 'SW'
-" let g:ale_echo_msg_error_str = g:ale_sign_error
-" let g:ale_echo_msg_warning_str = g:ale_sign_warning
-" let g:ale_echo_msg_info_str = g:ale_sign_info
+     \ 'css': ['stylelint'],
+     \ 'javascript': ['eslint'],
+     \ 'typescript': ['eslint'],
+     "\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
+     \ }
+" " ⊗
+" " ⊘
+" " ❎
+" " ⦸
+" " ⯑
+" " �
+" " ⚠
+" " ⛒
+" " ⨂
+" " ⮾
+" " ⮿
+" " 🚫
+" " 🛇
+" " 🛈
+" " ⓘ
+" " let g:ale_sign_error = '⨂'
+" " let g:ale_sign_warning = '⚠'
+" " let g:ale_sign_info = 'ⓘ'
+" " let g:ale_sign_style_error = 'SE'
+" " let g:ale_sign_style_warning = 'SW'
+" " let g:ale_echo_msg_error_str = g:ale_sign_error
+" " let g:ale_echo_msg_warning_str = g:ale_sign_warning
+" " let g:ale_echo_msg_info_str = g:ale_sign_info
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
@@ -701,16 +730,31 @@ let g:tmuxline_preset = {
       \ 'z'    : [ '%Y-%m-%d(%a) %H:%M ' ],
       \ 'options' : {'status-justify':'left'} }
 
-func! Hankaku()
-  :%s/０/0/g
-  :%s/１/1/g
-  :%s/２/2/g
-  :%s/３/3/g
-  :%s/４/4/g
-  :%s/５/5/g
-  :%s/６/6/g
-  :%s/７/7/g
-  :%s/８/8/g
-  :%s/９/9/g
-endfunc
+" Utils
+function! Hankaku()
+  :silent! %s/０/0/g
+  :silent! %s/１/1/g
+  :silent! %s/２/2/g
+  :silent! %s/３/3/g
+  :silent! %s/４/4/g
+  :silent! %s/５/5/g
+  :silent! %s/６/6/g
+  :silent! %s/７/7/g
+  :silent! %s/８/8/g
+  :silent! %s/９/9/g
+endfunction
 command Hankaku :call Hankaku()<CR>
+
+function! CSS2Props()
+  :silent! %s/\v([a-z-]+)\s*:\s+([a-zA-Z0-9%#.\(\) -]+);/\1: '\2',/g
+  :silent! %s/\v([a-z]+)-([a-z])([a-z]+:)/\1\U\2\e\3/g
+  :silent! %s/\v'var\(--color-([a-zA-Z]+)\)'/colors.\1/g
+  :silent! %s/\v'(.*)var\(--color-([a-zA-Z]+)\)'/`\1${colors.\2}`/g
+endfunction
+command CSS2Props :call CSS2Props()<CR>
+
+function! Delete()
+  :silent! call delete(expand('%'))
+  :silent! q!
+endfunction
+command Delete :call Delete()<CR>
