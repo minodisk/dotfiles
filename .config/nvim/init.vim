@@ -97,7 +97,9 @@ Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'digitaltoad/vim-pug'
 Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
-Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
+" Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
+Plug 'snoe/clojure-lsp', { 'for': ['clojure'] }
+Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
 " Plug 'villainy/deoplete-dart', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
@@ -279,6 +281,13 @@ if executable('dart_language_server')
         \ 'name': 'dart_language_server',
         \ 'cmd': {server_info->['dart_language_server']},
         \ 'whitelist': ['dart'],
+        \ })
+endif
+if executable('clojure-lsp')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clojure-lsp',
+        \ 'cmd': {server_info->['clojure-lsp']},
+        \ 'whitelist': ['clojure'],
         \ })
 endif
 let g:lsp_signs_enabled = 1         " enable signs
