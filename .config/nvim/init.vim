@@ -72,22 +72,14 @@ Plug 'fatih/vim-go', {
       \ }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
 
+"" JavaScript/TypeScript
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
 Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
-
-" Plug 'heavenshell/vim-flood'
-" Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
-" Plug 'wokalski/autocomplete-flow', { 'for': ['javascript'] }
-Plug 'minodisk/autocomplete-flow', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'mhartington/nvim-typescript', {
-"    \ 'do': './install.sh'
-"    \ }
 Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescript.tsx'] }
-" Plug 'godlygeek/tabular', { 'for': ['markdown'] }
-" Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
+
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -103,6 +95,7 @@ Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
 " Plug 'villainy/deoplete-dart', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
+Plug 'jparise/vim-graphql'
 
 " Formatters
 Plug 'vim-scripts/Align'
@@ -218,6 +211,8 @@ augroup prettier
   autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.module.css,*.less,*.scss Prettier
 augroup END
 
+nmap , [shortcut]
+
 " Move window
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
@@ -260,7 +255,7 @@ nnoremap ,,t :<C-u>call OpenTerm()<CR>
 " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-" Language Server
+" vim-lsp: Language Server
 if executable('typescript-language-server')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'typescript-language-server',
@@ -294,6 +289,12 @@ let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
+nnoremap <silent> [shortcut]d :<C-u>LspPeekDefinition<CR>
+nnoremap <silent> [shortcut]i :<C-u>LspPeekImplementation<CR>
+nnoremap <silent> [shortcut]t :<C-u>LspPeekTypeDefinition<CR>
+nnoremap <silent> [shortcut]j :<C-u>LspNextError<CR>
+nnoremap <silent> [shortcut]k :<C-u>LspPreviousError<CR>
+nnoremap <silent> [shortcut]r :<C-u>LspRename<CR>
 
 " acyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -381,12 +382,11 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ 'node_modules/', 'bower_components/', 'tmp/', 'log/', 'vendor/ruby',
      \ '.idea/', 'dist/',
      \ 'tags', 'tags-*'])
-nmap ,, [denite]
-nnoremap <silent> [denite]f :<C-u>Denite file/rec<CR>
-nnoremap <silent> [denite]g :<C-u>Denite -auto_preview grep<CR>
-nnoremap <silent> [denite]l :<C-u>Denite line<CR>
-nnoremap <silent> [denite]m :<C-u>Denite file_mru<CR>
-nnoremap <silent> [denite]y :<C-u>Denite neoyank<CR>
+nnoremap <silent> [shortcut]f :<C-u>Denite file/rec<CR>
+nnoremap <silent> [shortcut]g :<C-u>Denite -auto_preview grep<CR>
+nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
+nnoremap <silent> [shortcut]m :<C-u>Denite file_mru<CR>
+nnoremap <silent> [shortcut]y :<C-u>Denite neoyank<CR>
 
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
@@ -523,15 +523,6 @@ vmap ,/ <Plug>(caw:hatpos:toggle)
 " vim-smartchr
 inoremap <expr> , smartchr#loop(', ', ',')
 
-" nvim-typescript
-augroup typescript_shorthands
-  autocmd!
-  autocmd FileType typescript nmap <buffer> ,d :TSDefPreview<CR>
-  autocmd FileType typescript nmap <buffer> ,n :TSRename<CR>
-  autocmd FileType typescript nmap <buffer> ,r :TSRefs<CR>
-  autocmd FileType typescript nmap <buffer> ,t :TSType<CR>
-augroup END
-
 " vim-go
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -552,37 +543,37 @@ augroup vimgo
 augroup END
 
 " ale
-let g:ale_linters = {
-     \ 'css': ['stylelint'],
-     \ 'javascript': ['eslint'],
-     \ 'typescript': ['eslint'],
-     "\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-     \ }
-" " ⊗
-" " ⊘
-" " ❎
-" " ⦸
-" " ⯑
-" " �
-" " ⚠
-" " ⛒
-" " ⨂
-" " ⮾
-" " ⮿
-" " 🚫
-" " 🛇
-" " 🛈
-" " ⓘ
-" " let g:ale_sign_error = '⨂'
-" " let g:ale_sign_warning = '⚠'
-" " let g:ale_sign_info = 'ⓘ'
-" " let g:ale_sign_style_error = 'SE'
-" " let g:ale_sign_style_warning = 'SW'
-" " let g:ale_echo_msg_error_str = g:ale_sign_error
-" " let g:ale_echo_msg_warning_str = g:ale_sign_warning
-" " let g:ale_echo_msg_info_str = g:ale_sign_info
-nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-nmap <silent> <C-N> <Plug>(ale_next_wrap)
+" let g:ale_linters = {
+"     \ 'css': ['stylelint'],
+"     \ 'javascript': ['eslint'],
+"     \ 'typescript': ['eslint'],
+"      "\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
+"     \ }
+" " " ⊗
+" " " ⊘
+" " " ❎
+" " " ⦸
+" " " ⯑
+" " " �
+" " " ⚠
+" " " ⛒
+" " " ⨂
+" " " ⮾
+" " " ⮿
+" " " 🚫
+" " " 🛇
+" " " 🛈
+" " " ⓘ
+" " " let g:ale_sign_error = '⨂'
+" " " let g:ale_sign_warning = '⚠'
+" " " let g:ale_sign_info = 'ⓘ'
+" " " let g:ale_sign_style_error = 'SE'
+" " " let g:ale_sign_style_warning = 'SW'
+" " " let g:ale_echo_msg_error_str = g:ale_sign_error
+" " " let g:ale_echo_msg_warning_str = g:ale_sign_warning
+" " " let g:ale_echo_msg_info_str = g:ale_sign_info
+" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
 " lightline
 let s:base03  = ['#1d2021', 234]

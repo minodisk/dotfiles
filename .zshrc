@@ -93,6 +93,11 @@ alias exit="tmux detach"
 # BFG
 alias bfg='java -jar /usr/local/jar/bfg.jar'
 
+# Kill processes using specific port
+function killport() {
+  kill `lsof -ti tcp:$1`
+}
+
 # teensy_loader
 alias teensy_loader_="teensy_loader --mcu=atmega32u4 -vw"
 
@@ -108,4 +113,7 @@ if [ -f "$HOME/Library/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/Libr
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/Library/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/Library/google-cloud-sdk/completion.zsh.inc"; fi
 
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
 source ~/.zprofile
+
