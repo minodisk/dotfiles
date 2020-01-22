@@ -26,10 +26,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tmhedberg/matchit'
 
 " Input Supports
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-go', {'do': 'make' }
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
@@ -47,15 +43,12 @@ Plug 'luochen1990/rainbow'
 " File Operations
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
+Plug 'Shougo/neoyank.vim'
 
 " Lint / Warn / Error
 Plug 'w0rp/ale'
 
 " Language Client
-" Plug 'autozimu/LanguageClient-neovim', {
-"  \ 'branch': 'next',
-"  \ 'do': 'bash install.sh',
-"  \ }
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp', {
       \ 'do': 'go get golang.org/x/tools/cmd/gopls'
@@ -64,7 +57,6 @@ Plug 'prabirshrestha/vim-lsp', {
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/asyncomplete-neosnippet.vim'
 
 " Languages
 Plug 'fatih/vim-go', {
@@ -79,7 +71,6 @@ Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescript.tsx'] }
-
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -89,11 +80,9 @@ Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'digitaltoad/vim-pug'
 Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
-" Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
 Plug 'snoe/clojure-lsp', { 'for': ['clojure'] }
 Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
-" Plug 'villainy/deoplete-dart', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
 Plug 'jparise/vim-graphql'
 
@@ -374,6 +363,7 @@ omap <silent> <C-n> :lne<CR>
 nmap <silent> <C-N> :lp<CR>
 
 """ denite.nvim
+call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', '']) " brew install the_silver_searcher
 call denite#custom#source('file/rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ [ '*~', '*.o', '*.exe', '*.bak',
@@ -383,9 +373,8 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ '.idea/', 'dist/',
      \ 'tags', 'tags-*'])
 nnoremap <silent> [shortcut]f :<C-u>Denite file/rec<CR>
-nnoremap <silent> [shortcut]g :<C-u>Denite -auto_preview grep<CR>
-nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
 nnoremap <silent> [shortcut]m :<C-u>Denite file_mru<CR>
+nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
 nnoremap <silent> [shortcut]y :<C-u>Denite neoyank<CR>
 
 autocmd FileType denite call s:denite_my_settings()
