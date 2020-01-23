@@ -46,7 +46,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/neoyank.vim'
 
 " Lint / Warn / Error
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " Language Client
 Plug 'prabirshrestha/async.vim'
@@ -70,7 +70,7 @@ Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescript.tsx'] }
+Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescriptreact'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -90,9 +90,9 @@ Plug 'jparise/vim-graphql'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-     \ 'do': 'npm i -g prettier',
-     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
-     \ }
+    \ 'do': 'npm i -g prettier',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
+    \ }
 
 " External Tools
 Plug 'tpope/vim-git'
@@ -170,7 +170,6 @@ highlight NonText ctermbg=none
 augroup file_type
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPre *.js.flow set filetype=javascript
-  autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript.tsx
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
@@ -250,7 +249,7 @@ if executable('typescript-language-server')
         \ 'name': 'typescript-language-server',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ 'whitelist': ['typescript', 'typescriptreact'],
         \ })
 endif
 if executable('gopls')
@@ -532,37 +531,20 @@ augroup vimgo
 augroup END
 
 " ale
-" let g:ale_linters = {
-"     \ 'css': ['stylelint'],
-"     \ 'javascript': ['eslint'],
-"     \ 'typescript': ['eslint'],
-"      "\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-"     \ }
-" " " ⊗
-" " " ⊘
-" " " ❎
-" " " ⦸
-" " " ⯑
-" " " �
-" " " ⚠
-" " " ⛒
-" " " ⨂
-" " " ⮾
-" " " ⮿
-" " " 🚫
-" " " 🛇
-" " " 🛈
-" " " ⓘ
-" " " let g:ale_sign_error = '⨂'
-" " " let g:ale_sign_warning = '⚠'
-" " " let g:ale_sign_info = 'ⓘ'
-" " " let g:ale_sign_style_error = 'SE'
-" " " let g:ale_sign_style_warning = 'SW'
-" " " let g:ale_echo_msg_error_str = g:ale_sign_error
-" " " let g:ale_echo_msg_warning_str = g:ale_sign_warning
-" " " let g:ale_echo_msg_info_str = g:ale_sign_info
-" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-N> <Plug>(ale_next_wrap)
+let g:ale_linters = {
+    \ 'css': ['stylelint'],
+    \ 'javascript': ['eslint'],
+    \ 'typescript': ['eslint'],
+    \ 'typescriptreact': ['eslint'],
+    \ }
+let g:ale_fixers = {
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'javascript': ['eslint'],
+    \ 'typescript': ['eslint'],
+    \ 'typescriptreact': ['eslint'],
+    \ }
+let g:ale_fix_on_save = 1
+" let g:ale_javascript_eslint_executable='eslint_d'
 
 " lightline
 let s:base03  = ['#1d2021', 234]
