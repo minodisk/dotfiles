@@ -59,9 +59,12 @@ function peco-history-selection() {
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
+# workspace
+export WSPATH="$HOME/ws"
+
 # go
-export GOPATH="$HOME/go"
-export PATH="$HOME/go/bin:$PATH"
+export GOPATH=$WSPATH
+export PATH="$GOPATH/bin:$PATH"
 
 # rust
 # export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
@@ -72,8 +75,9 @@ export PATH="$HOME/Library/flutter/bin:$PATH"
 alias flutter-create='(){flutter create --org com.mono0926 -i swift -a kotlin --with-driver-test $1}'
 export PATH="$HOME/.pub-cache/bin:$PATH"
 
-# n
+# nodebrew
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+export PATH=$HOME/n/versions/node:$PATH
 
 # vim
 alias vi='nvim'

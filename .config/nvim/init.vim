@@ -49,7 +49,7 @@ Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
 
 " Lint / Warn / Error
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " Language Client
 " Plug 'autozimu/LanguageClient-neovim', {
@@ -112,6 +112,7 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
       \ 'do': 'go get github.com/haya14busa/gtrans'
       \ }
+Plug 'rhysd/vim-grammarous'
 
 call plug#end()
 
@@ -280,9 +281,9 @@ let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
-nnoremap <silent> [shortcut]d :<C-u>LspPeekDefinition<CR>
-nnoremap <silent> [shortcut]i :<C-u>LspPeekImplementation<CR>
-nnoremap <silent> [shortcut]t :<C-u>LspPeekTypeDefinition<CR>
+nnoremap <silent> [shortcut]d :<C-u>LspDefinition<CR>
+nnoremap <silent> [shortcut]i :<C-u>LspImplementation<CR>
+nnoremap <silent> [shortcut]t :<C-u>LspTypeDefinition<CR>
 nnoremap <silent> [shortcut]j :<C-u>LspNextError<CR>
 nnoremap <silent> [shortcut]k :<C-u>LspPreviousError<CR>
 nnoremap <silent> [shortcut]r :<C-u>LspRename<CR>
@@ -534,37 +535,15 @@ augroup vimgo
 augroup END
 
 " ale
-" let g:ale_linters = {
-"     \ 'css': ['stylelint'],
-"     \ 'javascript': ['eslint'],
-"     \ 'typescript': ['eslint'],
-"      "\ 'go': ['gofmt -e', 'go vet', 'golint', 'gometalinter', 'go build', 'gosimple', 'staticcheck'],
-"     \ }
-" " " ⊗
-" " " ⊘
-" " " ❎
-" " " ⦸
-" " " ⯑
-" " " �
-" " " ⚠
-" " " ⛒
-" " " ⨂
-" " " ⮾
-" " " ⮿
-" " " 🚫
-" " " 🛇
-" " " 🛈
-" " " ⓘ
-" " " let g:ale_sign_error = '⨂'
-" " " let g:ale_sign_warning = '⚠'
-" " " let g:ale_sign_info = 'ⓘ'
-" " " let g:ale_sign_style_error = 'SE'
-" " " let g:ale_sign_style_warning = 'SW'
-" " " let g:ale_echo_msg_error_str = g:ale_sign_error
-" " " let g:ale_echo_msg_warning_str = g:ale_sign_warning
-" " " let g:ale_echo_msg_info_str = g:ale_sign_info
-" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-N> <Plug>(ale_next_wrap)
+let g:ale_linters = {
+    \ 'typescript': ['eslint'],
+    \ }
+let g:ale_fixers = {
+  \ 'typescript': ['eslint'],
+  \ }
+let g:ale_fix_on_save = 1
+nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
 " lightline
 let s:base03  = ['#1d2021', 234]
@@ -744,8 +723,5 @@ function! CSS2Props()
 endfunction
 command CSS2Props :call CSS2Props()<CR>
 
-function! Delete()
-  :silent! call delete(expand('%'))
-  :silent! q!
-endfunction
-command Delete :call Delete()<CR>
+command! Delete call delete(expand('%'))<CR>
+command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))<CR>
