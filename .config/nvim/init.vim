@@ -26,10 +26,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tmhedberg/matchit'
 
 " Input Supports
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-go', {'do': 'make' }
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
 Plug 'cohama/lexima.vim'
 Plug 'kana/vim-smartchr'
 Plug 'tyru/caw.vim'
@@ -47,15 +43,12 @@ Plug 'luochen1990/rainbow'
 " File Operations
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
+Plug 'Shougo/neoyank.vim'
 
 " Lint / Warn / Error
 Plug 'dense-analysis/ale'
 
 " Language Client
-" Plug 'autozimu/LanguageClient-neovim', {
-"  \ 'branch': 'next',
-"  \ 'do': 'bash install.sh',
-"  \ }
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp', {
       \ 'do': 'go get golang.org/x/tools/cmd/gopls'
@@ -64,7 +57,6 @@ Plug 'prabirshrestha/vim-lsp', {
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/asyncomplete-neosnippet.vim'
 
 " Languages
 Plug 'fatih/vim-go', {
@@ -78,8 +70,7 @@ Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescript.tsx'] }
-
+Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescriptreact'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -89,9 +80,9 @@ Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'digitaltoad/vim-pug'
 Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
-Plug 'clojure-vim/async-clj-omni', { 'for': ['clojure'] }
+Plug 'snoe/clojure-lsp', { 'for': ['clojure'] }
+Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
-" Plug 'villainy/deoplete-dart', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
 Plug 'jparise/vim-graphql'
 
@@ -99,9 +90,9 @@ Plug 'jparise/vim-graphql'
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-     \ 'do': 'npm i -g prettier',
-     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
-     \ }
+    \ 'do': 'npm i -g prettier',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
+    \ }
 
 " External Tools
 Plug 'tpope/vim-git'
@@ -180,7 +171,6 @@ highlight NonText ctermbg=none
 augroup file_type
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPre *.js.flow set filetype=javascript
-  autocmd BufNewFile,BufRead,BufReadPre *.tsx setlocal filetype=typescript.tsx
   autocmd BufNewFile,BufRead,BufReadPre *.coffee set filetype=coffee
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
@@ -260,7 +250,7 @@ if executable('typescript-language-server')
         \ 'name': 'typescript-language-server',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ 'whitelist': ['typescript', 'typescriptreact'],
         \ })
 endif
 if executable('gopls')
@@ -275,6 +265,13 @@ if executable('dart_language_server')
         \ 'name': 'dart_language_server',
         \ 'cmd': {server_info->['dart_language_server']},
         \ 'whitelist': ['dart'],
+        \ })
+endif
+if executable('clojure-lsp')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clojure-lsp',
+        \ 'cmd': {server_info->['clojure-lsp']},
+        \ 'whitelist': ['clojure'],
         \ })
 endif
 let g:lsp_signs_enabled = 1         " enable signs
@@ -366,6 +363,7 @@ omap <silent> <C-n> :lne<CR>
 nmap <silent> <C-N> :lp<CR>
 
 """ denite.nvim
+call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', '']) " brew install the_silver_searcher
 call denite#custom#source('file/rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ [ '*~', '*.o', '*.exe', '*.bak',
@@ -375,9 +373,8 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ '.idea/', 'dist/',
      \ 'tags', 'tags-*'])
 nnoremap <silent> [shortcut]f :<C-u>Denite file/rec<CR>
-nnoremap <silent> [shortcut]g :<C-u>Denite -auto_preview grep<CR>
-nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
 nnoremap <silent> [shortcut]m :<C-u>Denite file_mru<CR>
+nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
 nnoremap <silent> [shortcut]y :<C-u>Denite neoyank<CR>
 
 autocmd FileType denite call s:denite_my_settings()
@@ -536,12 +533,19 @@ augroup END
 
 " ale
 let g:ale_linters = {
+    \ 'css': ['stylelint'],
+    \ 'javascript': ['eslint'],
     \ 'typescript': ['eslint'],
+    \ 'typescriptreact': ['eslint'],
     \ }
 let g:ale_fixers = {
-  \ 'typescript': ['eslint'],
-  \ }
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'javascript': ['eslint'],
+    \ 'typescript': ['eslint'],
+    \ 'typescriptreact': ['eslint'],
+    \ }
 let g:ale_fix_on_save = 1
+" let g:ale_javascript_eslint_executable='eslint_d'
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
