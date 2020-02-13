@@ -98,6 +98,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-rhubarb'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
