@@ -63,6 +63,7 @@ Plug 'fatih/vim-go', {
       \ 'for': ['go', 'gohtmltmpl', 'gotexttmpl'],
       \ }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
+Plug 'GutenYe/json5.vim'
 
 "" JavaScript/TypeScript
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
@@ -176,6 +177,7 @@ augroup file_type
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
   autocmd BufNewFile,BufRead,BufReadPre *.tmpl set filetype=gotexttmpl
+  autocmd BufNewFile,BufRead,BufReadPre *.eslintrc set filetype=json5
 augroup END
 
 augroup indent_setting
@@ -284,6 +286,7 @@ nnoremap <silent> [shortcut]i :<C-u>LspImplementation<CR>
 nnoremap <silent> [shortcut]t :<C-u>LspTypeDefinition<CR>
 nnoremap <silent> [shortcut]j :<C-u>LspNextError<CR>
 nnoremap <silent> [shortcut]k :<C-u>LspPreviousError<CR>
+nnoremap <silent> [shortcut]R :<C-u>LspReferences<CR>
 nnoremap <silent> [shortcut]r :<C-u>LspRename<CR>
 
 " acyncomplete
@@ -524,12 +527,12 @@ let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 augroup vimgo
   autocmd!
-  autocmd FileType go nmap ,b :<Plug>(go-build)<CR>
-  autocmd FileType go nmap ,d :<Plug>(go-def)<CR>
-  autocmd FileType go nmap ,n :<Plug>(go-rename)<CR>
-  autocmd FileType go nmap ,r :<Plug>(go-run)<CR>
-  autocmd FileType go nmap ,t :<Plug>(go-test)<CR>
-  autocmd FileType go nmap ,v :<Plug>(go-coverage)<CR>
+  autocmd FileType go nmap <buffer> ,b :<Plug>(go-build)<CR>
+  autocmd FileType go nmap <buffer> ,d :<Plug>(go-def)<CR>
+  autocmd FileType go nmap <buffer> ,n :<Plug>(go-rename)<CR>
+  autocmd FileType go nmap <buffer> ,r :<Plug>(go-run)<CR>
+  autocmd FileType go nmap <buffer> ,t :<Plug>(go-test)<CR>
+  autocmd FileType go nmap <buffer> ,v :<Plug>(go-coverage)<CR>
 augroup END
 
 " ale
@@ -546,7 +549,7 @@ let g:ale_fixers = {
     \ 'typescriptreact': ['eslint'],
     \ }
 let g:ale_fix_on_save = 1
-" let g:ale_javascript_eslint_executable='eslint_d'
+let g:ale_javascript_eslint_executable='eslint_d'
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
