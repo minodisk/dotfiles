@@ -63,6 +63,7 @@ Plug 'fatih/vim-go', {
       \ 'for': ['go', 'gohtmltmpl', 'gotexttmpl'],
       \ }
 Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
+Plug 'GutenYe/json5.vim'
 
 "" JavaScript/TypeScript
 Plug 'pangloss/vim-javascript', { 'for': ['javascript'] }
@@ -85,6 +86,7 @@ Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
 Plug 'jparise/vim-graphql'
+Plug 'palantir/python-language-server', { 'for': ['python'] }
 
 " Formatters
 Plug 'vim-scripts/Align'
@@ -99,6 +101,7 @@ Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-rhubarb'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 Plug 'haya14busa/vim-gtrans', {
@@ -176,6 +179,7 @@ augroup file_type
   autocmd BufNewFile,BufRead,BufReadPre *.conf set filetype=nginx
   autocmd BufNewFile,BufRead,BufReadPre apache/*.conf set filetype=apache
   autocmd BufNewFile,BufRead,BufReadPre *.tmpl set filetype=gotexttmpl
+  autocmd BufNewFile,BufRead,BufReadPre *.eslintrc set filetype=json5
 augroup END
 
 augroup indent_setting
@@ -275,6 +279,22 @@ if executable('clojure-lsp')
         \ 'whitelist': ['clojure'],
         \ })
 endif
+" pip install python-language-server
+if executable('pyls')
+  " Python用の設定を記載
+  " workspace_configで以下の設定を記載
+  " - pycodestyleの設定はALEと重複するので無効にする
+  " - jediの定義ジャンプで一部無効になっている設定を有効化
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'pyls',
+      \ 'cmd': { server_info -> ['pyls'] },
+      \ 'whitelist': ['python'],
+      \ 'workspace_config': {'pyls': {'plugins': {
+      \   'pycodestyle': {'enabled': v:false},
+      \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
+      \})
+  autocmd FileType python call s:configure_lsp()
+endif
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_signs_error = {'text': '✗'}
@@ -284,6 +304,7 @@ nnoremap <silent> [shortcut]i :<C-u>LspImplementation<CR>
 nnoremap <silent> [shortcut]t :<C-u>LspTypeDefinition<CR>
 nnoremap <silent> [shortcut]j :<C-u>LspNextError<CR>
 nnoremap <silent> [shortcut]k :<C-u>LspPreviousError<CR>
+nnoremap <silent> [shortcut]R :<C-u>LspReferences<CR>
 nnoremap <silent> [shortcut]r :<C-u>LspRename<CR>
 
 " acyncomplete
@@ -366,6 +387,10 @@ nmap <silent> <C-N> :lp<CR>
 """ denite.nvim
 call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', '']) " brew install the_silver_searcher
 call denite#custom#source('file/rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'default_opts', ['--follow', '--no-group', '--no-color'])
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
      \ [ '*~', '*.o', '*.exe', '*.bak',
      \ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
@@ -377,6 +402,10 @@ nnoremap <silent> [shortcut]f :<C-u>Denite file/rec<CR>
 nnoremap <silent> [shortcut]m :<C-u>Denite file_mru<CR>
 nnoremap <silent> [shortcut]l :<C-u>Denite line<CR>
 nnoremap <silent> [shortcut]y :<C-u>Denite neoyank<CR>
+nnoremap <silent> [shortcut]gg :<C-u>Denite grep -buffer-name=denite-grep<CR>
+nnoremap <silent> [shortcut]gr :<C-u>Denite -resume -buffer-name=denite-grep<CR>
+nnoremap <silent> [shortcut]gj :<C-u>Denite -resume -buffer-name=denite-grep -select=+1 -immediately<CR>
+nnoremap <silent> [shortcut]gk :<C-u>Denite -resume -buffer-name=denite-grep -select=-1 -immediately<CR>
 
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
@@ -522,15 +551,16 @@ let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
-augroup vimgo
-  autocmd!
-  autocmd FileType go nmap ,b :<Plug>(go-build)<CR>
-  autocmd FileType go nmap ,d :<Plug>(go-def)<CR>
-  autocmd FileType go nmap ,n :<Plug>(go-rename)<CR>
-  autocmd FileType go nmap ,r :<Plug>(go-run)<CR>
-  autocmd FileType go nmap ,t :<Plug>(go-test)<CR>
-  autocmd FileType go nmap ,v :<Plug>(go-coverage)<CR>
-augroup END
+" augroup vimgo
+"   autocmd!
+  autocmd FileType go nmap <buffer> ,b :<Plug>(go-build)<CR>
+  autocmd FileType go nmap <silent> [shortcut]d :<Plug>(go-def)<CR>
+  autocmd FileType go nmap <buffer> ,n :<Plug>(go-rename)<CR>
+  autocmd FileType go nmap <buffer> ,r :<Plug>(go-run)<CR>
+  autocmd FileType go nmap <buffer> ,t :<Plug>(go-test)<CR>
+  autocmd FileType go nmap <buffer> ,v :<Plug>(go-coverage)<CR>
+
+" augroup END
 
 " ale
 let g:ale_linters = {
@@ -546,7 +576,10 @@ let g:ale_fixers = {
     \ 'typescriptreact': ['eslint'],
     \ }
 let g:ale_fix_on_save = 1
-" let g:ale_javascript_eslint_executable='eslint_d'
+" if executable('eslint_d')
+"   let g:ale_javascript_eslint_use_global = 1
+"   let g:ale_javascript_eslint_executable = 'eslint_d'
+" endif
 nmap <silent> <C-n> <Plug>(ale_previous_wrap)
 nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
@@ -728,5 +761,5 @@ function! CSS2Props()
 endfunction
 command CSS2Props :call CSS2Props()<CR>
 
-command! Delete call delete(expand('%'))<CR>
+command! Delete :call delete(expand('%'))<CR>
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))<CR>
