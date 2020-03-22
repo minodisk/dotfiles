@@ -99,6 +99,7 @@ Plug 'prettier/vim-prettier', {
 " External Tools
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-rhubarb'
 Plug 'christoomey/vim-tmux-navigator'
