@@ -50,9 +50,9 @@ Plug 'dense-analysis/ale'
 
 " Language Client
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp', {
-      \ 'do': 'go get golang.org/x/tools/cmd/gopls'
-      \ }
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+" Plug 'tsuyoshicho/vim-efm-langserver-settings'
 
 " Completion
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -62,7 +62,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'fatih/vim-go', {
       \ 'for': ['go', 'gohtmltmpl', 'gotexttmpl'],
       \ }
-Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
+" Plug 'rust-lang/rust.vim', { 'for': ['rust'] }
 Plug 'GutenYe/json5.vim'
 
 "" JavaScript/TypeScript
@@ -71,7 +71,7 @@ Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['javascript'] }
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescriptreact'] }
+" Plug 'ryanolsonx/vim-lsp-typescript', { 'for': ['typescript', 'typescriptreact'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile'] }
 Plug 'markcornick/vim-terraform', { 'for': ['terraform'] }
 Plug 'vim-scripts/nginx.vim', { 'for': ['nginx'] }
@@ -80,8 +80,8 @@ Plug 'vim-scripts/AnsiEsc.vim', { 'for': ['log'] }
 Plug 'othree/html5.vim', { 'for': ['html'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css'] }
 Plug 'digitaltoad/vim-pug'
-Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
-Plug 'snoe/clojure-lsp', { 'for': ['clojure'] }
+" Plug 'solarnz/thrift.vim', { 'for': ['thrift'] }
+" Plug 'snoe/clojure-lsp', { 'for': ['clojure'] }
 Plug 'venantius/vim-cljfmt', { 'for': ['clojure'] }
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart'] }
 Plug 'thosakwe/vim-flutter'
@@ -92,9 +92,9 @@ Plug 'palantir/python-language-server', { 'for': ['python'] }
 Plug 'vim-scripts/Align'
 Plug 'vim-scripts/PreserveNoEOL'
 Plug 'prettier/vim-prettier', {
-    \ 'do': 'npm i -g prettier',
-    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
-    \ }
+   \ 'do': 'npm i -g prettier',
+   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown']
+   \ }
 
 " External Tools
 Plug 'tpope/vim-git'
@@ -194,14 +194,9 @@ augroup quick_fix
   autocmd QuickFixCmdPost *grep* cwindow
 augroup END
 
-augroup delete_spaces
-  autocmd!
-  autocmd BufWritePre * :%s/\s\+$//ge
-augroup END
-
 augroup prettier
   autocmd!
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.module.css,*.less,*.scss Prettier
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.js.flow,*.ts,*.tsx,*.css,*.module.css,*.less,*.scss,*.graphql Prettier
 augroup END
 
 nmap , [shortcut]
@@ -249,60 +244,63 @@ nnoremap ,,t :<C-u>call OpenTerm()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " vim-lsp: Language Server
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescriptreact'],
-        \ })
-endif
-if executable('gopls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
-if executable('dart_language_server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'dart_language_server',
-        \ 'cmd': {server_info->['dart_language_server']},
-        \ 'whitelist': ['dart'],
-        \ })
-endif
-if executable('clojure-lsp')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clojure-lsp',
-        \ 'cmd': {server_info->['clojure-lsp']},
-        \ 'whitelist': ['clojure'],
-        \ })
-endif
-" pip install python-language-server
-if executable('pyls')
-  " Python用の設定を記載
-  " workspace_configで以下の設定を記載
-  " - pycodestyleの設定はALEと重複するので無効にする
-  " - jediの定義ジャンプで一部無効になっている設定を有効化
-  au User lsp_setup call lsp#register_server({
-      \ 'name': 'pyls',
-      \ 'cmd': { server_info -> ['pyls'] },
-      \ 'whitelist': ['python'],
-      \ 'workspace_config': {'pyls': {'plugins': {
-      \   'pycodestyle': {'enabled': v:false},
-      \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
-      \})
-  autocmd FileType python call s:configure_lsp()
-endif
+" if executable('typescript-language-server')
+"     au User lsp_setup call lsp#register_server({
+"        \ 'name': 'typescript-language-server',
+"        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+"        \ 'whitelist': ['typescript', 'typescriptreact'],
+"        \ })
+" endif
+" if executable('gopls')
+"     au User lsp_setup call lsp#register_server({
+"        \ 'name': 'gopls',
+"        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+"        \ 'whitelist': ['go'],
+"        \ })
+" endif
+" if executable('dart_language_server')
+"     au User lsp_setup call lsp#register_server({
+"        \ 'name': 'dart_language_server',
+"        \ 'cmd': {server_info->['dart_language_server']},
+"        \ 'whitelist': ['dart'],
+"        \ })
+" endif
+" if executable('clojure-lsp')
+"     au User lsp_setup call lsp#register_server({
+"        \ 'name': 'clojure-lsp',
+"        \ 'cmd': {server_info->['clojure-lsp']},
+"        \ 'whitelist': ['clojure'],
+"        \ })
+" endif
+" " pip install python-language-server
+" if executable('pyls')
+"   " Python用の設定を記載
+"   " workspace_configで以下の設定を記載
+"   " - pycodestyleの設定はALEと重複するので無効にする
+"   " - jediの定義ジャンプで一部無効になっている設定を有効化
+"   au User lsp_setup call lsp#register_server({
+"      \ 'name': 'pyls',
+"      \ 'cmd': { server_info -> ['pyls'] },
+"      \ 'whitelist': ['python'],
+"      \ 'workspace_config': {'pyls': {'plugins': {
+"      \   'pycodestyle': {'enabled': v:false},
+"      \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
+"      \})
+"   autocmd FileType python call s:configure_lsp()
+" endif
 let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '‼'}
+let g:lsp_text_edit_enabled = 1
+" let g:lsp_signs_error = {'text': '✗'}
+" let g:lsp_signs_warning = {'text': '‼'}
+nnoremap <silent> [shortcut]h :<C-u>LspHover<CR>
 nnoremap <silent> [shortcut]d :<C-u>LspDefinition<CR>
 nnoremap <silent> [shortcut]i :<C-u>LspImplementation<CR>
 nnoremap <silent> [shortcut]t :<C-u>LspTypeDefinition<CR>
-nnoremap <silent> [shortcut]j :<C-u>LspNextError<CR>
-nnoremap <silent> [shortcut]k :<C-u>LspPreviousError<CR>
+nnoremap <silent> [shortcut]j :<C-u>LspNextDiagnostic<CR>
+nnoremap <silent> [shortcut]k :<C-u>LspPreviousDiagnostic<CR>
 nnoremap <silent> [shortcut]R :<C-u>LspReferences<CR>
 nnoremap <silent> [shortcut]r :<C-u>LspRename<CR>
 
@@ -434,12 +432,12 @@ let g:neomru#directory_mru_limit=10000
 
 """ neosnippet
 let g:neosnippet#enable_completed_snippet = 1
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
 " SuperTab like snippets behavior.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
 "imap <expr><TAB>
 " \ pumvisible() ? "\<C-n>" :
 " \ neosnippet#expandable_or_jumpable() ?
@@ -493,6 +491,7 @@ let g:rainbow_conf = {
 
 """ prettier
 " set all options as default: http://json.schemastore.org/prettierrc
+let g:prettier#autoformat = 1
 let g:prettier#config#single_quote = 'false'
 let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#config#jsx_bracket_same_line = 'false'
@@ -504,7 +503,7 @@ let g:prettier#config#trailing_comma = 'all'
 " let g:prettier#config#prose_wrap = 'preserve'
 
 " tsuquyomi
-let g:tsuquyomi_disable_quickfix = 1
+" let g:tsuquyomi_disable_quickfix = 1
 
 " vim-operator-surround
 nmap <silent>sa <Plug>(operator-surround-append)
@@ -562,25 +561,27 @@ let g:go_doc_keywordprg_enabled = 0
 " augroup END
 
 " ale
+let g:ale_completion_enabled = 0
 let g:ale_linters = {
-    \ 'css': ['stylelint'],
-    \ 'javascript': ['eslint'],
-    \ 'typescript': ['eslint'],
-    \ 'typescriptreact': ['eslint'],
-    \ }
+  \ 'css': [],
+  \ 'javascript': [],
+  \ 'typescript': [],
+  \ 'typescriptreact': [],
+  \ }
 let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'javascript': ['eslint'],
-    \ 'typescript': ['eslint'],
-    \ 'typescriptreact': ['eslint'],
-    \ }
+   \ '*': [],
+   \ 'vue': ['eslint'],
+   \ 'javascript': ['eslint'],
+   \ 'typescript': ['eslint'],
+   \ 'typescriptreact': ['eslint'],
+   \ }
 let g:ale_fix_on_save = 1
-" if executable('eslint_d')
-"   let g:ale_javascript_eslint_use_global = 1
-"   let g:ale_javascript_eslint_executable = 'eslint_d'
-" endif
-nmap <silent> <C-n> <Plug>(ale_previous_wrap)
-nmap <silent> <C-N> <Plug>(ale_next_wrap)
+" " if executable('eslint_d')
+" "   let g:ale_javascript_eslint_use_global = 1
+" "   let g:ale_javascript_eslint_executable = 'eslint_d'
+" " endif
+" nmap <silent> <C-n> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-N> <Plug>(ale_next_wrap)
 
 " lightline
 let s:base03  = ['#1d2021', 234]
@@ -717,10 +718,10 @@ function! LightlineOK()
   let l:counts = ale#statusline#Count(bufnr(''))
   return l:counts.total == 0 ? '✓ ' : ''
 endfunction
-augroup LightLineOnALE
-  autocmd!
-  autocmd User ALELint call lightline#update()
-augroup END
+" augroup LightLineOnALE
+"   autocmd!
+"   autocmd User ALELint call lightline#update()
+" augroup END
 
 " tmuxline
 let g:tmuxline_theme = 'lightline'
